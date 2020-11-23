@@ -24,54 +24,72 @@ import jdk.jfr.consumer.RecordedEvent;
 
 public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> {
 
-  // 2 - Write a constructor to build your assertion class with the object you want make assertions on.
-  public JfrEventsAssert(JfrEvents actual) {
-    super(actual, JfrEventsAssert.class);
-  }
+    public JfrEventsAssert(JfrEvents actual) {
+        super(actual, JfrEventsAssert.class);
+    }
 
-  // 3 - A fluent entry point to your specific assertion class, use it with static import.
-  public static JfrEventsAssert assertThat(JfrEvents actual) {
-    return new JfrEventsAssert(actual);
-  }
+    public static JfrEventsAssert assertThat(JfrEvents actual) {
+        return new JfrEventsAssert(actual);
+    }
 
-  public JfrEventsAssert contains(ExpectedEvent event) {
-      isNotNull();
+    public JfrEventsAssert contains(ExpectedEvent expectedEvent) {
+        isNotNull();
 
-      boolean found = false;
-      for (RecordedEvent recordedEvent : actual.getEvents()) {
-        if (recordedEvent.getEventType().getName().equals(event.getName())) {
-
-            if (!event.getProps().isEmpty()) {
-                for (Entry<String, Object> prop : event.getProps().entrySet()) {
-                    if (recordedEvent.hasField(prop.getKey())) {
-                        if (prop.getValue() instanceof Duration) {
-                            if (!recordedEvent.getDuration(prop.getKey()).equals(prop.getValue())) {
-                            }
-                            else {
-                                found = true;
-                                break;
-                            }
-                        }
-                    }
-
-                }
-            }
-            else {
-                found = true;
+        boolean found = false;
+        for (RecordedEvent recordedEvent : actual.getEvents()) {
+            found = matches(expectedEvent, recordedEvent);
+            if (found) {
                 break;
             }
-
         }
-      }
 
-      if (!found) {
-          failWithMessage("No JFR event of type <%s> and with attributes <%s>", event.getName(), event.getProps());
-      }
+        if (!found) {
+            if (expectedEvent.getProps().isEmpty()) {
+                failWithMessage("No JFR event of type <%s>", expectedEvent.getName());
+            }
+            else {
+                failWithMessage("No JFR event of type <%s> with attributes <%s>", expectedEvent.getName(), expectedEvent.getProps());
+            }
+        }
 
-      return this;
-  }
+        return this;
+    }
 
-  public static ExpectedEvent event(String name) {
-      return new ExpectedEvent(name);
-  }
+    private boolean matches(ExpectedEvent expectedEvent, RecordedEvent recordedEvent) {
+        if (!recordedEvent.getEventType().getName().equals(expectedEvent.getName())) {
+            return false;
+        }
+
+        if (!expectedEvent.getProps().isEmpty()) {
+            for (Entry<String, Object> prop : expectedEvent.getProps().entrySet()) {
+                if (!hasMatchingProperty(recordedEvent, prop.getKey(), prop.getValue())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean hasMatchingProperty(RecordedEvent recordedEvent, String name, Object value) {
+        if (!recordedEvent.hasField(name)) {
+            return false;
+        }
+
+        // TODO all event attribute types
+
+        if (value instanceof Duration) {
+            return recordedEvent.getDuration(name).equals(value);
+        }
+        else if (value instanceof String) {
+            return recordedEvent.getString(name).equals(value);
+        }
+        else {
+            throw new IllegalArgumentException(String.format("Unsupported property type: %s, %s", name, value));
+        }
+    }
+
+    public static ExpectedEvent event(String name) {
+        return new ExpectedEvent(name);
+    }
 }
