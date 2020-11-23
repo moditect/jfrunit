@@ -15,7 +15,7 @@
  */
 package dev.morling.jfrunit;
 
-import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.List;
@@ -66,9 +66,11 @@ public class JfrEvents implements Extension, BeforeEachCallback, AfterEachCallba
 
     @Override
     public void afterEach(ExtensionContext context) throws Exception {
+        Path dumpDir = Files.createDirectories(Path.of(context.getRequiredTestClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("jfrunit"));
+
         Recording recording = context.getStore(NAMESPACE).get(RECORDING, Recording.class);
         recording.stop();
-        recording.dump(Path.of(URI.create("file:///Users/gunnar/Development/debezium/flight-recorder-demo/example-service/target/mytest.jfr")));
+        recording.dump(dumpDir.resolve(context.getRequiredTestClass().getName() + "-" + context.getRequiredTestMethod().getName() + ".jfr"));
         recording.close();
 
         EventStream stream = context.getStore(NAMESPACE).get(EVENT_STREAM, EventStream.class);

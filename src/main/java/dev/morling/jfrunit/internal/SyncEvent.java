@@ -15,10 +15,12 @@
  */
 package dev.morling.jfrunit.internal;
 
+import jdk.jfr.Category;
 import jdk.jfr.Event;
 import jdk.jfr.Name;
 
 @Name(SyncEvent.JFRUNIT_SYNC_EVENT_NAME)
+@Category("JfrUnit")
 public class SyncEvent extends Event {
 
     public static final String JFRUNIT_SYNC_EVENT_NAME = "jfrunit.Sync";
