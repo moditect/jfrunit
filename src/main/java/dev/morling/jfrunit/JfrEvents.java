@@ -23,6 +23,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -94,6 +95,12 @@ public class JfrEvents implements Extension, BeforeEachCallback, AfterEachCallba
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public List<RecordedEvent> ofType(String type) {
+        return events.stream()
+                .filter(re -> re.getEventType().getName().equals(type))
+                .collect(Collectors.toUnmodifiableList());
     }
 
     private void awaitStreamStart(CountDownLatch streamStarted) throws InterruptedException {

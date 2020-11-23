@@ -17,6 +17,7 @@ package dev.morling.jfrunit;
 
 import static dev.morling.jfrunit.JfrEventsAssert.assertThat;
 import static dev.morling.jfrunit.JfrEventsAssert.event;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Duration;
 
@@ -42,5 +43,7 @@ public class JfrTest {
                 event("jdk.GarbageCollection").with("cause", "System.gc()"));
         assertThat(jfrEvents).contains(
                 event("jdk.ThreadSleep").with("time", Duration.ofSeconds(1)));
+
+        assertThat(jfrEvents.ofType("jdk.GarbageCollection")).hasSize(1);
     }
 }
