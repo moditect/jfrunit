@@ -15,6 +15,11 @@
  */
 package dev.morling.jfrunit;
 
+import java.io.IOException;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
+import java.lang.reflect.Method;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -25,57 +30,56 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.Extension;
-import org.junit.jupiter.api.extension.ExtensionContext;
-import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
-import org.junit.platform.commons.support.AnnotationSupport;
-
 import dev.morling.jfrunit.internal.SyncEvent;
 import jdk.jfr.Recording;
-import jdk.jfr.consumer.EventStream;
 import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordingStream;
 
-public class JfrEvents implements Extension, BeforeEachCallback, AfterEachCallback {
+public class JfrEvents {
 
-    private static final Namespace NAMESPACE = Namespace.create(JfrEvents.class);
-    private static final String EVENT_STREAM = "EVENT_STREAM";
-    private static final String RECORDING = "RECORDING";
+    private static final Logger LOGGER = System.getLogger(JfrEvents.class.getName());
 
+    private Method testMethod;
     private Queue<RecordedEvent> events = new ConcurrentLinkedQueue<>();
     private AtomicLong sequence = new AtomicLong();
     private AtomicLong watermark = new AtomicLong();
+    private RecordingStream stream;
+    private Recording recording;
 
-    public Queue<RecordedEvent> getEvents() {
-        return events;
+    public JfrEvents() {
     }
 
-    @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
-        List<EnableEvent> enabledEvents = AnnotationSupport.findRepeatableAnnotations(context.getRequiredTestMethod(), EnableEvent.class);
+    void startRecordingEvents(List<String> enabledEvents, Method testMethod) {
+        LOGGER.log(Level.INFO, "Starting recording");
+
         CountDownLatch streamStarted = new CountDownLatch(1);
 
-        RecordingStream stream = startRecordingStream(enabledEvents, streamStarted);
-        Recording recording = startRecording(enabledEvents);
-        awaitStreamStart(streamStarted);
+        this.testMethod = testMethod;
+        stream = startRecordingStream(enabledEvents, streamStarted);
+        recording = startRecording(enabledEvents);
 
-        context.getStore(NAMESPACE).put(RECORDING, recording);
-        context.getStore(NAMESPACE).put(EVENT_STREAM, stream);
+        try {
+            awaitStreamStart(streamStarted);
+            LOGGER.log(Level.INFO, "Event stream started");
+        }
+        catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @Override
-    public void afterEach(ExtensionContext context) throws Exception {
-        Path dumpDir = Files.createDirectories(Path.of(context.getRequiredTestClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("jfrunit"));
+    void stopRecordingEvents() {
+        try {
+            Path dumpDir = Files.createDirectories(Path.of(testMethod.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("jfrunit"));
+            System.out.println("Stop recording: " + dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr"));
+            recording.stop();
+            recording.dump(dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr"));
+            recording.close();
 
-        Recording recording = context.getStore(NAMESPACE).get(RECORDING, Recording.class);
-        recording.stop();
-        recording.dump(dumpDir.resolve(context.getRequiredTestClass().getName() + "-" + context.getRequiredTestMethod().getName() + ".jfr"));
-        recording.close();
-
-        EventStream stream = context.getStore(NAMESPACE).get(EVENT_STREAM, EventStream.class);
-        stream.close();
+            stream.close();
+        }
+        catch (IOException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -97,6 +101,10 @@ public class JfrEvents implements Extension, BeforeEachCallback, AfterEachCallba
         }
     }
 
+    public Queue<RecordedEvent> getEvents() {
+        return events;
+    }
+
     public List<RecordedEvent> ofType(String type) {
         return events.stream()
                 .filter(re -> re.getEventType().getName().equals(type))
@@ -114,22 +122,23 @@ public class JfrEvents implements Extension, BeforeEachCallback, AfterEachCallba
         }
     }
 
-    private Recording startRecording(List<EnableEvent> enabledEvents) {
+    private Recording startRecording(List<String> enabledEvents) {
         Recording recording = new Recording();
         recording.enable(SyncEvent.JFRUNIT_SYNC_EVENT_NAME);
 
-        for (EnableEvent enableEvent : enabledEvents) {
-            recording.enable(enableEvent.value());
+        for (String enabledEvent : enabledEvents) {
+            recording.enable(enabledEvent);
         }
+
         recording.start();
         return recording;
     }
 
-    private RecordingStream startRecordingStream(List<EnableEvent> enabledEvents, CountDownLatch streamStarted) {
+    private RecordingStream startRecordingStream(List<String> enabledEvents, CountDownLatch streamStarted) {
         RecordingStream stream = new RecordingStream();
         stream.enable(SyncEvent.JFRUNIT_SYNC_EVENT_NAME);
-        for (EnableEvent enableEvent : enabledEvents) {
-            stream.enable(enableEvent.value());
+        for (String enabledEvent : enabledEvents) {
+            stream.enable(enabledEvent);
         }
 
         stream.onEvent(re -> {

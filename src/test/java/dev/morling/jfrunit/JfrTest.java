@@ -22,12 +22,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.RegisterExtension;
 
+@JfrEventTest
 public class JfrTest {
 
-    @RegisterExtension
-    static JfrEvents jfrEvents = new JfrEvents();
+    public JfrEvents jfrEvents = new JfrEvents();
 
     @Test
     @EnableEvent("jdk.GarbageCollection")
