@@ -35,9 +35,9 @@ Alternatively, build JfrUnit from source (see below) yourself and add the follow
 Then you can implement tests expecting specific JFR events like so:
 
 ```java
+@JfrEventTest
 public class JfrTest {
 
-    @RegisterExtension
     static JfrEvents jfrEvents = new JfrEvents();
 
     @Test
@@ -55,6 +55,9 @@ public class JfrTest {
     }
 }
 ```
+
+Note that when you're writing a test for a Quarkus application using the `@QuarkusTest` annotation, you don't need (and even should not) add the `@JfrEventTest` annotation.
+Instead, the Quarkus test framework will automatically pick up the required callbacks for managing the JFR recording.
 
 ## Build
 
