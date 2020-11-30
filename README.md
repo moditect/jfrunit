@@ -38,7 +38,7 @@ Then you can implement tests expecting specific JFR events like so:
 @JfrEventTest
 public class JfrTest {
 
-    public static JfrEvents jfrEvents = new JfrEvents();
+    public JfrEvents jfrEvents = new JfrEvents();
 
     @Test
     @EnableEvent("jdk.GarbageCollection")
