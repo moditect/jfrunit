@@ -15,7 +15,7 @@ To so, add the following dependency to your project's _pom.xml_:
 <dependency>
   <groupId>com.github.gunnarmorling</groupId>
   <artifactId>jfrunit</artifactId>
-  <version>master-SNAPSHOT</version>
+  <version>main-SNAPSHOT</version>
 </dependency>
 ...
 ```
