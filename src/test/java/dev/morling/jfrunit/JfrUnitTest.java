@@ -24,7 +24,7 @@ import java.time.Duration;
 import org.junit.jupiter.api.Test;
 
 @JfrEventTest
-public class JfrTest {
+public class JfrUnitTest {
 
     public JfrEvents jfrEvents = new JfrEvents();
 

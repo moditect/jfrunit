@@ -25,5 +25,6 @@ public class SyncEvent extends Event {
 
     public static final String JFRUNIT_SYNC_EVENT_NAME = "jfrunit.Sync";
 
+    public String cause;
     public long sequence;
 }

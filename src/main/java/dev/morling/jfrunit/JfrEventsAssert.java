@@ -35,13 +35,10 @@ public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> 
     public JfrEventsAssert contains(ExpectedEvent expectedEvent) {
         isNotNull();
 
-        boolean found = false;
-        for (RecordedEvent recordedEvent : actual.getEvents()) {
-            found = matches(expectedEvent, recordedEvent);
-            if (found) {
-                break;
-            }
-        }
+        boolean found = actual.getEvents()
+            .filter(re -> matches(expectedEvent, re))
+            .findAny()
+            .isPresent();
 
         if (!found) {
             if (expectedEvent.getProps().isEmpty()) {

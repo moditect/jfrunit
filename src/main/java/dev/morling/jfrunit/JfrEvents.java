@@ -28,7 +28,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import dev.morling.jfrunit.internal.SyncEvent;
 import jdk.jfr.Recording;
@@ -90,6 +90,7 @@ public class JfrEvents {
         event.begin();
         long seq = sequence.incrementAndGet();
         event.sequence = seq;
+        event.cause = "awaiting events";
         event.commit();
 
         while (watermark.get() < seq) {
@@ -101,14 +102,18 @@ public class JfrEvents {
         }
     }
 
-    public Queue<RecordedEvent> getEvents() {
-        return events;
+    public void reset() {
+        awaitEvents();
+        events.clear();
     }
 
-    public List<RecordedEvent> ofType(String type) {
+    public Stream<RecordedEvent> getEvents() {
+        return events.stream();
+    }
+
+    public Stream<RecordedEvent> ofType(String type) {
         return events.stream()
-                .filter(re -> re.getEventType().getName().equals(type))
-                .collect(Collectors.toUnmodifiableList());
+                .filter(re -> re.getEventType().getName().equals(type));
     }
 
     private void awaitStreamStart(CountDownLatch streamStarted) throws InterruptedException {
@@ -116,6 +121,7 @@ public class JfrEvents {
             SyncEvent event = new SyncEvent();
             long seq = sequence.incrementAndGet();
             event.sequence = seq;
+            event.cause = "awaiting stream start";
             event.begin();
             event.commit();
             Thread.sleep(100);
