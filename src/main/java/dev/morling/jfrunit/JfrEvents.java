@@ -23,14 +23,18 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import dev.morling.jfrunit.internal.SyncEvent;
+import jdk.jfr.EventType;
+import jdk.jfr.FlightRecorder;
 import jdk.jfr.Recording;
 import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordingStream;
@@ -54,9 +58,11 @@ public class JfrEvents {
 
         CountDownLatch streamStarted = new CountDownLatch(1);
 
+        List<String> allEnabledEventTypes = matchEventTypes(enabledEvents);
+
         this.testMethod = testMethod;
-        stream = startRecordingStream(enabledEvents, streamStarted);
-        recording = startRecording(enabledEvents);
+        stream = startRecordingStream(allEnabledEventTypes, streamStarted);
+        recording = startRecording(allEnabledEventTypes);
 
         try {
             awaitStreamStart(streamStarted);
@@ -135,7 +141,6 @@ public class JfrEvents {
         for (String enabledEvent : enabledEvents) {
             recording.enable(enabledEvent);
         }
-
         recording.start();
         return recording;
     }
@@ -168,5 +173,26 @@ public class JfrEvents {
     private boolean isInternalSleepEvent(RecordedEvent re) {
         return re.getEventType().getName().equals("jdk.ThreadSleep") &&
                 re.getDuration("time").equals(Duration.ofMillis(100));
+    }
+
+    private List<String> matchEventTypes(List<String> enabledEvents) {
+        List<String> allEvents = new ArrayList<>();
+        List<EventType> allEventTypes = FlightRecorder.getFlightRecorder().getEventTypes();
+
+        for (String event : enabledEvents) {
+            if (event.contains("*")) {
+                Pattern pattern = Pattern.compile(event.replace("*", ".*"));
+                for (EventType eventType : allEventTypes) {
+                    if (pattern.matcher(eventType.getName()).matches()) {
+                        allEvents.add(eventType.getName());
+                    }
+                }
+            }
+            else {
+                allEvents.add(event);
+            }
+        }
+
+        return allEvents;
     }
 }

@@ -59,6 +59,19 @@ public class JfrTest {
 Note that when you're writing a test for a Quarkus application using the `@QuarkusTest` annotation, you don't need (and even should not) add the `@JfrEventTest` annotation.
 Instead, the Quarkus test framework will automatically pick up the required callbacks for managing the JFR recording.
 
+The `@EnableEvent` annotation is used to enable one or more JFR event types which should be captured.
+The "*" character can be used as a wildcard character to match multiple types:
+
+```java
+@Test
+@EnableEvent("jdk.GC*")
+@EnableEvent("jdk.G1*")
+public void someTest() throws Exception { ... }
+```
+
+This would capture events like `jdk.GCHeapSummary`, `jdk.GCPhasePause`, `jdk.G1GarbageCollection` etc.
+A complete list of all built-in JFR event types can be found [here](https://bestsolution-at.github.io/jfr-doc/).
+
 ## Build
 
 This project requires OpenJDK 14 or later for its build.
