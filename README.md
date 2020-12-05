@@ -8,7 +8,7 @@ This project requires OpenJDK 14 or later at runtime.
 
 JfrUnit is not yet available from Maven Central yet;
 in the meantime you can obtain snapshot builds from [JitPack](https://jitpack.io).
-To so, add the following dependency to your project's _pom.xml_:
+To do so, add the following dependency to your project's _pom.xml_:
 
 ```xml
 ...
