@@ -4,7 +4,7 @@ _Unit testing, for performance_
 
 JfrUnit allows to assert the [JDK Flight Recorder](https://openjdk.java.net/jeps/328) (JFR) events emitted by an application.
 
-## Why Should I Use JfrUnit?
+## Why JfrUnit?
 
 While unit testing of functional requirements is a standard practice, identifying performance regressions (increased latencies, reduced throughput) through automated tests is much harder: e.g. assertions on specific request runtime are prone to failures in virtualized/containerized CI environments due to concurrent load of other jobs.
 
