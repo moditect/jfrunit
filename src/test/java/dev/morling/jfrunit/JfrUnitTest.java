@@ -23,6 +23,8 @@ import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
 
+import jdk.jfr.Configuration;
+
 @JfrEventTest
 public class JfrUnitTest {
 
@@ -32,6 +34,28 @@ public class JfrUnitTest {
     @EnableEvent("jdk.GarbageCollection")
     @EnableEvent("jdk.ThreadSleep")
     public void shouldHaveGcAndSleepEvents() throws Exception {
+        System.gc();
+        Thread.sleep(1000);
+
+        jfrEvents.awaitEvents();
+
+        assertThat(jfrEvents).contains(event("jdk.GarbageCollection"));
+        assertThat(jfrEvents).contains(
+                event("jdk.GarbageCollection").with("cause", "System.gc()"));
+        assertThat(jfrEvents).contains(
+                event("jdk.ThreadSleep").with("time", Duration.ofSeconds(1)));
+
+        assertThat(jfrEvents.ofType("jdk.GarbageCollection")).hasSize(1);
+    }
+
+    @Test
+    @EnableConfiguration("default")
+    public void shouldHaveGcAndSleepEventsWithDefaultConfiguration() throws Exception {
+        Configuration.getConfigurations()
+                .stream()
+                .map(Configuration::getName)
+                .forEach(System.out::println);
+
         System.gc();
         Thread.sleep(1000);
 

@@ -72,6 +72,16 @@ public void someTest() throws Exception { ... }
 This would capture events like `jdk.GCHeapSummary`, `jdk.GCPhasePause`, `jdk.G1GarbageCollection` etc.
 A complete list of all built-in JFR event types can be found [here](https://bestsolution-at.github.io/jfr-doc/).
 
+Alternatively, you can specify the name of a JFR configuration file, e.g. "default" or "profile", using the `@EnableConfiguration` annotation:
+
+```java
+@Test
+@EnableConfiguration("default")
+public void someTest() throws Exception { ... }
+```
+
+JFR configuration files are located in the _$JAVA_HOME/bin/jfr_ directory.
+
 ## Build
 
 This project requires OpenJDK 14 or later for its build.

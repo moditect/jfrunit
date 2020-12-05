@@ -15,23 +15,16 @@
  */
 package dev.morling.jfrunit;
 
-import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Enables a specific JFR event type, e.g. "jdk.GarbageCollection" for a recording.
+ * Enables the given JFR configuration.
  *
  * @author Gunnar Morling
  */
-@Repeatable(value = EnableEvent.List.class)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EnableEvent {
+public @interface EnableConfiguration {
 
     String value();
-
-    @Retention(RetentionPolicy.RUNTIME)
-    public @interface List {
-        EnableEvent[] value();
-    }
 }

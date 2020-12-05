@@ -29,15 +29,21 @@ public class JfrEventTestExtension implements Extension, BeforeEachCallback, Aft
 
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
+        String enabledConfiguration = AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), EnableConfiguration.class)
+            .map(EnableConfiguration::value)
+            .map(String::trim)
+            .orElse(null);
+
         List<String> enabledEvents = AnnotationSupport.findRepeatableAnnotations(context.getRequiredTestMethod(), EnableEvent.class)
                 .stream()
                 .map(e -> e.value())
                 .collect(Collectors.toList());
 
+
         Object instance = context.getRequiredTestInstance();
         List<JfrEvents> allJfrEvents = getJfrEvents(instance);
         for (JfrEvents jfrEvents : allJfrEvents) {
-            jfrEvents.startRecordingEvents(enabledEvents, context.getRequiredTestMethod());
+            jfrEvents.startRecordingEvents(enabledConfiguration, enabledEvents, context.getRequiredTestMethod());
         }
     }
 

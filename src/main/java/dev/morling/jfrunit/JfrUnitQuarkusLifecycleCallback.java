@@ -18,6 +18,7 @@ package dev.morling.jfrunit;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import io.quarkus.test.junit.callback.QuarkusTestAfterEachCallback;
@@ -29,11 +30,12 @@ public class JfrUnitQuarkusLifecycleCallback implements QuarkusTestBeforeEachCal
     @Override
     public void beforeEach(QuarkusTestMethodContext context) {
         Object instance = context.getTestInstance();
+        String enabledConfiguration = getEnabledConfiguration(context.getTestMethod());
         List<String> enabledEvents = getEnabledEvents(context.getTestMethod());
 
         List<JfrEvents> allJfrEvents = getJfrEvents(instance);
         for (JfrEvents jfrEvents : allJfrEvents) {
-            jfrEvents.startRecordingEvents(enabledEvents, context.getTestMethod());
+            jfrEvents.startRecordingEvents(enabledConfiguration, enabledEvents, context.getTestMethod());
         }
     }
 
@@ -45,6 +47,13 @@ public class JfrUnitQuarkusLifecycleCallback implements QuarkusTestBeforeEachCal
         for (JfrEvents jfrEvents : allJfrEvents) {
             jfrEvents.stopRecordingEvents();
         }
+    }
+
+    private String getEnabledConfiguration(Method testMethod) {
+        return Optional.ofNullable(testMethod.getAnnotation(EnableConfiguration.class))
+                .map(EnableConfiguration::value)
+                .map(String::trim)
+                .orElse(null);
     }
 
     private List<String> getEnabledEvents(Method testMethod) {

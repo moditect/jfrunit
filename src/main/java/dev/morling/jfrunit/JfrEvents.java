@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import dev.morling.jfrunit.internal.SyncEvent;
+import jdk.jfr.Configuration;
 import jdk.jfr.EventType;
 import jdk.jfr.FlightRecorder;
 import jdk.jfr.Recording;
@@ -53,22 +54,26 @@ public class JfrEvents {
     public JfrEvents() {
     }
 
-    void startRecordingEvents(List<String> enabledEvents, Method testMethod) {
+    void startRecordingEvents(String configurationName, List<String> enabledEvents, Method testMethod) {
+        if (configurationName != null && !enabledEvents.isEmpty()) {
+            throw new IllegalArgumentException("Either @EnableConfiguration or @EnableEvent may be given, but not both at the same time");
+        }
+
         LOGGER.log(Level.INFO, "Starting recording");
 
         CountDownLatch streamStarted = new CountDownLatch(1);
 
         List<String> allEnabledEventTypes = matchEventTypes(enabledEvents);
 
-        this.testMethod = testMethod;
-        stream = startRecordingStream(allEnabledEventTypes, streamStarted);
-        recording = startRecording(allEnabledEventTypes);
-
         try {
+            this.testMethod = testMethod;
+            stream = startRecordingStream(configurationName, allEnabledEventTypes, streamStarted);
+            recording = startRecording(configurationName, allEnabledEventTypes);
+
             awaitStreamStart(streamStarted);
             LOGGER.log(Level.INFO, "Event stream started");
         }
-        catch (InterruptedException e) {
+        catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -134,23 +139,39 @@ public class JfrEvents {
         }
     }
 
-    private Recording startRecording(List<String> enabledEvents) {
-        Recording recording = new Recording();
+    private Recording startRecording(String configurationName, List<String> enabledEvents) throws Exception {
+        Recording recording;
+
+        if (configurationName != null) {
+            recording = new Recording(Configuration.getConfiguration(configurationName));
+        }
+        else {
+            recording = new Recording();
+            for (String enabledEvent : enabledEvents) {
+                recording.enable(enabledEvent);
+            }
+        }
+
         recording.enable(SyncEvent.JFRUNIT_SYNC_EVENT_NAME);
 
-        for (String enabledEvent : enabledEvents) {
-            recording.enable(enabledEvent);
-        }
         recording.start();
         return recording;
     }
 
-    private RecordingStream startRecordingStream(List<String> enabledEvents, CountDownLatch streamStarted) {
-        RecordingStream stream = new RecordingStream();
-        stream.enable(SyncEvent.JFRUNIT_SYNC_EVENT_NAME);
-        for (String enabledEvent : enabledEvents) {
-            stream.enable(enabledEvent);
+    private RecordingStream startRecordingStream(String configurationName, List<String> enabledEvents, CountDownLatch streamStarted) throws Exception {
+        RecordingStream stream;
+
+        if (configurationName != null) {
+            stream = new RecordingStream(Configuration.getConfiguration(configurationName));
         }
+        else {
+            stream = new RecordingStream();
+            for (String enabledEvent : enabledEvents) {
+                stream.enable(enabledEvent);
+            }
+        }
+
+        stream.enable(SyncEvent.JFRUNIT_SYNC_EVENT_NAME);
 
         stream.onEvent(re -> {
             if (isSyncEvent(re)) {
