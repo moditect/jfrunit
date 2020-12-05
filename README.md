@@ -1,6 +1,19 @@
 # JfrUnit - A JUnit extension for asserting JDK Flight Recorder events
 
+_Unit testing, for performance_
+
 JfrUnit allows to assert the [JDK Flight Recorder](https://openjdk.java.net/jeps/328) (JFR) events emitted by an application.
+
+## Why Should I Use JfrUnit?
+
+While unit testing of functional requirements is a standard practice, identifying performance regressions (increased latencies, reduced throughput) through automated tests is much harder: e.g. assertions on specific request runtime are prone to failures in virtualized/containerized CI environments due to concurrent load of other jobs.
+
+JfrUnit provides a fresh angle to this topic by supporting assertions not on metrics like latency/throughput themselves, but on indirect metrics which may impact those.
+Based on JDK Flight Recorder events, JfrUnit allows you execute assertions e.g. against memory allocation, database IO, and number of executed SQL statements for a defined workload.
+Failures of such assertions are indicators for potential performance regressions, as a code change may have introduced higher GC pressure, fetching of unneccessary data from the database, or common SQL problems like N+1 SELECT statements.
+
+JfrUnit provide means of identifying and analysizing such issues in a reliable, environment independent way in standard JUnit tests,
+before they manifest as performance regressions in production.
 
 ## Usage
 
