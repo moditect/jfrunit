@@ -15,12 +15,7 @@
  */
 package dev.morling.jfrunit;
 
-import java.time.Duration;
-import java.util.Map.Entry;
-
 import org.assertj.core.api.AbstractAssert;
-
-import jdk.jfr.consumer.RecordedEvent;
 
 public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> {
 
@@ -36,7 +31,7 @@ public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> 
         isNotNull();
 
         boolean found = actual.getEvents()
-            .filter(re -> matches(expectedEvent, re))
+            .filter(re -> ExpectedEvent.matches(expectedEvent, re))
             .findAny()
             .isPresent();
 
@@ -50,43 +45,5 @@ public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> 
         }
 
         return this;
-    }
-
-    private boolean matches(ExpectedEvent expectedEvent, RecordedEvent recordedEvent) {
-        if (!recordedEvent.getEventType().getName().equals(expectedEvent.getName())) {
-            return false;
-        }
-
-        if (!expectedEvent.getProps().isEmpty()) {
-            for (Entry<String, Object> prop : expectedEvent.getProps().entrySet()) {
-                if (!hasMatchingProperty(recordedEvent, prop.getKey(), prop.getValue())) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private boolean hasMatchingProperty(RecordedEvent recordedEvent, String name, Object value) {
-        if (!recordedEvent.hasField(name)) {
-            return false;
-        }
-
-        // TODO all event attribute types
-
-        if (value instanceof Duration) {
-            return recordedEvent.getDuration(name).equals(value);
-        }
-        else if (value instanceof String) {
-            return recordedEvent.getString(name).equals(value);
-        }
-        else {
-            throw new IllegalArgumentException(String.format("Unsupported property type: %s, %s", name, value));
-        }
-    }
-
-    public static ExpectedEvent event(String name) {
-        return new ExpectedEvent(name);
     }
 }

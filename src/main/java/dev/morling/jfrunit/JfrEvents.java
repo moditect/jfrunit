@@ -29,6 +29,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
@@ -122,9 +123,12 @@ public class JfrEvents {
         return events.stream();
     }
 
-    public Stream<RecordedEvent> ofType(String type) {
-        return events.stream()
-                .filter(re -> re.getEventType().getName().equals(type));
+    public Stream<RecordedEvent> filter(Predicate<RecordedEvent> predicate) {
+        return events.stream().filter(predicate);
+    }
+
+    public Stream<RecordedEvent> stream() {
+        return events.stream();
     }
 
     private void awaitStreamStart(CountDownLatch streamStarted) throws InterruptedException {

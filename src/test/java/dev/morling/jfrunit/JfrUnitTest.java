@@ -15,15 +15,13 @@
  */
 package dev.morling.jfrunit;
 
+import static dev.morling.jfrunit.ExpectedEvent.event;
 import static dev.morling.jfrunit.JfrEventsAssert.assertThat;
-import static dev.morling.jfrunit.JfrEventsAssert.event;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.time.Duration;
 
 import org.junit.jupiter.api.Test;
-
-import jdk.jfr.Configuration;
 
 @JfrEventTest
 public class JfrUnitTest {
@@ -45,17 +43,12 @@ public class JfrUnitTest {
         assertThat(jfrEvents).contains(
                 event("jdk.ThreadSleep").with("time", Duration.ofSeconds(1)));
 
-        assertThat(jfrEvents.ofType("jdk.GarbageCollection")).hasSize(1);
+        assertThat(jfrEvents.filter(event("jdk.GarbageCollection"))).hasSize(1);
     }
 
     @Test
-    @EnableConfiguration("default")
+    @EnableConfiguration("profile")
     public void shouldHaveGcAndSleepEventsWithDefaultConfiguration() throws Exception {
-        Configuration.getConfigurations()
-                .stream()
-                .map(Configuration::getName)
-                .forEach(System.out::println);
-
         System.gc();
         Thread.sleep(1000);
 
@@ -67,6 +60,14 @@ public class JfrUnitTest {
         assertThat(jfrEvents).contains(
                 event("jdk.ThreadSleep").with("time", Duration.ofSeconds(1)));
 
-        assertThat(jfrEvents.ofType("jdk.GarbageCollection")).hasSize(1);
+        assertThat(jfrEvents.filter(
+                event("jdk.GarbageCollection").with("cause", "System.gc()")))
+                .hasSize(1);
+
+        long allocated = jfrEvents.filter(event("jdk.ObjectAllocationInNewTLAB"))
+                .mapToLong(e -> e.getLong("tlabSize"))
+                .sum();
+
+        assertThat(allocated).isGreaterThan(0);
     }
 }

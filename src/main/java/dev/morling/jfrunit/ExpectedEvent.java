@@ -15,15 +15,20 @@
  */
 package dev.morling.jfrunit;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.function.Predicate;
 
-public class ExpectedEvent {
+import jdk.jfr.consumer.RecordedEvent;
+
+public class ExpectedEvent implements Predicate<RecordedEvent> {
 
     private String name;
     private Map<String, Object> props = new HashMap<>();
 
-    public ExpectedEvent(String name) {
+    private ExpectedEvent(String name) {
         this.name = name;
     }
 
@@ -38,5 +43,48 @@ public class ExpectedEvent {
     public ExpectedEvent with(String name, Object value) {
         this.props.put(name, value);
         return this;
+    }
+
+    public static ExpectedEvent event(String name) {
+        return new ExpectedEvent(name);
+    }
+
+    /* default */ static boolean matches(ExpectedEvent expectedEvent, RecordedEvent recordedEvent) {
+        if (!recordedEvent.getEventType().getName().equals(expectedEvent.getName())) {
+            return false;
+        }
+
+        if (!expectedEvent.getProps().isEmpty()) {
+            for (Entry<String, Object> prop : expectedEvent.getProps().entrySet()) {
+                if (!hasMatchingProperty(recordedEvent, prop.getKey(), prop.getValue())) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean hasMatchingProperty(RecordedEvent recordedEvent, String name, Object value) {
+        if (!recordedEvent.hasField(name)) {
+            return false;
+        }
+
+        // TODO all event attribute types
+
+        if (value instanceof Duration) {
+            return recordedEvent.getDuration(name).equals(value);
+        }
+        else if (value instanceof String) {
+            return recordedEvent.getString(name).equals(value);
+        }
+        else {
+            throw new IllegalArgumentException(String.format("Unsupported property type: %s, %s", name, value));
+        }
+    }
+
+    @Override
+    public boolean test(RecordedEvent recordedEvent) {
+        return matches(this, recordedEvent);
     }
 }
