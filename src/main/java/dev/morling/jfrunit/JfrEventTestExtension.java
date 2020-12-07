@@ -34,9 +34,9 @@ public class JfrEventTestExtension implements Extension, BeforeEachCallback, Aft
             .map(String::trim)
             .orElse(null);
 
-        List<String> enabledEvents = AnnotationSupport.findRepeatableAnnotations(context.getRequiredTestMethod(), EnableEvent.class)
+        List<EventConfiguration> enabledEvents = AnnotationSupport.findRepeatableAnnotations(context.getRequiredTestMethod(), EnableEvent.class)
                 .stream()
-                .map(e -> e.value())
+                .map(e -> new EventConfiguration(e.value(), e.stackTrace()))
                 .collect(Collectors.toList());
 
 

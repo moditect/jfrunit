@@ -31,7 +31,7 @@ public class JfrUnitQuarkusLifecycleCallback implements QuarkusTestBeforeEachCal
     public void beforeEach(QuarkusTestMethodContext context) {
         Object instance = context.getTestInstance();
         String enabledConfiguration = getEnabledConfiguration(context.getTestMethod());
-        List<String> enabledEvents = getEnabledEvents(context.getTestMethod());
+        List<EventConfiguration> enabledEvents = getEnabledEvents(context.getTestMethod());
 
         List<JfrEvents> allJfrEvents = getJfrEvents(instance);
         for (JfrEvents jfrEvents : allJfrEvents) {
@@ -56,9 +56,9 @@ public class JfrUnitQuarkusLifecycleCallback implements QuarkusTestBeforeEachCal
                 .orElse(null);
     }
 
-    private List<String> getEnabledEvents(Method testMethod) {
+    private List<EventConfiguration> getEnabledEvents(Method testMethod) {
         return Arrays.stream(testMethod.getAnnotationsByType(EnableEvent.class))
-            .map(EnableEvent::value)
+            .map(e -> new EventConfiguration(e.value(), e.stackTrace()))
             .collect(Collectors.toList());
     }
 

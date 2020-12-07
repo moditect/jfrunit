@@ -28,7 +28,18 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface EnableEvent {
 
-    String value();
+    /**
+     * An alias for name().
+     */
+    String value() default "";
+
+//    String name() default "";
+
+    StacktracePolicy stackTrace() default StacktracePolicy.DEFAULT;
+
+    public enum StacktracePolicy {
+        DEFAULT, INCLUDED, EXCLUDED;
+    }
 
     @Retention(RetentionPolicy.RUNTIME)
     public @interface List {

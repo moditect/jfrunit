@@ -33,8 +33,10 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
+import dev.morling.jfrunit.EnableEvent.StacktracePolicy;
 import dev.morling.jfrunit.internal.SyncEvent;
 import jdk.jfr.Configuration;
+import jdk.jfr.EventSettings;
 import jdk.jfr.EventType;
 import jdk.jfr.FlightRecorder;
 import jdk.jfr.Recording;
@@ -55,7 +57,7 @@ public class JfrEvents {
     public JfrEvents() {
     }
 
-    void startRecordingEvents(String configurationName, List<String> enabledEvents, Method testMethod) {
+    void startRecordingEvents(String configurationName, List<EventConfiguration> enabledEvents, Method testMethod) {
         if (configurationName != null && !enabledEvents.isEmpty()) {
             throw new IllegalArgumentException("Either @EnableConfiguration or @EnableEvent may be given, but not both at the same time");
         }
@@ -64,7 +66,7 @@ public class JfrEvents {
 
         CountDownLatch streamStarted = new CountDownLatch(1);
 
-        List<String> allEnabledEventTypes = matchEventTypes(enabledEvents);
+        List<EventConfiguration> allEnabledEventTypes = matchEventTypes(enabledEvents);
 
         try {
             this.testMethod = testMethod;
@@ -143,7 +145,7 @@ public class JfrEvents {
         }
     }
 
-    private Recording startRecording(String configurationName, List<String> enabledEvents) throws Exception {
+    private Recording startRecording(String configurationName, List<EventConfiguration> enabledEvents) throws Exception {
         Recording recording;
 
         if (configurationName != null) {
@@ -151,8 +153,14 @@ public class JfrEvents {
         }
         else {
             recording = new Recording();
-            for (String enabledEvent : enabledEvents) {
-                recording.enable(enabledEvent);
+            for (EventConfiguration enabledEvent : enabledEvents) {
+                EventSettings settings = recording.enable(enabledEvent.name);
+                if (enabledEvent.stackTrace == StacktracePolicy.INCLUDED) {
+                    settings.withStackTrace();
+                }
+                else if (enabledEvent.stackTrace == StacktracePolicy.INCLUDED) {
+                    settings.withoutStackTrace();
+                }
             }
         }
 
@@ -162,7 +170,7 @@ public class JfrEvents {
         return recording;
     }
 
-    private RecordingStream startRecordingStream(String configurationName, List<String> enabledEvents, CountDownLatch streamStarted) throws Exception {
+    private RecordingStream startRecordingStream(String configurationName, List<EventConfiguration> enabledEvents, CountDownLatch streamStarted) throws Exception {
         RecordingStream stream;
 
         if (configurationName != null) {
@@ -170,8 +178,14 @@ public class JfrEvents {
         }
         else {
             stream = new RecordingStream();
-            for (String enabledEvent : enabledEvents) {
-                stream.enable(enabledEvent);
+            for (EventConfiguration enabledEvent : enabledEvents) {
+                EventSettings settings = stream.enable(enabledEvent.name);
+                if (enabledEvent.stackTrace == StacktracePolicy.INCLUDED) {
+                    settings.withStackTrace();
+                }
+                else if (enabledEvent.stackTrace == StacktracePolicy.INCLUDED) {
+                    settings.withoutStackTrace();
+                }
             }
         }
 
@@ -200,16 +214,16 @@ public class JfrEvents {
                 re.getDuration("time").equals(Duration.ofMillis(100));
     }
 
-    private List<String> matchEventTypes(List<String> enabledEvents) {
-        List<String> allEvents = new ArrayList<>();
+    private List<EventConfiguration> matchEventTypes(List<EventConfiguration> enabledEvents) {
+        List<EventConfiguration> allEvents = new ArrayList<>();
         List<EventType> allEventTypes = FlightRecorder.getFlightRecorder().getEventTypes();
 
-        for (String event : enabledEvents) {
-            if (event.contains("*")) {
-                Pattern pattern = Pattern.compile(event.replace("*", ".*"));
+        for (EventConfiguration event : enabledEvents) {
+            if (event.name.contains("*")) {
+                Pattern pattern = Pattern.compile(event.name.replace("*", ".*"));
                 for (EventType eventType : allEventTypes) {
                     if (pattern.matcher(eventType.getName()).matches()) {
-                        allEvents.add(eventType.getName());
+                        allEvents.add(new EventConfiguration(eventType.getName(), event.stackTrace));
                     }
                 }
             }
