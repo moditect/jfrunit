@@ -19,11 +19,13 @@ import dev.morling.jfrunit.EnableEvent.StacktracePolicy;
 
 public class EventConfiguration {
 
-    public String name;
-    public StacktracePolicy stackTrace;
+    public final String name;
+    public final StacktracePolicy stackTrace;
+    public final int threshold;
 
-    public EventConfiguration(String name, StacktracePolicy stackTrace) {
+    public EventConfiguration(String name, StacktracePolicy stackTrace, int threshold) {
         this.name = name;
         this.stackTrace = stackTrace;
+        this.threshold = threshold;
     }
 }
