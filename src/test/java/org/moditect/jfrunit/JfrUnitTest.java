@@ -18,12 +18,18 @@
 package org.moditect.jfrunit;
 
 import java.time.Duration;
+import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.openjdk.jmc.flightrecorder.rules.Severity;
+import org.openjdk.jmc.flightrecorder.rules.jdk.memory.FullGcRule;
+import org.openjdk.jmc.flightrecorder.rules.jdk.memory.HeapDumpRule;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.moditect.jfrunit.ExpectedEvent.event;
+import static org.moditect.jfrunit.JfrAnalysisAssert.assertThat;
 import static org.moditect.jfrunit.JfrEventsAssert.assertThat;
 
 @JfrEventTest
@@ -66,7 +72,7 @@ public class JfrUnitTest {
                 event("jdk.ThreadSleep").with("time", Duration.ofMillis(50)));
 
         assertThat(jfrEvents.filter(
-                event("jdk.GarbageCollection").with("cause", "System.gc()")))
+                event("jdk.GarbageCollection").with("cause", "System.gc()")).collect(Collectors.toList()))
                         .hasSize(1);
     }
 
@@ -137,5 +143,34 @@ public class JfrUnitTest {
         jfrEvents.awaitEvents();
 
         assertThat(jfrEvents).contains(event("jfrunit.test.StackTraceDisabledSampleEvent").hasNot("stackTrace"));
+    }
+
+    @Test
+    @EnableConfiguration("profile")
+    public void automatedAnalysis() throws Exception {
+
+        System.gc();
+        Thread.sleep(1000);
+
+        jfrEvents.awaitEvents();
+
+        JfrAnalysisResults analysisResults = jfrEvents.automaticAnalysis();
+
+        assertNotNull(analysisResults);
+
+        assertThat(analysisResults.size()).isGreaterThan(0);
+
+        // Inspect rules that fired
+        assertThat(analysisResults).contains(FullGcRule.class);
+        assertThat(analysisResults).doesNotContain(HeapDumpRule.class);
+
+        // Inspect severity of rule
+        assertThat(analysisResults).hasSeverity(FullGcRule.class, Severity.WARNING);
+
+        // Inspect score of rule
+        assertThat(analysisResults)
+                .contains(FullGcRule.class)
+                .scoresLessThan(80);
+
     }
 }

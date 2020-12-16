@@ -135,10 +135,50 @@ As you can see you can use custom DSL when checking the expected state.
  * The `RecordedEvent` itself is extended with dynamic properties so you can just use `event.time` or `event.bytesWritten` etc.
    This might be handy when you need an aggregation like this `jfrEvents['jdk.FileWrite']*.bytesWritten.sum() == expectedBytes`
 
+## Automatic Analysis
+
+
+Java Mission Control provides an Automatic Analysis tool that performs pattern analysis on recorded JFR events to determine common performance issues with Java applications.
+
+It is possible to write assertions against the Automatic Analysis results to verify that unit tests against common performance issues:
+
+```java
+import dev.morling.jfrunit.*;
+
+import static dev.morling.jfrunit.JfrEventsAssert.*;
+import static dev.morling.jfrunit.ExpectedEvent.*;
+
+@Test
+@EnableConfiguration("profile")
+public void automaticAnalysisTest() throws Exception {
+        System.gc();
+        Thread.sleep(1000);
+
+        jfrEvents.awaitEvents();
+
+        JfrAnalysisResults analysisResults = jfrEvents.automaticAnalysis();
+
+        //Inspect rules that fired
+        assertThat(analysisResults).contains(FullGcRule.class);
+        assertThat(analysisResults).doesNotContain(HeapDumpRule.class);
+
+        //Inspect severity of rule
+        assertThat(analysisResults).hasSeverity(FullGcRule.class, Severity.WARNING);
+
+        //Inspect score of rule
+        assertThat(analysisResults)
+        .contains(FullGcRule.class)
+        .scoresLessThan(80);
+        }
+```
+
+A full list of JMC Analysis rules can be found [here](https://docs.oracle.com/en/java/java-components/jdk-mission-control/8/jmc-flightrecorder-rules-jdk/org.openjdk.jmc.flightrecorder.rules.jdk/module-summary.html).
+
 ## Build
 
 This project requires OpenJDK 14 or later for its build.
 Apache Maven is used for the build.
+
 Run the following to build the project:
 
 ```shell

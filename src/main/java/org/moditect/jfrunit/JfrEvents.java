@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 
 import org.moditect.jfrunit.EnableEvent.StacktracePolicy;
 import org.moditect.jfrunit.internal.SyncEvent;
+import org.openjdk.jmc.flightrecorder.rules.Severity;
 
 import jdk.jfr.Configuration;
 import jdk.jfr.EventSettings;
@@ -62,6 +63,8 @@ public class JfrEvents {
     private RecordingStream stream;
     private Recording recording;
     private boolean capturing;
+
+    private JfrAnalysisResults analysis = null;
 
     public JfrEvents() {
     }
@@ -104,8 +107,7 @@ public class JfrEvents {
                 LOGGER.log(Level.WARNING, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
             }
 
-            String fileName = getDumpFileName();
-            Path recordingPath = dumpDir.resolve(fileName);
+            Path recordingPath = getRecordingFilePath();
 
             LOGGER.log(Level.INFO, "Stop recording: " + recordingPath);
             capturing = false;
@@ -116,7 +118,7 @@ public class JfrEvents {
             catch (IOException ex) {
                 LOGGER.log(Level.WARNING, "Could not dump to: " + recordingPath, ex);
                 String defaultFileName = getDefaultDumpFileName();
-                if (!defaultFileName.equals(fileName)) {
+                if (!defaultFileName.equals(recordingPath.getFileName().toString())) {
                     // perhaps the FS was not able to handle special characters
                     recordingPath = dumpDir.resolve(defaultFileName);
                     LOGGER.log(Level.INFO, "Retrying dump: " + recordingPath);
@@ -133,6 +135,25 @@ public class JfrEvents {
         catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Path getRecordingFilePath() throws URISyntaxException, IOException {
+        URI testSourceUri = testMethod.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toURI();
+        Path dumpDir;
+        try {
+            dumpDir = Files.createDirectories(Path.of(testSourceUri).getParent().resolve("jfrunit"));
+
+        }
+        catch (FileSystemNotFoundException e) {
+            dumpDir = Files.createTempDirectory(null);
+            LOGGER.log(Level.WARNING, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
+        }
+        String fileName = getDumpFileName();
+        return dumpDir.resolve(fileName);
+    }
+
+    void dumpRecording(Path jfrPath) throws IOException {
+        recording.dump(jfrPath);
     }
 
     /**
@@ -304,5 +325,20 @@ public class JfrEvents {
 
     private String getDefaultDumpFileName() {
         return testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr";
+    }
+
+    public JfrAnalysisResults automaticAnalysis() {
+        if (analysis == null) {
+            try {
+                Path recordingPath = getRecordingFilePath();
+                dumpRecording(recordingPath);
+
+                analysis = new JfrAnalysisResults(JfrAnalysis.analysisRecording(recordingPath.toAbsolutePath().toString(), Severity.INFO));
+            }
+            catch (IOException | URISyntaxException e) {
+                LOGGER.log(Level.WARNING, "Unable to analyse jfr recording: " + e.getLocalizedMessage());
+            }
+        }
+        return analysis;
     }
 }
