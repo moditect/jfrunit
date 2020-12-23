@@ -84,7 +84,7 @@ public class JfrEvents {
     void stopRecordingEvents() {
         try {
             Path dumpDir = Files.createDirectories(Path.of(testMethod.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("jfrunit"));
-            System.out.println("Stop recording: " + dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr"));
+            LOGGER.log(Level.INFO, "Stop recording: " + dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr"));
             recording.stop();
             recording.dump(dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr"));
             recording.close();
