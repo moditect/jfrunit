@@ -72,15 +72,13 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
             return false;
         }
 
-        // TODO all event attribute types
-
         if (value instanceof Duration) {
             return Objects.equals(recordedEvent.getDuration(name), value);
         }
         else if (value instanceof String) {
             return Objects.equals(recordedEvent.getString(name), value);
         }
-        else if (value instanceof Boolean) {
+        else if (value instanceof Byte) {
             return Objects.equals(recordedEvent.getBoolean(name), value);
         }
         else if (value instanceof Boolean) {
