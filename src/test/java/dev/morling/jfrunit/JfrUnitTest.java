@@ -15,13 +15,16 @@
  */
 package dev.morling.jfrunit;
 
+import jdk.jfr.consumer.RecordedEvent;
+import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static dev.morling.jfrunit.ExpectedEvent.event;
 import static dev.morling.jfrunit.JfrEventsAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
-
-import java.time.Duration;
-
-import org.junit.jupiter.api.Test;
 
 @JfrEventTest
 public class JfrUnitTest {
@@ -69,5 +72,38 @@ public class JfrUnitTest {
                 .sum();
 
         assertThat(allocated).isGreaterThan(0);
+    }
+
+    private static final int BYTE_ARRAY_OVERHEAD = 16;
+    private static final int OBJECT_SIZE = 102400;
+    private static final String BYTE_ARRAY_CLASS_NAME = new byte[0].getClass().getName();
+    public static byte[] tmp;
+
+    @Test
+    @EnableEvent("jdk.ObjectAllocationOutsideTLAB")
+    @EnableEvent("jdk.ObjectAllocationInNewTLAB")
+    public void testTLAB() throws InterruptedException {
+        System.gc();
+        Thread.sleep(1000);
+        for (int i = 0; i < 512; ++i) {
+            tmp = new byte[OBJECT_SIZE - BYTE_ARRAY_OVERHEAD];
+        }
+        jfrEvents.awaitEvents();
+        assertThat(jfrEvents).contains(event("jdk.ObjectAllocationOutsideTLAB"));
+        assertThat(jfrEvents).contains(event("jdk.ObjectAllocationInNewTLAB"));
+        List<RecordedEvent> allocation100KBInNewTLABEvents = jfrEvents.filter(event("jdk.ObjectAllocationInNewTLAB")
+                .with("allocationSize", (double) OBJECT_SIZE)
+                .with("objectClass", BYTE_ARRAY_CLASS_NAME)
+        ).collect(Collectors.toList());
+        List<RecordedEvent> allocation100KBOutsideTLABEvents = jfrEvents.filter(event("jdk.ObjectAllocationOutsideTLAB")
+                .with("allocationSize", (double) OBJECT_SIZE)
+                .with("objectClass", BYTE_ARRAY_CLASS_NAME)
+        ).collect(Collectors.toList());
+        assertThat(allocation100KBInNewTLABEvents.size()).isGreaterThan(0);
+        assertThat(allocation100KBInNewTLABEvents.size()).isGreaterThan(0);
+        RecordedEvent allocation100KBInNewTLABEvent = allocation100KBInNewTLABEvents.get(0);
+        double tlabSize = allocation100KBInNewTLABEvent.getDouble("tlabSize");
+        allocation100KBInNewTLABEvent.getThread().getId();
+
     }
 }
