@@ -78,7 +78,7 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
         else if (value instanceof String) {
             return Objects.equals(recordedEvent.getString(name), value);
         }
-        else if (value instanceof Byte) {
+        else if (value instanceof Boolean) {
             return Objects.equals(recordedEvent.getBoolean(name), value);
         }
         else if (value instanceof Boolean) {
