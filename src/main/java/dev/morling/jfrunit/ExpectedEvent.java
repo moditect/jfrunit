@@ -73,7 +73,7 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
             return false;
         }
 
-        if ("objectClass".equalsIgnoreCase(name)) {
+        if ("objectClass".equalsIgnoreCase(name) && !(value instanceof ExpectedClass)) {
             return Objects.equals(recordedEvent.getClass("objectClass").getName(), value.toString());
         }
 
@@ -109,6 +109,12 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
         }
         else if (value instanceof Instant) {
             return Objects.equals(recordedEvent.getInstant(name), value);
+        }
+        else if (value instanceof ExpectedClass) {
+            return ((ExpectedClass) value).test(recordedEvent.getClass(name));
+        }
+        else if (value instanceof ExpectedThread) {
+            return ((ExpectedThread) value).test(recordedEvent.getThread(name));
         }
         else {
             throw new IllegalArgumentException(String.format("Unsupported property type: %s, %s", name, value));

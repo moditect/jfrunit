@@ -100,10 +100,21 @@ public class JfrUnitTest {
                 .with("objectClass", BYTE_ARRAY_CLASS_NAME)
         ).collect(Collectors.toList());
         assertThat(allocation100KBInNewTLABEvents.size()).isGreaterThan(0);
-        assertThat(allocation100KBInNewTLABEvents.size()).isGreaterThan(0);
-        RecordedEvent allocation100KBInNewTLABEvent = allocation100KBInNewTLABEvents.get(0);
-        double tlabSize = allocation100KBInNewTLABEvent.getDouble("tlabSize");
-        allocation100KBInNewTLABEvent.getThread().getId();
+        assertThat(allocation100KBOutsideTLABEvents.size()).isGreaterThan(0);
 
+        List<RecordedEvent> allocation100KBInNewTLABEvents2 = jfrEvents.filter(event("jdk.ObjectAllocationInNewTLAB")
+                .with("allocationSize", (double) OBJECT_SIZE)
+                .with("objectClass", new ExpectedClass(new byte[0].getClass()))
+                .with("eventThread", new ExpectedThread(Thread.currentThread()))
+        ).collect(Collectors.toList());
+        List<RecordedEvent> allocation100KBOutsideTLABEvents2 = jfrEvents.filter(event("jdk.ObjectAllocationOutsideTLAB")
+                .with("allocationSize", (double) OBJECT_SIZE)
+                .with("objectClass", new ExpectedClass(new byte[0].getClass()))
+                .with("eventThread", new ExpectedThread(Thread.currentThread()))
+        ).collect(Collectors.toList());
+        assertThat(allocation100KBInNewTLABEvents.size()).isEqualTo(allocation100KBInNewTLABEvents2.size());
+        assertThat(allocation100KBOutsideTLABEvents.size()).isEqualTo(allocation100KBOutsideTLABEvents2.size());
+
+        //todo add more tlab test
     }
 }
