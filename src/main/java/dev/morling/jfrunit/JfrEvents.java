@@ -164,6 +164,10 @@ public class JfrEvents {
                 if (enabledEvent.threshold != -1) {
                     settings.withThreshold(Duration.ofMillis(enabledEvent.threshold));
                 }
+
+                if (enabledEvent.period != -1) {
+                    settings.withPeriod(Duration.ofMillis(enabledEvent.period));
+                }
             }
         }
 
@@ -230,7 +234,7 @@ public class JfrEvents {
                 Pattern pattern = Pattern.compile(event.name.replace("*", ".*"));
                 for (EventType eventType : allEventTypes) {
                     if (pattern.matcher(eventType.getName()).matches()) {
-                        allEvents.add(new EventConfiguration(eventType.getName(), event.stackTrace, event.threshold));
+                        allEvents.add(new EventConfiguration(eventType.getName(), event.stackTrace, event.threshold, event.period));
                     }
                 }
             }

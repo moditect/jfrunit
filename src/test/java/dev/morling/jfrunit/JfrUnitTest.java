@@ -15,14 +15,14 @@
  */
 package dev.morling.jfrunit;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.time.Duration;
-
 import static dev.morling.jfrunit.ExpectedEvent.event;
 import static dev.morling.jfrunit.JfrEventsAssert.assertThat;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.time.Duration;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 @JfrEventTest
 public class JfrUnitTest {

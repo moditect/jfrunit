@@ -35,11 +35,13 @@ public @interface EnableEvent {
 
     StacktracePolicy stackTrace() default StacktracePolicy.DEFAULT;
 
-    int threshold() default -1;
+    long threshold() default -1L;
 
     enum StacktracePolicy {
         DEFAULT, INCLUDED, EXCLUDED
     }
+
+    long period() default -1L;
 
     @Retention(RetentionPolicy.RUNTIME)
     @interface List {

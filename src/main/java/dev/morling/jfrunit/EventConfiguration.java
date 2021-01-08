@@ -21,11 +21,13 @@ public class EventConfiguration {
 
     public final String name;
     public final StacktracePolicy stackTrace;
-    public final int threshold;
+    public final long threshold;
+    public final long period;
 
-    public EventConfiguration(String name, StacktracePolicy stackTrace, int threshold) {
+    public EventConfiguration(String name, StacktracePolicy stackTrace, long threshold, long period) {
         this.name = name;
         this.stackTrace = stackTrace;
         this.threshold = threshold;
+        this.period = period;
     }
 }
