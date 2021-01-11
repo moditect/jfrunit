@@ -32,7 +32,6 @@ public class ExpectedMethod implements Predicate<RecordedMethod> {
 
     public ExpectedMethod(Method method) {
         this.name = method.getName();
-        this.modifiers = method.getModifiers();
     }
 
     @Override
