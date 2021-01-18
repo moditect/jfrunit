@@ -15,13 +15,13 @@
  */
 package dev.morling.jfrunit;
 
-import static dev.morling.jfrunit.ExpectedEvent.event;
-import static dev.morling.jfrunit.JfrEventsAssert.assertThat;
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import org.junit.jupiter.api.Test;
+import static dev.morling.jfrunit.ExpectedEvent.event;
+import static dev.morling.jfrunit.JfrEventsAssert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @JfrEventTest
 public class JfrUnitTest {
@@ -69,5 +69,35 @@ public class JfrUnitTest {
                 .sum();
 
         assertThat(allocated).isGreaterThan(0);
+    }
+
+    @Test
+    @EnableEvent("jdk.ThreadSleep")
+    public void shouldHaveStackTraceCapturedWithNoStackTracePolicyDefined() throws Exception {
+        Thread.sleep(1000);
+
+        jfrEvents.awaitEvents();
+
+        assertThat(jfrEvents).contains(event("jdk.ThreadSleep").has("stackTrace"));
+    }
+
+    @Test
+    @EnableEvent(value = "jdk.ThreadSleep", stackTrace = EnableEvent.StacktracePolicy.INCLUDED)
+    public void shouldHaveStackTraceCapturedWithStackTracePolicyIncluded() throws Exception {
+        Thread.sleep(1000);
+
+        jfrEvents.awaitEvents();
+
+        assertThat(jfrEvents).contains(event("jdk.ThreadSleep").has("stackTrace"));
+    }
+
+    @Test
+    @EnableEvent(value = "jdk.ThreadSleep", stackTrace = EnableEvent.StacktracePolicy.EXCLUDED)
+    public void shouldNotHaveStackTraceCapturedWithStackTracePolicyExcluded() throws Exception {
+        Thread.sleep(1000);
+
+        jfrEvents.awaitEvents();
+
+        assertThat(jfrEvents).contains(event("jdk.ThreadSleep").hasNot("stackTrace"));
     }
 }

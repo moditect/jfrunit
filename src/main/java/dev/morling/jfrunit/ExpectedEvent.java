@@ -16,7 +16,9 @@
 package dev.morling.jfrunit;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Predicate;
@@ -25,8 +27,13 @@ import jdk.jfr.consumer.RecordedEvent;
 
 public class ExpectedEvent implements Predicate<RecordedEvent> {
 
+    private static final System.Logger LOGGER = System.getLogger(ExpectedEvent.class.getName());
+
     private String name;
-    private Map<String, Object> props = new HashMap<>();
+    private Map<String, Object> withProps = new HashMap<>();
+    private List<String> hasProps = new ArrayList<>();
+    private List<String> hasNotProps = new ArrayList<>();
+
 
     private ExpectedEvent(String name) {
         this.name = name;
@@ -36,12 +43,30 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
         return name;
     }
 
-    public Map<String, Object> getProps() {
-        return props;
+    public Map<String, Object> getWithProps() {
+        return withProps;
+    }
+
+    public List<String> getHasProps() {
+        return hasProps;
+    }
+
+    public List<String> getHasNotProps() {
+        return hasNotProps;
     }
 
     public ExpectedEvent with(String name, Object value) {
-        this.props.put(name, value);
+        this.withProps.put(name, value);
+        return this;
+    }
+
+    public ExpectedEvent has(String name) {
+        this.hasProps.add(name);
+        return this;
+    }
+
+    public ExpectedEvent hasNot(String name) {
+        this.hasNotProps.add(name);
         return this;
     }
 
@@ -54,9 +79,24 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
             return false;
         }
 
-        if (!expectedEvent.getProps().isEmpty()) {
-            for (Entry<String, Object> prop : expectedEvent.getProps().entrySet()) {
-                if (!hasMatchingProperty(recordedEvent, prop.getKey(), prop.getValue())) {
+        if(!expectedEvent.getHasProps().isEmpty()) {
+            for(String name: expectedEvent.getHasProps()) {
+                if(!hasPropertyMatching(recordedEvent, name))
+                    return false;
+            }
+        }
+
+        if(!expectedEvent.getHasNotProps().isEmpty()) {
+            for(String name: expectedEvent.getHasNotProps()) {
+                if(hasPropertyMatching(recordedEvent, name)) {
+                    return false;
+                }
+            }
+        }
+
+        if (!expectedEvent.getWithProps().isEmpty()) {
+            for (Entry<String, Object> prop : expectedEvent.getWithProps().entrySet()) {
+                if (!withPropertyMatching(recordedEvent, prop.getKey(), prop.getValue())) {
                     return false;
                 }
             }
@@ -65,7 +105,16 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
         return true;
     }
 
-    private static boolean hasMatchingProperty(RecordedEvent recordedEvent, String name, Object value) {
+    private static boolean hasPropertyMatching(RecordedEvent recordedEvent, String name) {
+        if (!recordedEvent.hasField(name)) {
+            return false;
+        }
+
+        Object value = recordedEvent.getValue(name);
+        return value!=null;
+    }
+
+    private static boolean withPropertyMatching(RecordedEvent recordedEvent, String name, Object value) {
         if (!recordedEvent.hasField(name)) {
             return false;
         }
