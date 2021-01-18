@@ -136,8 +136,7 @@ public class JfrEvents {
     private void awaitStreamStart(CountDownLatch streamStarted) throws InterruptedException {
         while(streamStarted.getCount() != 0) {
             SyncEvent event = new SyncEvent();
-            long seq = sequence.incrementAndGet();
-            event.sequence = seq;
+            event.sequence = sequence.incrementAndGet();
             event.cause = "awaiting stream start";
             event.begin();
             event.commit();
@@ -158,7 +157,7 @@ public class JfrEvents {
                 if (enabledEvent.stackTrace == StacktracePolicy.INCLUDED) {
                     settings.withStackTrace();
                 }
-                else if (enabledEvent.stackTrace == StacktracePolicy.INCLUDED) {
+                else if (enabledEvent.stackTrace == StacktracePolicy.EXCLUDED) {
                     settings.withoutStackTrace();
                 }
 
@@ -187,7 +186,7 @@ public class JfrEvents {
                 if (enabledEvent.stackTrace == StacktracePolicy.INCLUDED) {
                     settings.withStackTrace();
                 }
-                else if (enabledEvent.stackTrace == StacktracePolicy.INCLUDED) {
+                else if (enabledEvent.stackTrace == StacktracePolicy.EXCLUDED) {
                     settings.withoutStackTrace();
                 }
 
