@@ -18,6 +18,7 @@ package dev.morling.jfrunit;
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
 /**
  * Enables a specific JFR event type, e.g. "jdk.GarbageCollection" for a recording.
  *
@@ -32,18 +33,16 @@ public @interface EnableEvent {
      */
     String value() default "";
 
-//    String name() default "";
-
-    StacktracePolicy stackTrace() default StacktracePolicy.DEFAULT;
+    StacktracePolicy stackTrace() default StacktracePolicy.INCLUDED;
 
     int threshold() default -1;
 
-    public enum StacktracePolicy {
-        DEFAULT, INCLUDED, EXCLUDED;
+    enum StacktracePolicy {
+        INCLUDED, EXCLUDED
     }
 
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface List {
+    @interface List {
         EnableEvent[] value();
     }
 }
