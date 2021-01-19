@@ -58,7 +58,7 @@ public class JfrUnitQuarkusLifecycleCallback implements QuarkusTestBeforeEachCal
 
     private List<EventConfiguration> getEnabledEvents(Method testMethod) {
         return Arrays.stream(testMethod.getAnnotationsByType(EnableEvent.class))
-            .map(e -> new EventConfiguration(e.value(), e.stackTrace(), e.threshold()))
+            .map(e -> new EventConfiguration(e.value(), e.stackTrace(), e.threshold(), e.period()))
             .collect(Collectors.toList());
     }
 
