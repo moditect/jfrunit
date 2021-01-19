@@ -17,7 +17,9 @@ package dev.morling.jfrunit;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -25,11 +27,14 @@ import java.util.function.Predicate;
 
 import jdk.jfr.consumer.RecordedClass;
 import jdk.jfr.consumer.RecordedEvent;
+import jdk.jfr.consumer.RecordedFrame;
+import jdk.jfr.consumer.RecordedStackTrace;
 
 public class ExpectedEvent implements Predicate<RecordedEvent> {
 
     private String name;
     private Map<String, Object> props = new HashMap<>();
+    private List<ExpectedStackFrame> frames = new ArrayList<>();
 
     private ExpectedEvent(String name) {
         this.name = name;
@@ -43,8 +48,17 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
         return props;
     }
 
+    public List<ExpectedStackFrame> getFrames() {
+        return frames;
+    }
+
     public ExpectedEvent with(String name, Object value) {
         this.props.put(name, value);
+        return this;
+    }
+
+    public ExpectedEvent containStackFrame(ExpectedStackFrame value) {
+        this.frames.add(value);
         return this;
     }
 
@@ -60,6 +74,19 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
         if (!expectedEvent.getProps().isEmpty()) {
             for (Entry<String, Object> prop : expectedEvent.getProps().entrySet()) {
                 if (!hasMatchingProperty(recordedEvent, prop.getKey(), prop.getValue())) {
+                    return false;
+                }
+            }
+        }
+
+        if (!expectedEvent.getFrames().isEmpty()) {
+            RecordedStackTrace stackTrace = recordedEvent.getStackTrace();
+            if (stackTrace == null) {
+                return false;
+            }
+            for (ExpectedStackFrame expectedStackFrame : expectedEvent.getFrames()) {
+                List<RecordedFrame> recordedFrames = stackTrace.getFrames();
+                if (recordedFrames.stream().noneMatch(expectedStackFrame::test)) {
                     return false;
                 }
             }

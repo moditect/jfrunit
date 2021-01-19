@@ -73,48 +73,4 @@ public class JfrUnitTest {
 
         assertThat(allocated).isGreaterThan(0);
     }
-
-    private static final int BYTE_ARRAY_OVERHEAD = 16;
-    private static final int OBJECT_SIZE = 102400;
-    private static final String BYTE_ARRAY_CLASS_NAME = new byte[0].getClass().getName();
-    public static byte[] tmp;
-
-    @Test
-    @EnableEvent("jdk.ObjectAllocationOutsideTLAB")
-    @EnableEvent("jdk.ObjectAllocationInNewTLAB")
-    public void testTLAB() throws InterruptedException {
-        System.gc();
-        Thread.sleep(1000);
-        for (int i = 0; i < 512; ++i) {
-            tmp = new byte[OBJECT_SIZE - BYTE_ARRAY_OVERHEAD];
-        }
-        jfrEvents.awaitEvents();
-        assertThat(jfrEvents).contains(event("jdk.ObjectAllocationOutsideTLAB"));
-        assertThat(jfrEvents).contains(event("jdk.ObjectAllocationInNewTLAB"));
-        List<RecordedEvent> allocation100KBInNewTLABEvents = jfrEvents.filter(event("jdk.ObjectAllocationInNewTLAB")
-                .with("allocationSize", (double) OBJECT_SIZE)
-                .with("objectClass", BYTE_ARRAY_CLASS_NAME)
-        ).collect(Collectors.toList());
-        List<RecordedEvent> allocation100KBOutsideTLABEvents = jfrEvents.filter(event("jdk.ObjectAllocationOutsideTLAB")
-                .with("allocationSize", (double) OBJECT_SIZE)
-                .with("objectClass", BYTE_ARRAY_CLASS_NAME)
-        ).collect(Collectors.toList());
-        assertThat(allocation100KBInNewTLABEvents.size()).isGreaterThan(0);
-        assertThat(allocation100KBOutsideTLABEvents.size()).isGreaterThan(0);
-
-        List<RecordedEvent> allocation100KBInNewTLABEvents2 = jfrEvents.filter(event("jdk.ObjectAllocationInNewTLAB")
-                .with("allocationSize", (double) OBJECT_SIZE)
-                .with("objectClass", new ExpectedClass(new byte[0].getClass()))
-                .with("eventThread", new ExpectedThread(Thread.currentThread()))
-        ).collect(Collectors.toList());
-        List<RecordedEvent> allocation100KBOutsideTLABEvents2 = jfrEvents.filter(event("jdk.ObjectAllocationOutsideTLAB")
-                .with("allocationSize", (double) OBJECT_SIZE)
-                .with("objectClass", new ExpectedClass(new byte[0].getClass()))
-                .with("eventThread", new ExpectedThread(Thread.currentThread()))
-        ).collect(Collectors.toList());
-        assertThat(allocation100KBInNewTLABEvents.size()).isEqualTo(allocation100KBInNewTLABEvents2.size());
-        assertThat(allocation100KBOutsideTLABEvents.size()).isEqualTo(allocation100KBOutsideTLABEvents2.size());
-
-        //todo add more tlab test
-    }
 }
