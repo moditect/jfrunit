@@ -33,12 +33,12 @@ public @interface EnableEvent {
      */
     String value() default "";
 
-    StacktracePolicy stackTrace() default StacktracePolicy.INCLUDED;
+    StacktracePolicy stackTrace() default StacktracePolicy.DEFAULT;
 
     int threshold() default -1;
 
     enum StacktracePolicy {
-        INCLUDED, EXCLUDED
+        DEFAULT, INCLUDED, EXCLUDED
     }
 
     @Retention(RetentionPolicy.RUNTIME)
