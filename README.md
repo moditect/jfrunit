@@ -17,7 +17,9 @@ before they manifest as performance regressions in production.
 
 ## Usage
 
-This project requires OpenJDK 14 or later at runtime.
+This project requires OpenJDK 15 or later at runtime.
+Support for JDK 11 is on the roadmap, JfrUnit couldn't rely on JFR event stream in this case though, but would have to read JFR events from a recording persisted to disk.
+A PR contributing this change would be very welcomed.
 
 JfrUnit is not yet available from Maven Central yet;
 in the meantime you can obtain snapshot builds from [JitPack](https://jitpack.io).
