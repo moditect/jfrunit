@@ -152,7 +152,13 @@ Apache Maven is used for the build.
 Run the following to build the project:
 
 ```shell
-mvn clean install
+mvn verify
+```
+
+Run the following to install the JARs to the local Maven repository:
+
+```shell
+mvn install
 ```
 
 ## License
