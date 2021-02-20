@@ -1,18 +1,20 @@
 <!--
 
-     Copyright 2020 - 2021 The JfrUnit authors
+    SPDX-License-Identifier: Apache-2.0
 
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
+    Copyright 2020 - 2021 The JfrUnit authors.
 
-         http://www.apache.org/licenses/LICENSE-2.0
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
+        https://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -20,30 +22,41 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>dev.morling.jfrunit</groupId>
+  <parent>
+    <groupId>org.moditect</groupId>
+    <artifactId>moditect-org-parent</artifactId>
+    <version>1.0.0.Final</version>
+  </parent>
+
+  <groupId>org.moditect.jfrunit</groupId>
   <artifactId>jfrunit</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>JfrUnit</name>
   <url>https://github.com/gunnarmorling/jfrunit/</url>
   <description>A JUnit extension for asserting JDK Flight Recorder events</description>
+  <inceptionYear>2020</inceptionYear>
 
   <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <project.identifier>jfrunit</project.identifier>
+    <project.github.repository>moditect/jfrunit</project.github.repository>
+    <local.repository.path>/tmp/repository</local.repository.path>
+    <java.version>16</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+    <maven.compiler.release>${java.version}</maven.compiler.release>
     <maven.compiler.parameters>true</maven.compiler.parameters>
-    <maven.compiler.release>16</maven.compiler.release>
     <quarkus.platform.version>2.1.0.Final</quarkus.platform.version>
+    <version.surefire.plugin>3.0.0-M5</version.surefire.plugin>
   </properties>
 
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
+  <scm>
+    <connection>scm:git:${repository.url}</connection>
+    <developerConnection>scm:git:${repository.url}</developerConnection>
+    <url>${repository.url}</url>
+    <tag>HEAD</tag>
+  </scm>
 
   <dependencyManagement>
     <dependencies>
@@ -60,6 +73,11 @@
         <version>2.0-groovy-3.0</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -98,60 +116,28 @@
   </dependencies>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>com.mycila</groupId>
-          <artifactId>license-maven-plugin</artifactId>
-          <version>3.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-clean-plugin</artifactId>
-          <version>3.1.0</version>
-        </plugin>
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.0.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>3.2.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.8.1</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.0.0-M5</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.2.0</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-install-plugin</artifactId>
-          <version>2.5.2</version>
-        </plugin>
-        <plugin>
-          <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
         <version>1.12.1</version>
-
         <executions>
           <execution>
             <goals>
               <goal>compile</goal>
               <goal>compileTests</goal>
             </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-testCompile</id>
+            <configuration>
+              <release>${java.version}</release>
+            </configuration>
           </execution>
         </executions>
       </plugin>
@@ -170,42 +156,20 @@
       <plugin>
         <groupId>com.mycila</groupId>
         <artifactId>license-maven-plugin</artifactId>
-        <configuration>
-          <header>etc/license.txt</header>
+        <configuration combine.self="override">
+          <header>${rootdir}/etc/license.txt</header>
           <strictCheck>true</strictCheck>
-          <aggregate>true</aggregate>
           <excludes>
+            <exclude>README.md</exclude>
             <exclude>jitpack.yml</exclude>
             <exclude>LICENSE.txt</exclude>
             <exclude>install-jdk.sh</exclude>
+            <exclude>mvnw</exclude>
+            <exclude>mvnw.cmd</exclude>
+            <exclude>.mvn/wrapper/maven-wrapper.properties</exclude>
+            <exclude>.mvn/wrapper/MavenWrapperDownloader.java</exclude>
           </excludes>
         </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-enforcer-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>enforce-java</id>
-            <goals>
-              <goal>enforce</goal>
-            </goals>
-            <configuration>
-              <rules>
-                <requireJavaVersion>
-                  <version>[16.0,)</version>
-                </requireJavaVersion>
-              </rules>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
     <resources>
@@ -215,4 +179,42 @@
       </resource>
     </resources>
   </build>
+
+  <profiles>
+    <profile>
+      <id>jreleaser</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.jreleaser</groupId>
+            <artifactId>jreleaser-maven-plugin</artifactId>
+            <version>0.6.0</version>
+            <inherited>false</inherited>
+            <configuration>
+              <jreleaser>
+                <release>
+                  <github>
+                    <skipTag>true</skipTag>
+                    <changelog>
+                      <formatted>ALWAYS</formatted>
+                      <format>- {{commitShortHash}} {{commitTitle}}</format>
+                      <contributors>
+                        <format>* {{contributorName}}{{#contributorUsernameAsLink}} ({{.}}){{/contributorUsernameAsLink}}</format>
+                      </contributors>
+                      <hide>
+                        <contributors>
+                          <contributor>GitHub</contributor>
+                          <contributor>bot</contributor>
+                        </contributors>
+                      </hide>
+                    </changelog>
+                  </github>
+                </release>
+              </jreleaser>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
