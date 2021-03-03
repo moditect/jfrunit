@@ -28,7 +28,7 @@ To do so, add the following dependency to your project's _pom.xml_:
 ```xml
 ...
 <dependency>
-  <groupId>com.github.gunnarmorling</groupId>
+  <groupId>com.github.moditect</groupId>
   <artifactId>jfrunit</artifactId>
   <version>main-SNAPSHOT</version>
 </dependency>
@@ -50,6 +50,11 @@ Alternatively, build JfrUnit from source (see below) yourself and add the follow
 Then you can implement tests expecting specific JFR events like so:
 
 ```java
+import dev.morling.jfrunit.*;
+
+import static dev.morling.jfrunit.JfrEventsAssert.*;
+import static dev.morling.jfrunit.ExpectedEvent.*;
+
 @JfrEventTest
 public class JfrTest {
 
