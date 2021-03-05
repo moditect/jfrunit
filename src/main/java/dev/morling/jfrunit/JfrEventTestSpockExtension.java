@@ -31,32 +31,12 @@ public class JfrEventTestSpockExtension extends AbstractAnnotationDrivenExtensio
     @Override
     public void visitSpecAnnotation(JfrEventTest annotation, SpecInfo spec) {
         final JfrMethodInterceptor interceptor = new JfrMethodInterceptor();
-        spec.getAllFeatures().stream().forEach(featureInfo -> {
+        spec.getBottomSpec().getAllFeatures().stream().forEach(featureInfo -> {
             featureInfo.getFeatureMethod().addInterceptor(interceptor);
         });
     }
 
-    private String getEnabledConfiguration(IMethodInvocation invocation) {
-        return Optional.ofNullable(invocation.getMethod().getAnnotation(EnableConfiguration.class))
-                .map(EnableConfiguration::value)
-                .map(String::trim)
-                .orElse(null);
-    }
-
-    private List<EventConfiguration> getEnabledEvents(IMethodInvocation invocation) {
-        return Arrays.stream(invocation.getMethod().getReflection().getAnnotationsByType(EnableEvent.class))
-                .map(e -> new EventConfiguration(e.value(), e.stackTrace(), e.threshold(), e.period()))
-                .collect(Collectors.toList());
-    }
-
-    private List<JfrEventsContext> getJfrEvents(IMethodInvocation invocation) {
-        return invocation.getSpec().getAllFields().stream()
-                .filter(fieldInfo -> JfrEvents.class.equals(fieldInfo.getType()))
-                .map(fieldInfo -> new JfrEventsContext((JfrEvents) fieldInfo.readValue(invocation.getInstance()), fieldInfo))
-                .collect(Collectors.toList());
-    }
-
-    private class JfrMethodInterceptor extends AbstractMethodInterceptor {
+    private static class JfrMethodInterceptor extends AbstractMethodInterceptor {
 
         @Override
         public void interceptFeatureMethod(IMethodInvocation invocation) throws Throwable {
@@ -77,6 +57,26 @@ public class JfrEventTestSpockExtension extends AbstractAnnotationDrivenExtensio
                     }
                 });
             }
+        }
+
+        private String getEnabledConfiguration(IMethodInvocation invocation) {
+            return Optional.ofNullable(invocation.getMethod().getAnnotation(EnableConfiguration.class))
+                    .map(EnableConfiguration::value)
+                    .map(String::trim)
+                    .orElse(null);
+        }
+
+        private List<EventConfiguration> getEnabledEvents(IMethodInvocation invocation) {
+            return Arrays.stream(invocation.getMethod().getReflection().getAnnotationsByType(EnableEvent.class))
+                    .map(e -> new EventConfiguration(e.value(), e.stackTrace(), e.threshold(), e.period()))
+                    .collect(Collectors.toList());
+        }
+
+        private List<JfrEventsContext> getJfrEvents(IMethodInvocation invocation) {
+            return invocation.getSpec().getAllFields().stream()
+                    .filter(fieldInfo -> JfrEvents.class.equals(fieldInfo.getType()))
+                    .map(fieldInfo -> new JfrEventsContext((JfrEvents) fieldInfo.readValue(invocation.getInstance()), fieldInfo))
+                    .collect(Collectors.toList());
         }
 
     }
