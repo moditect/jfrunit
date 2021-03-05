@@ -108,6 +108,10 @@ public class JfrEvents {
         }
     }
 
+    void clear() {
+        events.clear();
+    }
+
     /**
      * Ensures all previously emitted events have been consumed.
      */
@@ -134,14 +138,16 @@ public class JfrEvents {
     }
 
     public Stream<RecordedEvent> getEvents() {
+        awaitEvents();
         return events.stream();
     }
 
     public Stream<RecordedEvent> filter(Predicate<RecordedEvent> predicate) {
-        return events.stream().filter(predicate);
+        return stream().filter(predicate);
     }
 
     public Stream<RecordedEvent> stream() {
+        awaitEvents();
         return events.stream();
     }
 

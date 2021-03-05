@@ -76,6 +76,36 @@ public class JfrTest {
 }
 ```
 
+Or with Spock Framework like this:
+```groovy
+import dev.morling.jfrunit.*
+import spock.lang.Specification
+
+import java.time.Duration
+
+import static dev.morling.jfrunit.JfrEventsAssert.*
+import static dev.morling.jfrunit.ExpectedEvent.*
+
+@JfrEventTest
+class JfrSpec extends Specification {
+
+    JfrEvents jfrEvents = new JfrEvents()
+
+    @EnableEvent('jdk.GarbageCollection')
+    @EnableEvent('jdk.ThreadSleep')
+    def 'should Have GC And Sleep Events'() {
+        when:
+        System.gc()
+        sleep(1000)
+
+        then:
+        assertThat(jfrEvents).contains(event('jdk.GarbageCollection'))
+        assertThat(jfrEvents).contains(
+                event('jdk.ThreadSleep').with('time', Duration.ofSeconds(1)))
+    }
+}
+```
+
 Note that when you're writing a test for a Quarkus application using the `@QuarkusTest` annotation, you don't need (and even should not) add the `@JfrEventTest` annotation.
 Instead, the Quarkus test framework will automatically pick up the required callbacks for managing the JFR recording.
 
