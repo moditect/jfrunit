@@ -17,38 +17,24 @@ package dev.morling.jfrunit
 
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import spock.lang.Shared
 import spock.lang.Specification
+import spock.lang.Stepwise
 
-import java.time.Duration
-
-import static dev.morling.jfrunit.ExpectedEvent.event
-import static dev.morling.jfrunit.JfrEventsAssert.assertThat
-
+@Stepwise
 @JfrEventTest
-class JfrSpockSpec extends Specification {
+class JfrSpockStepwiseSharedSpec extends Specification {
 
     @Rule
     TemporaryFolder temporaryFolder = new TemporaryFolder()
 
+    @Shared
     JfrEvents jfrEvents = new JfrEvents()
 
-    @EnableEvent('jdk.GarbageCollection')
-    @EnableEvent('jdk.ThreadSleep')
-    def 'should Have GC And Sleep Events'() {
-        when:
-        System.gc()
-        sleep(1000)
-
-        then:
-        assertThat(jfrEvents).contains(event('jdk.GarbageCollection'))
-        assertThat(jfrEvents).contains(
-                event('jdk.ThreadSleep').with('time', Duration.ofSeconds(1)))
-    }
-
     @EnableEvent(value = 'jdk.FileWrite', threshold = 0L)
-    def 'should record written bytes on each iteration'(int iteration) {
+    def 'should record of written bytes'() {
         given:
-        long bytesWritten = iteration * 10
+        long bytesWritten = 10
         byte[] array = new byte[bytesWritten]
         new Random().nextBytes(array)
         File file = temporaryFolder.newFile()
@@ -58,13 +44,30 @@ class JfrSpockSpec extends Specification {
 
         then:
         jfrEvents.events.filter({it.eventType.name == 'jdk.FileWrite' }).count() == 1
+        checkFileWrite(jfrEvents, bytesWritten, file)
+    }
+
+    @EnableEvent(value = 'jdk.FileWrite', threshold = 0L)
+    def 'should add record of written bytes'() {
+        given:
+        long bytesWritten = 20
+        byte[] array = new byte[bytesWritten]
+        new Random().nextBytes(array)
+        File file = temporaryFolder.newFile()
+
+        when:
+        file << array
+
+        then:
+        jfrEvents.events.filter({it.eventType.name == 'jdk.FileWrite' }).count() == 2
+        checkFileWrite(jfrEvents, bytesWritten, file)
+    }
+
+    private void checkFileWrite(JfrEvents jfrEvents, long bytesWritten, File file) {
         JfrEventsAssert.assertThat(jfrEvents).contains(
                 ExpectedEvent.event('jdk.FileWrite')
                         .with('bytesWritten', bytesWritten)
                         .with('path', file.absolutePath))
-
-        where:
-        iteration << [1, 2]
     }
 
 }

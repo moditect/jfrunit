@@ -55,6 +55,7 @@ public class JfrEvents {
     private AtomicLong watermark = new AtomicLong();
     private RecordingStream stream;
     private Recording recording;
+    private boolean capturing;
 
     public JfrEvents() {
     }
@@ -76,6 +77,7 @@ public class JfrEvents {
             recording = startRecording(configurationName, allEnabledEventTypes);
 
             awaitStreamStart(streamStarted);
+            capturing = true;
             LOGGER.log(Level.INFO, "Event stream started");
         }
         catch (Exception e) {
@@ -97,6 +99,7 @@ public class JfrEvents {
             Path recordingPath = dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr");
 
             LOGGER.log(Level.INFO, "Stop recording: " + recordingPath);
+            capturing = false;
             recording.stop();
             recording.dump(recordingPath);
             recording.close();
@@ -106,10 +109,6 @@ public class JfrEvents {
         catch (IOException | URISyntaxException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    void clear() {
-        events.clear();
     }
 
     /**
@@ -138,8 +137,7 @@ public class JfrEvents {
     }
 
     public Stream<RecordedEvent> getEvents() {
-        awaitEvents();
-        return events.stream();
+        return stream();
     }
 
     public Stream<RecordedEvent> filter(Predicate<RecordedEvent> predicate) {
@@ -147,7 +145,10 @@ public class JfrEvents {
     }
 
     public Stream<RecordedEvent> stream() {
-        awaitEvents();
+        // avoid blocking when called outside of a test such as new JfrEvents().stream()
+        if (capturing) {
+            awaitEvents();
+        }
         return events.stream();
     }
 
