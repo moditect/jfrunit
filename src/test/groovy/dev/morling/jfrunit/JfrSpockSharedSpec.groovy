@@ -17,6 +17,7 @@ package dev.morling.jfrunit
 
 import org.junit.Rule
 import org.junit.rules.TemporaryFolder
+import spock.lang.Shared
 import spock.lang.Specification
 
 import java.time.Duration
@@ -25,25 +26,13 @@ import static dev.morling.jfrunit.ExpectedEvent.event
 import static dev.morling.jfrunit.JfrEventsAssert.assertThat
 
 @JfrEventTest
-class JfrSpockSpec extends Specification {
+class JfrSpockSharedSpec extends Specification {
 
     @Rule
     TemporaryFolder temporaryFolder = new TemporaryFolder()
 
+    @Shared
     JfrEvents jfrEvents = new JfrEvents()
-
-    @EnableEvent('jdk.GarbageCollection')
-    @EnableEvent('jdk.ThreadSleep')
-    def 'should Have GC And Sleep Events'() {
-        when:
-        System.gc()
-        sleep(1000)
-
-        then:
-        assertThat(jfrEvents).contains(event('jdk.GarbageCollection'))
-        assertThat(jfrEvents).contains(
-                event('jdk.ThreadSleep').with('time', Duration.ofSeconds(1)))
-    }
 
     @EnableEvent(value = 'jdk.FileWrite', threshold = 0L)
     def 'should record written bytes on each iteration'(int iteration) {
@@ -57,7 +46,7 @@ class JfrSpockSpec extends Specification {
         file << array
 
         then:
-        jfrEvents.events.filter({it.eventType.name == 'jdk.FileWrite' }).count() == 1
+        jfrEvents.events.filter({it.eventType.name == 'jdk.FileWrite' }).count() == iteration
         JfrEventsAssert.assertThat(jfrEvents).contains(
                 ExpectedEvent.event('jdk.FileWrite')
                         .with('bytesWritten', bytesWritten)

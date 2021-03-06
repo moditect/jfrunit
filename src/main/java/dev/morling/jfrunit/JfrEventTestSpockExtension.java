@@ -18,7 +18,6 @@ package dev.morling.jfrunit;
 import org.spockframework.runtime.extension.AbstractAnnotationDrivenExtension;
 import org.spockframework.runtime.extension.AbstractMethodInterceptor;
 import org.spockframework.runtime.extension.IMethodInvocation;
-import org.spockframework.runtime.model.FieldInfo;
 import org.spockframework.runtime.model.SpecInfo;
 
 import java.util.Arrays;
@@ -43,19 +42,13 @@ public class JfrEventTestSpockExtension extends AbstractAnnotationDrivenExtensio
             String enabledConfiguration = getEnabledConfiguration(invocation);
             List<EventConfiguration> enabledEvents = getEnabledEvents(invocation);
 
-            getJfrEvents(invocation).stream().map(JfrEventsContext::getJfrEvents).forEach(jfrEvents -> {
+            getJfrEvents(invocation).stream().forEach(jfrEvents -> {
                 jfrEvents.startRecordingEvents(enabledConfiguration, enabledEvents, invocation.getMethod().getReflection());
             });
             try {
                 invocation.proceed();
             } finally {
-                getJfrEvents(invocation).stream().forEach(jfrEventsContext -> {
-                    JfrEvents jfrEvents = jfrEventsContext.getJfrEvents();
-                    jfrEvents.stopRecordingEvents();
-                    if (!jfrEventsContext.getFieldInfo().isShared()) {
-                        jfrEvents.clear();
-                    }
-                });
+                getJfrEvents(invocation).stream().forEach(JfrEvents::stopRecordingEvents);
             }
         }
 
@@ -72,33 +65,14 @@ public class JfrEventTestSpockExtension extends AbstractAnnotationDrivenExtensio
                     .collect(Collectors.toList());
         }
 
-        private List<JfrEventsContext> getJfrEvents(IMethodInvocation invocation) {
+        private List<JfrEvents> getJfrEvents(IMethodInvocation invocation) {
             return invocation.getSpec().getAllFields().stream()
-                    .filter(fieldInfo -> JfrEvents.class.equals(fieldInfo.getType()))
-                    .map(fieldInfo -> new JfrEventsContext((JfrEvents) fieldInfo.readValue(invocation.getInstance()), fieldInfo))
+                    .filter(fieldInfo -> JfrEvents.class.isAssignableFrom(fieldInfo.getType()))
+                    .map(fieldInfo -> (JfrEvents) fieldInfo.readValue(
+                            fieldInfo.isShared() ? invocation.getSharedInstance() : invocation.getInstance()))
                     .collect(Collectors.toList());
         }
 
-    }
-
-    private static class JfrEventsContext {
-
-        private final JfrEvents jfrEvents;
-
-        private final FieldInfo fieldInfo;
-
-        public JfrEventsContext(JfrEvents jfrEvents, FieldInfo fieldInfo) {
-            this.jfrEvents = jfrEvents;
-            this.fieldInfo = fieldInfo;
-        }
-
-        public JfrEvents getJfrEvents() {
-            return jfrEvents;
-        }
-
-        public FieldInfo getFieldInfo() {
-            return fieldInfo;
-        }
     }
 
 }
