@@ -15,6 +15,8 @@
  */
 package dev.morling.jfrunit
 
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 import java.time.Duration
@@ -24,6 +26,9 @@ import static dev.morling.jfrunit.JfrEventsAssert.assertThat
 
 @JfrEventTest
 class JfrSpockSpec extends Specification {
+
+    @Rule
+    TemporaryFolder temporaryFolder = new TemporaryFolder()
 
     JfrEvents jfrEvents = new JfrEvents()
 
@@ -40,20 +45,26 @@ class JfrSpockSpec extends Specification {
                 event('jdk.ThreadSleep').with('time', Duration.ofSeconds(1)))
     }
 
-    @EnableEvent('jdk.ThreadSleep')
-    def 'should Sleep Events when data driven'(int iteration) {
+    @EnableEvent(value = 'jdk.FileWrite', threshold = 0L)
+    def 'should record written bytes on each iteration'(int iteration) {
         given:
-        def sleepTime = iteration * 200
+        long bytesWritten = iteration * 10
+        byte[] array = new byte[bytesWritten]
+        new Random().nextBytes(array)
+        File file = temporaryFolder.newFile();
 
         when:
-        sleep(sleepTime)
+        file << array
 
         then:
-        jfrEvents.events.filter({it.eventType.name == 'jdk.ThreadSleep' }).count() == 1
-        assertThat(jfrEvents).contains(
-                event('jdk.ThreadSleep').with('time', Duration.ofMillis(sleepTime)))
+        jfrEvents.events.filter({it.eventType.name == 'jdk.FileWrite' }).count() == 1
+        JfrEventsAssert.assertThat(jfrEvents).contains(
+                ExpectedEvent.event('jdk.FileWrite')
+                        .with('bytesWritten', bytesWritten)
+                        .with('path', file.absolutePath))
 
         where:
         iteration << [1, 2]
     }
+
 }
