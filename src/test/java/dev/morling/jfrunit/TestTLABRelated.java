@@ -39,7 +39,6 @@ public class TestTLABRelated {
     @EnableEvent("jdk.ObjectAllocationInNewTLAB")
     public void testSlowAllocation() throws InterruptedException {
         System.gc();
-        Thread.sleep(1000);
         for (int i = 0; i < 512; ++i) {
             tmp = new byte[OBJECT_SIZE - BYTE_ARRAY_OVERHEAD];
         }

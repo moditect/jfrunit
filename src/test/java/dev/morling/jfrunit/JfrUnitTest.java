@@ -35,7 +35,7 @@ public class JfrUnitTest {
     @DisplayName("Should have Gc and Sleep events recorded when explicitly enabled individually with @EnableEvent")
     public void shouldHaveGcAndSleepEvents() throws Exception {
         System.gc();
-        Thread.sleep(1000);
+        Thread.sleep(50);
 
         jfrEvents.awaitEvents();
 
@@ -43,7 +43,7 @@ public class JfrUnitTest {
         assertThat(jfrEvents).contains(
                 event("jdk.GarbageCollection").with("cause", "System.gc()"));
         assertThat(jfrEvents).contains(
-                event("jdk.ThreadSleep").with("time", Duration.ofSeconds(1)));
+                event("jdk.ThreadSleep").with("time", Duration.ofMillis(50)));
 
         assertThat(jfrEvents.filter(event("jdk.GarbageCollection"))).hasSize(1);
     }
@@ -53,7 +53,7 @@ public class JfrUnitTest {
     @DisplayName("Should have Gc and Sleep events recorded when enabled with configuration 'profile'")
     public void shouldHaveGcAndSleepEventsWithDefaultConfiguration() throws Exception {
         System.gc();
-        Thread.sleep(1000);
+        Thread.sleep(50);
 
         jfrEvents.awaitEvents();
 
@@ -61,7 +61,7 @@ public class JfrUnitTest {
         assertThat(jfrEvents).contains(
                 event("jdk.GarbageCollection").with("cause", "System.gc()"));
         assertThat(jfrEvents).contains(
-                event("jdk.ThreadSleep").with("time", Duration.ofSeconds(1)));
+                event("jdk.ThreadSleep").with("time", Duration.ofMillis(50)));
 
         assertThat(jfrEvents.filter(
                 event("jdk.GarbageCollection").with("cause", "System.gc()")))
@@ -78,7 +78,7 @@ public class JfrUnitTest {
     @EnableEvent("jdk.ThreadSleep")
     @DisplayName("Should have StackTrace captured for StackTrace-Enabled Events by default with StackTrace policy Default")
     public void captureTracesWhenEnabledWithPolicyDefault() throws Exception {
-        Thread.sleep(1000);
+        Thread.sleep(50);
 
         jfrEvents.awaitEvents();
 
@@ -101,7 +101,7 @@ public class JfrUnitTest {
     @EnableEvent(value = "jdk.ThreadSleep", stackTrace = EnableEvent.StacktracePolicy.INCLUDED)
     @DisplayName("Should have StackTrace captured irrespective of Event StackTrace Configuration(Enabled) with StackTrace policy Included")
     public void captureTraceWhenEnabledWithStackTracePolicyIncluded() throws Exception {
-        Thread.sleep(1000);
+        Thread.sleep(50);
 
         jfrEvents.awaitEvents();
 
@@ -124,7 +124,7 @@ public class JfrUnitTest {
     @EnableEvent(value = "jdk.ThreadSleep", stackTrace = EnableEvent.StacktracePolicy.EXCLUDED)
     @DisplayName("Should not have StackTrace captured irrespective of Event StackTrace Configuration(Enabled) with StackTrace policy Excluded")
     public void doNotCaptureTraceWhenEnabledWithStackTracePolicyExcluded() throws Exception {
-        Thread.sleep(1000);
+        Thread.sleep(50);
 
         jfrEvents.awaitEvents();
 

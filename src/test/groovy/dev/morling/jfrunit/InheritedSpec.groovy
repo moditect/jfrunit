@@ -13,20 +13,20 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package dev.morling.jfrunit;
+package dev.morling.jfrunit
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import static dev.morling.jfrunit.ExpectedEvent.event
+import static dev.morling.jfrunit.JfrEventsAssert.assertThat
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.spockframework.runtime.extension.ExtensionAnnotation;
+class InheritedSpec extends ParentSpec {
 
-@ExtensionAnnotation(JfrEventTestSpockExtension.class)
-@Retention(RetentionPolicy.RUNTIME)
-@ExtendWith(JfrEventTestExtension.class)
-@Target(ElementType.TYPE)
-public @interface JfrEventTest {
+    @EnableEvent("jdk.GarbageCollection")
+    def 'test inherited fields'() {
+        when:
+        System.gc()
+
+        then:
+        assertThat(jfrEvents).contains(event("jdk.GarbageCollection"))
+    }
 
 }

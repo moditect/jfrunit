@@ -63,10 +63,10 @@ public class ThreadSleepTest {
 
 
     @Test
-    @EnableEvent(value = "jdk.ThreadSleep", threshold = 500)
+    @EnableEvent(value = "jdk.ThreadSleep", threshold = 100)
     public void testWithThreshold() throws Exception {
         Thread.sleep(10);
-        Thread.sleep(1000);
+        Thread.sleep(200);
 
         jfrEvents.awaitEvents();
 

@@ -13,20 +13,29 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package dev.morling.jfrunit;
+package dev.morling.jfrunit
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import spock.lang.Specification
 
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.spockframework.runtime.extension.ExtensionAnnotation;
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
-@ExtensionAnnotation(JfrEventTestSpockExtension.class)
-@Retention(RetentionPolicy.RUNTIME)
-@ExtendWith(JfrEventTestExtension.class)
-@Target(ElementType.TYPE)
-public @interface JfrEventTest {
+class JfrEventsSpec extends Specification {
+
+    def 'does not block on stream() when capturing is not running'() {
+        given:
+        JfrEvents jfrEvents = new JfrEvents()
+        CountDownLatch latch = new CountDownLatch(1)
+
+        when:
+        Executors.newFixedThreadPool(1).submit({
+            jfrEvents.stream()
+            latch.countDown()
+        })
+
+        then:
+        latch.await(1, TimeUnit.SECONDS)
+    }
 
 }
