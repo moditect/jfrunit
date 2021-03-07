@@ -35,7 +35,7 @@ class JfrSpockSharedSpec extends Specification {
     JfrEvents jfrEvents = new JfrEvents()
 
     @EnableEvent(value = 'jdk.FileWrite', threshold = 0L)
-    def 'should record written bytes on each iteration'(int iteration) {
+    def 'records written bytes on each iteration'(int iteration) {
         given:
         long bytesWritten = iteration * 10
         byte[] array = new byte[bytesWritten]
