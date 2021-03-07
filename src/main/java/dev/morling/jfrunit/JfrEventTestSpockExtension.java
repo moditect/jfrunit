@@ -27,11 +27,12 @@ import java.util.stream.Collectors;
 
 public class JfrEventTestSpockExtension extends AbstractAnnotationDrivenExtension<JfrEventTest> {
 
+    private static final JfrMethodInterceptor JFR_METHOD_INTERCEPTOR = new JfrMethodInterceptor();
+
     @Override
     public void visitSpecAnnotation(JfrEventTest annotation, SpecInfo spec) {
-        final JfrMethodInterceptor interceptor = new JfrMethodInterceptor();
         spec.getBottomSpec().getAllFeatures().stream().forEach(featureInfo -> {
-            featureInfo.getFeatureMethod().addInterceptor(interceptor);
+            featureInfo.getFeatureMethod().addInterceptor(JFR_METHOD_INTERCEPTOR);
         });
     }
 
