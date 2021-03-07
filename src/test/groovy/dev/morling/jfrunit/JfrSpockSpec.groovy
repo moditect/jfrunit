@@ -37,12 +37,12 @@ class JfrSpockSpec extends Specification {
     def 'should Have GC And Sleep Events'() {
         when:
         System.gc()
-        sleep(1000)
+        sleep(50)
 
         then:
         assertThat(jfrEvents).contains(event('jdk.GarbageCollection'))
         assertThat(jfrEvents).contains(
-                event('jdk.ThreadSleep').with('time', Duration.ofSeconds(1)))
+                event('jdk.ThreadSleep').with('time', Duration.ofMillis(50)))
     }
 
     @EnableEvent(value = 'jdk.FileWrite', threshold = 0L)
