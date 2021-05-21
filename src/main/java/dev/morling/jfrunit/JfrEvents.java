@@ -19,7 +19,10 @@ import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
@@ -83,10 +86,20 @@ public class JfrEvents {
 
     void stopRecordingEvents() {
         try {
-            Path dumpDir = Files.createDirectories(Path.of(testMethod.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toURI()).getParent().resolve("jfrunit"));
-            LOGGER.log(Level.INFO, "Stop recording: " + dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr"));
+            URI testSourceUri = testMethod.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toURI();
+            Path dumpDir;
+            try {
+                dumpDir = Files.createDirectories(Path.of(testSourceUri).getParent().resolve("jfrunit"));
+            } catch (FileSystemNotFoundException e) {
+                dumpDir = Files.createTempDirectory(null);
+                LOGGER.log(Level.DEBUG, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
+            }
+
+            Path recordingPath = dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr");
+
+            LOGGER.log(Level.INFO, "Stop recording: " + recordingPath);
             recording.stop();
-            recording.dump(dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr"));
+            recording.dump(recordingPath);
             recording.close();
 
             stream.close();
