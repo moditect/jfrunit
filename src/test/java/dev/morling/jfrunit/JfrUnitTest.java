@@ -66,12 +66,6 @@ public class JfrUnitTest {
         assertThat(jfrEvents.filter(
                 event("jdk.GarbageCollection").with("cause", "System.gc()")))
                 .hasSize(1);
-
-        long allocated = jfrEvents.filter(event("jdk.ObjectAllocationInNewTLAB"))
-                .mapToLong(e -> e.getLong("tlabSize"))
-                .sum();
-
-        assertThat(allocated).isGreaterThan(0);
     }
 
     @Test
