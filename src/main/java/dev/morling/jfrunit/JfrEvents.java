@@ -21,7 +21,6 @@ import java.lang.System.Logger.Level;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystem;
 import java.nio.file.FileSystemNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -92,7 +91,7 @@ public class JfrEvents {
                 dumpDir = Files.createDirectories(Path.of(testSourceUri).getParent().resolve("jfrunit"));
             } catch (FileSystemNotFoundException e) {
                 dumpDir = Files.createTempDirectory(null);
-                LOGGER.log(Level.DEBUG, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
+                LOGGER.log(Level.WARNING, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
             }
 
             Path recordingPath = dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr");
