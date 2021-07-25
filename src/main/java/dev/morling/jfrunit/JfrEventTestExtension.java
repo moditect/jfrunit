@@ -15,9 +15,13 @@
  */
 package dev.morling.jfrunit;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.extension.AfterEachCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
@@ -58,7 +62,7 @@ public class JfrEventTestExtension implements Extension, BeforeEachCallback, Aft
     }
 
     private List<JfrEvents> getJfrEvents(Object instance) {
-        return Arrays.stream(instance.getClass().getDeclaredFields())
+        return getAllFields(instance.getClass())
             .filter(f -> f.getType() == JfrEvents.class)
             .map(f -> {
                 try {
@@ -69,5 +73,18 @@ public class JfrEventTestExtension implements Extension, BeforeEachCallback, Aft
                 }
             })
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Gets all fields declared anywhere on the inheritance path between the given class and {@link Object}.
+     *
+     * <p>This is necessary because some test frameworks may implicitly subclass a test class with a proxy
+     * class.  It is also useful for test fixtures.
+     */
+    private static Stream<Field> getAllFields(Class<?> c) {
+        Class<?> superclass = c.getSuperclass();
+        return Stream.concat(
+            Arrays.stream(c.getDeclaredFields()),
+            superclass == null ? Stream.empty() : getAllFields(superclass));
     }
 }
