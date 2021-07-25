@@ -92,7 +92,7 @@ public class JfrEvents {
                 dumpDir = Files.createDirectories(Path.of(testSourceUri).getParent().resolve("jfrunit"));
             } catch (FileSystemNotFoundException e) {
                 dumpDir = Files.createTempDirectory(null);
-                LOGGER.log(Level.DEBUG, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
+                LOGGER.log(Level.WARN, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
             }
 
             Path recordingPath = dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr");
