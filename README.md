@@ -98,8 +98,8 @@ class JfrSpec extends Specification {
         sleep(1000)
 
         then:
-        jfrEvents.list('jdk.GarbageCollection')
-        jfrEvents.list('jdk.ThreadSleep').withTime(Duration.ofMillis(1000))
+        jfrEvents['jdk.GarbageCollection']
+        jfrEvents['jdk.ThreadSleep'].withTime(Duration.ofMillis(1000))
     }
 }
 ```

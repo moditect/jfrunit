@@ -36,8 +36,8 @@ class JfrSpockSpec extends Specification {
         sleep(50)
 
         then:
-        jfrEvents.list('jdk.GarbageCollection')
-        jfrEvents.list('jdk.ThreadSleep').withTime(Duration.ofMillis(50))
+        jfrEvents['jdk.GarbageCollection']
+        jfrEvents['jdk.ThreadSleep'].withTime(Duration.ofMillis(50))
     }
 
     @EnableConfiguration("profile")
