@@ -30,7 +30,7 @@ public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> 
     public JfrEventsAssert contains(ExpectedEvent expectedEvent) {
         isNotNull();
 
-        boolean found = actual.getEvents()
+        boolean found = actual.events()
             .anyMatch(re -> ExpectedEvent.matches(expectedEvent, re));
 
         if (!found) {

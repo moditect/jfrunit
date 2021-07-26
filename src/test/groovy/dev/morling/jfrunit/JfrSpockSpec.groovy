@@ -57,7 +57,7 @@ class JfrSpockSpec extends Specification {
         file << array
 
         then:
-        jfrEvents.events.filter({it.eventType.name == 'jdk.FileWrite' }).count() == 1
+        jfrEvents.events().filter({it.eventType.name == 'jdk.FileWrite' }).count() == 1
         JfrEventsAssert.assertThat(jfrEvents).contains(
                 ExpectedEvent.event('jdk.FileWrite')
                         .with('bytesWritten', bytesWritten)
