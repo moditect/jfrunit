@@ -21,9 +21,6 @@ import spock.lang.Specification
 
 import java.time.Duration
 
-import static dev.morling.jfrunit.ExpectedEvent.event
-import static dev.morling.jfrunit.JfrEventsAssert.assertThat
-
 class JfrSpockSpec extends Specification {
 
     @Rule
@@ -39,9 +36,88 @@ class JfrSpockSpec extends Specification {
         sleep(50)
 
         then:
-        assertThat(jfrEvents).contains(event('jdk.GarbageCollection'))
-        assertThat(jfrEvents).contains(
-                event('jdk.ThreadSleep').with('time', Duration.ofMillis(50)))
+        jfrEvents.list('jdk.GarbageCollection')
+        jfrEvents.list('jdk.ThreadSleep').withTime(Duration.ofMillis(50))
+    }
+
+    @EnableConfiguration("profile")
+    def 'Should have Gc and Sleep events recorded when enabled with configuration \'profile\''() {
+        when:
+        System.gc()
+        sleep(50)
+
+        then:
+        jfrEvents.list('jdk.GarbageCollection')
+        jfrEvents.list('jdk.GarbageCollection').withCause('System.gc()').size() == 1
+        jfrEvents.list('jdk.ThreadSleep').withTime(Duration.ofMillis(50))
+        jfrEvents.list('jdk.ObjectAllocationInNewTLAB')*.tlabSize.sum() > 0
+        jfrEvents.list('jdk.GarbageCollection').findAll {it.cause == 'System.gc()' }.size() == 1
+        jfrEvents['jdk.GarbageCollection'].withCause('System.gc()').size() == 1
+    }
+
+    @EnableEvent('jdk.ThreadSleep')
+    def 'Should have StackTrace captured for StackTrace-Enabled Events by default with StackTrace policy Default'() {
+        when:
+        sleep(50)
+
+        then:
+        jfrEvents.list('jdk.ThreadSleep').havingStackTrace()
+    }
+
+    @EnableEvent('jfrunit.test.StackTraceDisabledSampleEvent')
+    def 'Should not have StackTrace captured for StackTrace-Disabled Events by default with StackTrace policy Default'() {
+        given:
+        StackTraceDisabledSampleEvent event = new StackTraceDisabledSampleEvent()
+
+        when:
+        event.commit()
+
+        then:
+        jfrEvents.list('jfrunit.test.StackTraceDisabledSampleEvent').notHavingStackTrace()
+        jfrEvents.list().notHavingStackTrace()
+    }
+
+    @EnableEvent(value = 'jdk.ThreadSleep', stackTrace = EnableEvent.StacktracePolicy.INCLUDED)
+    def 'Should have StackTrace captured irrespective of Event StackTrace Configuration(Enabled) with StackTrace policy Included'() {
+        when:
+        sleep(50)
+
+        then:
+        jfrEvents.list('jdk.ThreadSleep').havingStackTrace()
+        jfrEvents.list().havingStackTrace()
+    }
+
+    @EnableEvent(value = 'jfrunit.test.StackTraceDisabledSampleEvent', stackTrace = EnableEvent.StacktracePolicy.INCLUDED)
+    def 'Should have StackTrace captured irrespective of Event StackTrace Configuration(Disabled) with StackTrace policy Included'() {
+        given:
+        StackTraceDisabledSampleEvent event = new StackTraceDisabledSampleEvent()
+
+        when:
+        event.commit()
+
+        then:
+        jfrEvents.list('jfrunit.test.StackTraceDisabledSampleEvent').havingStackTrace()
+    }
+
+    @EnableEvent(value = 'jdk.ThreadSleep', stackTrace = EnableEvent.StacktracePolicy.EXCLUDED)
+    def 'Should not have StackTrace captured irrespective of Event StackTrace Configuration(Enabled) with StackTrace policy Excluded'() {
+        when:
+        sleep(50)
+
+        then:
+        jfrEvents.list('jdk.ThreadSleep').notHavingStackTrace()
+    }
+
+    @EnableEvent(value = 'jfrunit.test.StackTraceDisabledSampleEvent', stackTrace = EnableEvent.StacktracePolicy.EXCLUDED)
+    def 'Should not have StackTrace captured irrespective of Event StackTrace Configuration(Disabled) with StackTrace policy Excluded'() {
+        given:
+        StackTraceDisabledSampleEvent event = new StackTraceDisabledSampleEvent()
+
+        when:
+        event.commit();
+
+        then:
+        jfrEvents.list('jfrunit.test.StackTraceDisabledSampleEvent').notHavingStackTrace()
     }
 
     @EnableEvent(value = 'jdk.FileWrite', threshold = 0L)
@@ -56,11 +132,8 @@ class JfrSpockSpec extends Specification {
         file << array
 
         then:
-        jfrEvents.events().filter({it.eventType.name == 'jdk.FileWrite' }).count() == 1
-        JfrEventsAssert.assertThat(jfrEvents).contains(
-                ExpectedEvent.event('jdk.FileWrite')
-                        .with('bytesWritten', bytesWritten)
-                        .with('path', file.absolutePath))
+        jfrEvents.list('jdk.FileWrite').size() == 1
+        jfrEvents.list('jdk.FileWrite').withBytesWritten(bytesWritten).withPath(file.absolutePath)
 
         where:
         iteration << [1, 2]

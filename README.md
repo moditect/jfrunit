@@ -81,13 +81,10 @@ public class JfrTest {
 You can also write JfrUnit tests using the [Spock Framework](https://spockframework.org/) like this:
 
 ```groovy
-import dev.morling.jfrunit.*
+import dev.morling.jfrunit.JfrEvents
 import spock.lang.Specification
 
 import java.time.Duration
-
-import static dev.morling.jfrunit.JfrEventsAssert.*
-import static dev.morling.jfrunit.ExpectedEvent.*
 
 class JfrSpec extends Specification {
 
@@ -101,9 +98,8 @@ class JfrSpec extends Specification {
         sleep(1000)
 
         then:
-        assertThat(jfrEvents).contains(event('jdk.GarbageCollection'))
-        assertThat(jfrEvents).contains(
-                event('jdk.ThreadSleep').with('time', Duration.ofSeconds(1)))
+        jfrEvents.list('jdk.GarbageCollection')
+        jfrEvents.list('jdk.ThreadSleep').withTime(Duration.ofMillis(1000))
     }
 }
 ```

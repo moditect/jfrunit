@@ -40,11 +40,8 @@ class JfrSpockSharedSpec extends Specification {
         file << array
 
         then:
-        jfrEvents.events().filter{ it.eventType.name == 'jdk.FileWrite' }.count() == iteration
-        JfrEventsAssert.assertThat(jfrEvents).contains(
-                ExpectedEvent.event('jdk.FileWrite')
-                        .with('bytesWritten', bytesWritten)
-                        .with('path', file.absolutePath))
+        jfrEvents.list('jdk.FileWrite').size() == iteration
+        jfrEvents.list('jdk.FileWrite').withBytesWritten(bytesWritten).withPath(file.absolutePath)
 
         where:
         iteration << [1, 2]

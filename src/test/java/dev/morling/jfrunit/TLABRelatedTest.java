@@ -26,12 +26,11 @@ import static dev.morling.jfrunit.ExpectedEvent.event;
 import static dev.morling.jfrunit.JfrEventsAssert.assertThat;
 
 @JfrEventTest
-public class TestTLABRelated {
+public class TLABRelatedTest {
     public JfrEvents jfrEvents = new JfrEvents();
 
     private static final int BYTE_ARRAY_OVERHEAD = 16;
     private static final int OBJECT_SIZE = 102400;
-    private static final String BYTE_ARRAY_CLASS_NAME = byte[].class.getName();
     public static byte[] tmp;
 
     @Test

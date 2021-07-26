@@ -42,8 +42,8 @@ class JfrSpockStepwiseSharedSpec extends Specification {
         file << array
 
         then:
-        jfrEvents.events().filter({it.eventType.name == 'jdk.FileWrite' }).count() == 1
-        checkFileWrite(jfrEvents, bytesWritten, file)
+        jfrEvents.list('jdk.FileWrite').size() == 1
+        jfrEvents.list('jdk.FileWrite').withBytesWritten(bytesWritten).withPath(file.absolutePath)
     }
 
     @EnableEvent(value = 'jdk.FileWrite', threshold = 0L)
@@ -58,15 +58,8 @@ class JfrSpockStepwiseSharedSpec extends Specification {
         file << array
 
         then:
-        jfrEvents.events().filter({it.eventType.name == 'jdk.FileWrite' }).count() == 2
-        checkFileWrite(jfrEvents, bytesWritten, file)
-    }
-
-    private void checkFileWrite(JfrEvents jfrEvents, long bytesWritten, File file) {
-        JfrEventsAssert.assertThat(jfrEvents).contains(
-                ExpectedEvent.event('jdk.FileWrite')
-                        .with('bytesWritten', bytesWritten)
-                        .with('path', file.absolutePath))
+        jfrEvents.list('jdk.FileWrite').size() == 2
+        jfrEvents.list('jdk.FileWrite').withBytesWritten(bytesWritten).withPath(file.absolutePath)
     }
 
 }

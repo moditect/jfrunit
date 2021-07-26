@@ -15,18 +15,12 @@
  */
 package dev.morling.jfrunit
 
-import static dev.morling.jfrunit.ExpectedEvent.event
-import static dev.morling.jfrunit.JfrEventsAssert.assertThat
+import jdk.jfr.consumer.RecordedEvent
 
-class InheritedSpec extends ParentSpec {
+class RecordedEventExtension {
 
-    @EnableEvent('jdk.GarbageCollection')
-    def 'test inherited fields'() {
-        when:
-        System.gc()
-
-        then:
-        jfrEvents.list('jdk.GarbageCollection')
+    static Object propertyMissing(RecordedEvent self, String name) {
+        return self.getValue(name)
     }
 
 }
