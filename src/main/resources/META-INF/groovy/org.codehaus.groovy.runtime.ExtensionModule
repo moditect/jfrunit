@@ -1,0 +1,3 @@
+moduleName=JfrUnit extensions
+moduleVersion=0.1
+extensionClasses=dev.morling.jfrunit.JfrEventsExtension,dev.morling.jfrunit.RecordedEventExtension

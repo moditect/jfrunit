@@ -88,7 +88,8 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
     }
 
     /* default */ static boolean matches(ExpectedEvent expectedEvent, RecordedEvent recordedEvent) {
-        if (!recordedEvent.getEventType().getName().equals(expectedEvent.getName())) {
+        if (expectedEvent.getName() != null
+                && !recordedEvent.getEventType().getName().equals(expectedEvent.getName())) {
             return false;
         }
 
