@@ -76,7 +76,10 @@ public class JfrTest {
 }
 ```
 
-Or with Spock Framework like this:
+### Using Spock Framework
+
+You can also write JfrUnit tests using the [Spock Framework](https://spockframework.org/) like this:
+
 ```groovy
 import dev.morling.jfrunit.*
 import spock.lang.Specification
