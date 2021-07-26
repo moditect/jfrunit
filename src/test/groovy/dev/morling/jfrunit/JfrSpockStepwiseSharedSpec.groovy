@@ -43,7 +43,7 @@ class JfrSpockStepwiseSharedSpec extends Specification {
         file << array
 
         then:
-        jfrEvents.events.filter({it.eventType.name == 'jdk.FileWrite' }).count() == 1
+        jfrEvents.events().filter({it.eventType.name == 'jdk.FileWrite' }).count() == 1
         checkFileWrite(jfrEvents, bytesWritten, file)
     }
 
@@ -59,7 +59,7 @@ class JfrSpockStepwiseSharedSpec extends Specification {
         file << array
 
         then:
-        jfrEvents.events.filter({it.eventType.name == 'jdk.FileWrite' }).count() == 2
+        jfrEvents.events().filter({it.eventType.name == 'jdk.FileWrite' }).count() == 2
         checkFileWrite(jfrEvents, bytesWritten, file)
     }
 

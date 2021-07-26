@@ -15,6 +15,16 @@
  */
 package dev.morling.jfrunit;
 
+import dev.morling.jfrunit.EnableEvent.StacktracePolicy;
+import dev.morling.jfrunit.internal.SyncEvent;
+import jdk.jfr.Configuration;
+import jdk.jfr.EventSettings;
+import jdk.jfr.EventType;
+import jdk.jfr.FlightRecorder;
+import jdk.jfr.Recording;
+import jdk.jfr.consumer.RecordedEvent;
+import jdk.jfr.consumer.RecordingStream;
+
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -35,19 +45,11 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import dev.morling.jfrunit.EnableEvent.StacktracePolicy;
-import dev.morling.jfrunit.internal.SyncEvent;
-import jdk.jfr.Configuration;
-import jdk.jfr.EventSettings;
-import jdk.jfr.EventType;
-import jdk.jfr.FlightRecorder;
-import jdk.jfr.Recording;
-import jdk.jfr.consumer.RecordedEvent;
-import jdk.jfr.consumer.RecordingStream;
-
 public class JfrEvents {
 
     private static final Logger LOGGER = System.getLogger(JfrEvents.class.getName());
+
+    private static final long INTERNAL_WAIT_TIME = 97;
 
     private Method testMethod;
     private Queue<RecordedEvent> events = new ConcurrentLinkedQueue<>();
@@ -124,7 +126,7 @@ public class JfrEvents {
 
         while (watermark.get() < seq) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(INTERNAL_WAIT_TIME);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
@@ -136,7 +138,7 @@ public class JfrEvents {
         events.clear();
     }
 
-    public Stream<RecordedEvent> getEvents() {
+    public Stream<RecordedEvent> events() {
         return stream();
     }
 
@@ -144,7 +146,7 @@ public class JfrEvents {
         return stream().filter(predicate);
     }
 
-    public Stream<RecordedEvent> stream() {
+    private Stream<RecordedEvent> stream() {
         // avoid blocking when called outside of a test such as new JfrEvents().stream()
         if (capturing) {
             awaitEvents();
@@ -159,7 +161,7 @@ public class JfrEvents {
             event.cause = "awaiting stream start";
             event.begin();
             event.commit();
-            Thread.sleep(100);
+            Thread.sleep(INTERNAL_WAIT_TIME);
         }
     }
 
@@ -219,15 +221,17 @@ public class JfrEvents {
             }
         }
 
+        // we need this as we keep reference to events - otherwise they could be changed after the capture
+        // see RecordingStream#setReuse (the default is true)
+        stream.setReuse(false);
         stream.enable(SyncEvent.JFRUNIT_SYNC_EVENT_NAME);
 
         stream.onEvent(re -> {
             if (isSyncEvent(re)) {
                 watermark.set(re.getLong("sequence"));
                 streamStarted.countDown();
-            }
-            else if (!isInternalSleepEvent(re)) {
-                    events.add(re);
+            } else if (!isInternalSleepEvent(re)) {
+                events.add(re);
             }
         });
 
@@ -241,7 +245,7 @@ public class JfrEvents {
 
     private boolean isInternalSleepEvent(RecordedEvent re) {
         return re.getEventType().getName().equals("jdk.ThreadSleep") &&
-                re.getDuration("time").equals(Duration.ofMillis(100));
+                re.getDuration("time").equals(Duration.ofMillis(INTERNAL_WAIT_TIME));
     }
 
     private List<EventConfiguration> matchEventTypes(List<EventConfiguration> enabledEvents) {
