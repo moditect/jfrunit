@@ -50,7 +50,6 @@ class JfrSpockSpec extends Specification {
         jfrEvents.list('jdk.GarbageCollection')
         jfrEvents.list('jdk.GarbageCollection').withCause('System.gc()').size() == 1
         jfrEvents.list('jdk.ThreadSleep').withTime(Duration.ofMillis(50))
-        jfrEvents.list('jdk.ObjectAllocationInNewTLAB')*.tlabSize.sum() > 0
         jfrEvents.list('jdk.GarbageCollection').findAll {it.cause == 'System.gc()' }.size() == 1
         jfrEvents['jdk.GarbageCollection'].withCause('System.gc()').size() == 1
     }
