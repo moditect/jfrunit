@@ -133,6 +133,7 @@ class JfrSpockSpec extends Specification {
         then:
         jfrEvents.list('jdk.FileWrite').size() == 1
         jfrEvents.list('jdk.FileWrite').withBytesWritten(bytesWritten).withPath(file.absolutePath)
+        jfrEvents.list('jdk.FileWrite')*.bytesWritten.sum() == bytesWritten
 
         where:
         iteration << [1, 2]
