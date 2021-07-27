@@ -76,6 +76,32 @@ public class JfrTest {
 }
 ```
 
+Note that when you're writing a test for a Quarkus application using the `@QuarkusTest` annotation, you don't need (and even should not) add the `@JfrEventTest` annotation.
+Instead, the Quarkus test framework will automatically pick up the required callbacks for managing the JFR recording.
+
+The `@EnableEvent` annotation is used to enable one or more JFR event types which should be captured.
+The "*" character can be used as a wildcard character to match multiple types:
+
+```java
+@Test
+@EnableEvent("jdk.GC*")
+@EnableEvent("jdk.G1*")
+public void someTest() throws Exception { ... }
+```
+
+This would capture events like `jdk.GCHeapSummary`, `jdk.GCPhasePause`, `jdk.G1GarbageCollection` etc.
+A complete list of all built-in JFR event types can be found [here](https://bestsolution-at.github.io/jfr-doc/).
+
+Alternatively, you can specify the name of a JFR configuration file, e.g. "default" or "profile", using the `@EnableConfiguration` annotation:
+
+```java
+@Test
+@EnableConfiguration("default")
+public void someTest() throws Exception { ... }
+```
+
+JFR configuration files are located in the _$JAVA_HOME/bin/jfr_ directory.
+
 ### Using Spock Framework
 
 You can also write JfrUnit tests using the [Spock Framework](https://spockframework.org/) like this:
@@ -104,31 +130,16 @@ class JfrSpec extends Specification {
 }
 ```
 
-Note that when you're writing a test for a Quarkus application using the `@QuarkusTest` annotation, you don't need (and even should not) add the `@JfrEventTest` annotation.
-Instead, the Quarkus test framework will automatically pick up the required callbacks for managing the JFR recording.
-
-The `@EnableEvent` annotation is used to enable one or more JFR event types which should be captured.
-The "*" character can be used as a wildcard character to match multiple types:
-
-```java
-@Test
-@EnableEvent("jdk.GC*")
-@EnableEvent("jdk.G1*")
-public void someTest() throws Exception { ... }
-```
-
-This would capture events like `jdk.GCHeapSummary`, `jdk.GCPhasePause`, `jdk.G1GarbageCollection` etc.
-A complete list of all built-in JFR event types can be found [here](https://bestsolution-at.github.io/jfr-doc/).
-
-Alternatively, you can specify the name of a JFR configuration file, e.g. "default" or "profile", using the `@EnableConfiguration` annotation:
-
-```java
-@Test
-@EnableConfiguration("default")
-public void someTest() throws Exception { ... }
-```
-
-JFR configuration files are located in the _$JAVA_HOME/bin/jfr_ directory.
+As you can see you can use custom DSL when checking the expected state.
+ * `JfrEvents['event.name']` or `JfrEvents.list('event.name')` gives you a list containing all the events of the requested type.
+ * Beyond just list methods as usual you may further narrow it down by using `with`, `having` and `notHaving` dynamic methods
+   (returning list as well). For example:
+     * `withTime(Duration.ofMillis(1000))`
+     * `withCause('System.gc()')`
+     * `havingStackTrace()`
+     * `notHavingStackTrace()` etc.
+ * The `RecordedEvent` itself is extended with dynamic properties so you can just use `event.time` or `event.bytesWritten` etc.
+   This might be handy when you need an aggregation like this `jfrEvents['jdk.FileWrite']*.bytesWritten.sum() == expectedBytes`
 
 ## Build
 
