@@ -17,7 +17,6 @@ package dev.morling.jfrunit
 
 import spock.lang.Specification
 
-@JfrEventTest
 abstract class ParentSpec extends Specification {
 
     JfrEvents jfrEvents = new JfrEvents()

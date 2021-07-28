@@ -24,7 +24,6 @@ import java.time.Duration
 import static dev.morling.jfrunit.ExpectedEvent.event
 import static dev.morling.jfrunit.JfrEventsAssert.assertThat
 
-@JfrEventTest
 class JfrSpockSpec extends Specification {
 
     @Rule
