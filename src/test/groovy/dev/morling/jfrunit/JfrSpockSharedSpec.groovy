@@ -20,12 +20,6 @@ import org.junit.rules.TemporaryFolder
 import spock.lang.Shared
 import spock.lang.Specification
 
-import java.time.Duration
-
-import static dev.morling.jfrunit.ExpectedEvent.event
-import static dev.morling.jfrunit.JfrEventsAssert.assertThat
-
-@JfrEventTest
 class JfrSpockSharedSpec extends Specification {
 
     @Rule

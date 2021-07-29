@@ -22,7 +22,6 @@ import spock.lang.Specification
 import spock.lang.Stepwise
 
 @Stepwise
-@JfrEventTest
 class JfrSpockStepwiseSharedSpec extends Specification {
 
     @Rule

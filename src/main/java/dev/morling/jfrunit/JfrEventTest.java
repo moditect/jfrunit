@@ -21,9 +21,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.spockframework.runtime.extension.ExtensionAnnotation;
 
-@ExtensionAnnotation(JfrEventTestSpockExtension.class)
 @Retention(RetentionPolicy.RUNTIME)
 @ExtendWith(JfrEventTestExtension.class)
 @Target(ElementType.TYPE)

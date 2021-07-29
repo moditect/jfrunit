@@ -15,8 +15,8 @@
  */
 package dev.morling.jfrunit;
 
-import org.spockframework.runtime.extension.AbstractAnnotationDrivenExtension;
 import org.spockframework.runtime.extension.AbstractMethodInterceptor;
+import org.spockframework.runtime.extension.IGlobalExtension;
 import org.spockframework.runtime.extension.IMethodInvocation;
 import org.spockframework.runtime.model.SpecInfo;
 
@@ -25,15 +25,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class JfrEventTestSpockExtension extends AbstractAnnotationDrivenExtension<JfrEventTest> {
+public class JfrUnitSpockGlobalExtension implements IGlobalExtension {
 
     private static final JfrMethodInterceptor JFR_METHOD_INTERCEPTOR = new JfrMethodInterceptor();
 
     @Override
-    public void visitSpecAnnotation(JfrEventTest annotation, SpecInfo spec) {
-        spec.getBottomSpec().getAllFeatures().stream().forEach(featureInfo -> {
-            featureInfo.getFeatureMethod().addInterceptor(JFR_METHOD_INTERCEPTOR);
-        });
+    public void visitSpec(SpecInfo spec) {
+        if (hasJfrEvents(spec)) {
+            spec.getBottomSpec().getAllFeatures().stream().forEach(featureInfo -> {
+                featureInfo.getFeatureMethod().addInterceptor(JFR_METHOD_INTERCEPTOR);
+            });
+        }
+    }
+
+    private boolean hasJfrEvents(SpecInfo spec) {
+        return spec.getAllFields().stream()
+                .anyMatch(fieldInfo -> JfrEvents.class.isAssignableFrom(fieldInfo.getType()));
     }
 
     private static class JfrMethodInterceptor extends AbstractMethodInterceptor {

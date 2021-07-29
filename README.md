@@ -89,7 +89,6 @@ import java.time.Duration
 import static dev.morling.jfrunit.JfrEventsAssert.*
 import static dev.morling.jfrunit.ExpectedEvent.*
 
-@JfrEventTest
 class JfrSpec extends Specification {
 
     JfrEvents jfrEvents = new JfrEvents()
