@@ -136,8 +136,12 @@ As you can see you can use custom DSL when checking the expected state.
    (returning list as well). For example:
      * `withTime(Duration.ofMillis(1000))`
      * `withCause('System.gc()')`
+     * `withObjectClass(byte[].class)`
+     * `withEventThread(Thread.currentThread())`
      * `havingStackTrace()`
-     * `notHavingStackTrace()` etc.
+     * `notHavingStackTrace()`
+     * `containStackFrame(stackTraceElement)`
+     * ...
  * The `RecordedEvent` itself is extended with dynamic properties so you can just use `event.time` or `event.bytesWritten` etc.
    This might be handy when you need an aggregation like this `jfrEvents['jdk.FileWrite']*.bytesWritten.sum() == expectedBytes`
 

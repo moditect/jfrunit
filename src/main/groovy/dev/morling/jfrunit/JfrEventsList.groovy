@@ -43,7 +43,7 @@ class JfrEventsList implements List<RecordedEvent> {
         if (name.startsWith(WITH_PREFIX)) {
             String what = name.substring(WITH_PREFIX.length()).uncapitalize()
             if (what && args.length == 1) {
-                return new JfrEventsList(events, expectedEvent.with(what, args[0]))
+                return new JfrEventsList(events, expectedEvent.with(what, wrapWithArgument(what, args[0])))
             } else if (args.length == 2) {
                 return new JfrEventsList(events, expectedEvent.with(args[0], args[1]))
             }
@@ -61,8 +61,20 @@ class JfrEventsList implements List<RecordedEvent> {
             } else if (args.length == 1) {
                 return new JfrEventsList(events, expectedEvent.hasNot(args[0]))
             }
+        } else if ('containStackFrame' == name && args.length == 1 && args[0] instanceof StackTraceElement) {
+            return new JfrEventsList(events, expectedEvent.containStackFrame(new ExpectedStackFrame(args[0])))
         }
         return new JfrEventsList(events, expectedEvent.invokeMethod(name, args))
+    }
+
+    private Object wrapWithArgument(String what, Object withArgument) {
+        if ('objectClass' == what && withArgument instanceof Class) {
+            return new ExpectedClass(withArgument)
+        }
+        if ('eventThread' == what && withArgument instanceof Thread) {
+            return new ExpectedThread(withArgument)
+        }
+        return withArgument
     }
 
 }

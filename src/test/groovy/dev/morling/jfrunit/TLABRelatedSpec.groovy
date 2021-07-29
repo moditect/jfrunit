@@ -43,6 +43,13 @@ class TLABRelatedSpec extends Specification {
                 .withObjectClass(new ExpectedClass(byte[].class))
                 .withEventThread(new ExpectedThread(Thread.currentThread()))
                 .containStackFrame(new ExpectedStackFrame(stackTraceElement))
+
+        // test variant without wrappers work as well
+        jfrEvents.list('jdk.ObjectAllocationOutsideTLAB')
+                .withAllocationSize((double) OBJECT_SIZE)
+                .withObjectClass(byte[].class)
+                .withEventThread(Thread.currentThread())
+                .containStackFrame(stackTraceElement)
     }
 
     @CompileStatic
