@@ -18,7 +18,6 @@ package dev.morling.jfrunit
 import groovy.transform.CompileStatic
 import spock.lang.Specification
 
-@JfrEventTest
 class TLABRelatedSpec extends Specification {
 
     private static final int BYTE_ARRAY_OVERHEAD = 16

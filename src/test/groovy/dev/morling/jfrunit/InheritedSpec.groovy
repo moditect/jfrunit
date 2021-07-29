@@ -15,9 +15,6 @@
  */
 package dev.morling.jfrunit
 
-import static dev.morling.jfrunit.ExpectedEvent.event
-import static dev.morling.jfrunit.JfrEventsAssert.assertThat
-
 class InheritedSpec extends ParentSpec {
 
     @EnableEvent('jdk.GarbageCollection')
