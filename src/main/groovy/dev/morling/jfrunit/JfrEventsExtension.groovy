@@ -19,16 +19,16 @@ import java.util.stream.Collectors
 
 class JfrEventsExtension {
 
-    static JfrEventsFilter list(JfrEvents self) {
+    static JfrEventsList list(JfrEvents self) {
         return list(self, ExpectedEvent.event(null))
     }
 
-    static JfrEventsFilter list(JfrEvents self, String eventName) {
+    static JfrEventsList list(JfrEvents self, String eventName) {
         return list(self, ExpectedEvent.event(eventName))
     }
 
-    static JfrEventsFilter list(JfrEvents self, ExpectedEvent event) {
-        return new JfrEventsFilter(self.stream().collect(Collectors.toList()), event)
+    static JfrEventsList list(JfrEvents self, ExpectedEvent event) {
+        return new JfrEventsList(self.stream().collect(Collectors.toList()), event)
     }
 
     static Object asType(JfrEvents self, Class clazz) {

@@ -21,7 +21,7 @@ import jdk.jfr.consumer.RecordedEvent
 import java.util.stream.Collectors
 
 @PackageScope
-class JfrEventsFilter implements List<RecordedEvent> {
+class JfrEventsList implements List<RecordedEvent> {
 
     private static final String WITH_PREFIX = 'with'
 
@@ -34,7 +34,7 @@ class JfrEventsFilter implements List<RecordedEvent> {
 
     private final ExpectedEvent expectedEvent
 
-    JfrEventsFilter(List<RecordedEvent> events, ExpectedEvent expectedEvent) {
+    JfrEventsList(List<RecordedEvent> events, ExpectedEvent expectedEvent) {
         this.events = Collections.unmodifiableList(events.stream().filter(expectedEvent).collect(Collectors.toList()))
         this.expectedEvent = expectedEvent
     }
@@ -43,26 +43,26 @@ class JfrEventsFilter implements List<RecordedEvent> {
         if (name.startsWith(WITH_PREFIX)) {
             String what = name.substring(WITH_PREFIX.length()).uncapitalize()
             if (what && args.length == 1) {
-                return new JfrEventsFilter(events, expectedEvent.with(what, args[0]))
+                return new JfrEventsList(events, expectedEvent.with(what, args[0]))
             } else if (args.length == 2) {
-                return new JfrEventsFilter(events, expectedEvent.with(args[0], args[1]))
+                return new JfrEventsList(events, expectedEvent.with(args[0], args[1]))
             }
         } else if (name.startsWith(HAVING_PREFIX)) {
             String what = name.substring(HAVING_PREFIX.length()).uncapitalize()
             if (what && args.length == 0) {
-                return new JfrEventsFilter(events, expectedEvent.has(what))
+                return new JfrEventsList(events, expectedEvent.has(what))
             } else if (args.length == 1) {
-                return new JfrEventsFilter(events, expectedEvent.has(args[0]))
+                return new JfrEventsList(events, expectedEvent.has(args[0]))
             }
         } else if (name.startsWith(NOT_HAVING_PREFIX)) {
             String what = name.substring(NOT_HAVING_PREFIX.length()).uncapitalize()
             if (what && args.length == 0) {
-                return new JfrEventsFilter(events, expectedEvent.hasNot(what))
+                return new JfrEventsList(events, expectedEvent.hasNot(what))
             } else if (args.length == 1) {
-                return new JfrEventsFilter(events, expectedEvent.hasNot(args[0]))
+                return new JfrEventsList(events, expectedEvent.hasNot(args[0]))
             }
         }
-        return new JfrEventsFilter(events, expectedEvent.invokeMethod(name, args))
+        return new JfrEventsList(events, expectedEvent.invokeMethod(name, args))
     }
 
 }
