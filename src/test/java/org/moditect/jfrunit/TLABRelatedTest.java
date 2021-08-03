@@ -17,9 +17,6 @@
  */
 package org.moditect.jfrunit;
 
-import static org.moditect.jfrunit.ExpectedEvent.event;
-import static org.moditect.jfrunit.JfrEventsAssert.assertThat;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +24,9 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import jdk.jfr.consumer.RecordedEvent;
+
+import static org.moditect.jfrunit.ExpectedEvent.event;
+import static org.moditect.jfrunit.JfrEventsAssert.assertThat;
 
 @JfrEventTest
 public class TLABRelatedTest {
@@ -55,14 +55,12 @@ public class TLABRelatedTest {
                 .with("allocationSize", (double) OBJECT_SIZE)
                 .with("objectClass", new ExpectedClass(byte[].class))
                 .with("eventThread", new ExpectedThread(Thread.currentThread()))
-                .containStackFrame(new ExpectedStackFrame(elements[0]))
-        ).collect(Collectors.toList());
+                .containStackFrame(new ExpectedStackFrame(elements[0]))).collect(Collectors.toList());
         List<RecordedEvent> allocation100KBOutsideTLABEvents = jfrEvents.filter(event("jdk.ObjectAllocationOutsideTLAB")
                 .with("allocationSize", (double) OBJECT_SIZE)
                 .with("objectClass", new ExpectedClass(byte[].class))
                 .with("eventThread", new ExpectedThread(Thread.currentThread()))
-                .containStackFrame(new ExpectedStackFrame(elements[0]))
-        ).collect(Collectors.toList());
+                .containStackFrame(new ExpectedStackFrame(elements[0]))).collect(Collectors.toList());
         Assertions.assertThat(allocation100KBInNewTLABEvents.size()).isGreaterThan(0);
         Assertions.assertThat(allocation100KBOutsideTLABEvents.size()).isGreaterThan(0);
     }

@@ -33,16 +33,16 @@ public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> 
         isNotNull();
 
         boolean found = actual.events()
-            .anyMatch(re -> ExpectedEvent.matches(expectedEvent, re));
+                .anyMatch(re -> ExpectedEvent.matches(expectedEvent, re));
 
         if (!found) {
             if (expectedEvent.getWithProps().isEmpty() && expectedEvent.getHasProps().isEmpty() && expectedEvent.getHasNotProps().isEmpty()) {
                 failWithMessage("No JFR event of type <%s>", expectedEvent.getName());
             }
-            else if(!expectedEvent.getHasProps().isEmpty()) {
+            else if (!expectedEvent.getHasProps().isEmpty()) {
                 failWithMessage("No JFR event of type <%s> with attributes <%s>", expectedEvent.getName(), expectedEvent.getHasProps());
             }
-            else if(!expectedEvent.getHasNotProps().isEmpty()) {
+            else if (!expectedEvent.getHasNotProps().isEmpty()) {
                 failWithMessage("No JFR event of type <%s> without attributes <%s>", expectedEvent.getName(), expectedEvent.getHasNotProps());
             }
             else {

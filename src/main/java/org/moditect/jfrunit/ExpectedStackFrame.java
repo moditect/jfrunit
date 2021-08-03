@@ -17,10 +17,10 @@
  */
 package org.moditect.jfrunit;
 
-import jdk.jfr.consumer.RecordedFrame;
-
 import java.util.Objects;
 import java.util.function.Predicate;
+
+import jdk.jfr.consumer.RecordedFrame;
 
 public class ExpectedStackFrame implements Predicate<RecordedFrame> {
     private Boolean isJavaFrame;
@@ -37,7 +37,6 @@ public class ExpectedStackFrame implements Predicate<RecordedFrame> {
         this.method = new ExpectedMethod();
         this.method.setName(stackFrame.getMethodName());
     }
-
 
     public ExpectedStackFrame(StackTraceElement stackTraceElement) {
         this.isJavaFrame = !stackTraceElement.isNativeMethod();

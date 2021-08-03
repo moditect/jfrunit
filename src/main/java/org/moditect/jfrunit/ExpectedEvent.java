@@ -93,16 +93,16 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
             return false;
         }
 
-        if(!expectedEvent.getHasProps().isEmpty()) {
-            for(String name: expectedEvent.getHasProps()) {
-                if(!hasPropertyMatching(recordedEvent, name))
+        if (!expectedEvent.getHasProps().isEmpty()) {
+            for (String name : expectedEvent.getHasProps()) {
+                if (!hasPropertyMatching(recordedEvent, name))
                     return false;
             }
         }
 
-        if(!expectedEvent.getHasNotProps().isEmpty()) {
-            for(String name: expectedEvent.getHasNotProps()) {
-                if(hasPropertyMatching(recordedEvent, name)) {
+        if (!expectedEvent.getHasNotProps().isEmpty()) {
+            for (String name : expectedEvent.getHasNotProps()) {
+                if (hasPropertyMatching(recordedEvent, name)) {
                     return false;
                 }
             }
@@ -138,7 +138,7 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
         }
 
         Object value = recordedEvent.getValue(name);
-        return value!=null;
+        return value != null;
     }
 
     private static boolean withPropertyMatching(RecordedEvent recordedEvent, String name, Object value) {

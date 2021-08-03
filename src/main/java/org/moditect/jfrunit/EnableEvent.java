@@ -40,7 +40,9 @@ public @interface EnableEvent {
     long threshold() default -1L;
 
     enum StacktracePolicy {
-        DEFAULT, INCLUDED, EXCLUDED
+        DEFAULT,
+        INCLUDED,
+        EXCLUDED
     }
 
     long period() default -1L;

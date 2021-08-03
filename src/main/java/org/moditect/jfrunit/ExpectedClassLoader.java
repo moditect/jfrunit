@@ -17,9 +17,9 @@
  */
 package org.moditect.jfrunit;
 
-import jdk.jfr.consumer.RecordedClassLoader;
-
 import java.util.function.Predicate;
+
+import jdk.jfr.consumer.RecordedClassLoader;
 
 public class ExpectedClassLoader implements Predicate<RecordedClassLoader> {
     private Long id;

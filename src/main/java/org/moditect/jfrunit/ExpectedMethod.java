@@ -17,10 +17,10 @@
  */
 package org.moditect.jfrunit;
 
-import jdk.jfr.consumer.RecordedMethod;
-
 import java.lang.reflect.Method;
 import java.util.function.Predicate;
+
+import jdk.jfr.consumer.RecordedMethod;
 
 public class ExpectedMethod implements Predicate<RecordedMethod> {
     private ExpectedClass type;
