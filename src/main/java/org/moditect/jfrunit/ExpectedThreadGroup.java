@@ -17,9 +17,9 @@
  */
 package org.moditect.jfrunit;
 
-import jdk.jfr.consumer.RecordedThreadGroup;
-
 import java.util.function.Predicate;
+
+import jdk.jfr.consumer.RecordedThreadGroup;
 
 public class ExpectedThreadGroup implements Predicate<RecordedThreadGroup> {
     private String name;

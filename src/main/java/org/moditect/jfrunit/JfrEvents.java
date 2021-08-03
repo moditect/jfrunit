@@ -17,14 +17,6 @@
  */
 package org.moditect.jfrunit;
 
-import jdk.jfr.Configuration;
-import jdk.jfr.EventSettings;
-import jdk.jfr.EventType;
-import jdk.jfr.FlightRecorder;
-import jdk.jfr.Recording;
-import jdk.jfr.consumer.RecordedEvent;
-import jdk.jfr.consumer.RecordingStream;
-
 import java.io.IOException;
 import java.lang.System.Logger;
 import java.lang.System.Logger.Level;
@@ -47,6 +39,14 @@ import java.util.stream.Stream;
 
 import org.moditect.jfrunit.EnableEvent.StacktracePolicy;
 import org.moditect.jfrunit.internal.SyncEvent;
+
+import jdk.jfr.Configuration;
+import jdk.jfr.EventSettings;
+import jdk.jfr.EventType;
+import jdk.jfr.FlightRecorder;
+import jdk.jfr.Recording;
+import jdk.jfr.consumer.RecordedEvent;
+import jdk.jfr.consumer.RecordingStream;
 
 public class JfrEvents {
 
@@ -96,7 +96,8 @@ public class JfrEvents {
             Path dumpDir;
             try {
                 dumpDir = Files.createDirectories(Path.of(testSourceUri).getParent().resolve("jfrunit"));
-            } catch (FileSystemNotFoundException e) {
+            }
+            catch (FileSystemNotFoundException e) {
                 dumpDir = Files.createTempDirectory(null);
                 LOGGER.log(Level.WARNING, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
             }
@@ -130,7 +131,8 @@ public class JfrEvents {
         while (watermark.get() < seq) {
             try {
                 Thread.sleep(INTERNAL_WAIT_TIME);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -158,7 +160,7 @@ public class JfrEvents {
     }
 
     private void awaitStreamStart(CountDownLatch streamStarted) throws InterruptedException {
-        while(streamStarted.getCount() != 0) {
+        while (streamStarted.getCount() != 0) {
             SyncEvent event = new SyncEvent();
             event.sequence = sequence.incrementAndGet();
             event.cause = "awaiting stream start";
@@ -233,7 +235,8 @@ public class JfrEvents {
             if (isSyncEvent(re)) {
                 watermark.set(re.getLong("sequence"));
                 streamStarted.countDown();
-            } else if (!isInternalSleepEvent(re)) {
+            }
+            else if (!isInternalSleepEvent(re)) {
                 events.add(re);
             }
         });

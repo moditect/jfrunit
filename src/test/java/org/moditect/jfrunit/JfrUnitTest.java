@@ -17,14 +17,14 @@
  */
 package org.moditect.jfrunit;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.moditect.jfrunit.ExpectedEvent.event;
-import static org.moditect.jfrunit.JfrEventsAssert.assertThat;
-
 import java.time.Duration;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.moditect.jfrunit.ExpectedEvent.event;
+import static org.moditect.jfrunit.JfrEventsAssert.assertThat;
 
 @JfrEventTest
 public class JfrUnitTest {
@@ -67,7 +67,7 @@ public class JfrUnitTest {
 
         assertThat(jfrEvents.filter(
                 event("jdk.GarbageCollection").with("cause", "System.gc()")))
-                .hasSize(1);
+                        .hasSize(1);
     }
 
     @Test

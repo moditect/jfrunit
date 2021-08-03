@@ -17,9 +17,9 @@
  */
 package org.moditect.jfrunit;
 
-import jdk.jfr.consumer.RecordedThread;
-
 import java.util.function.Predicate;
+
+import jdk.jfr.consumer.RecordedThread;
 
 public class ExpectedThread implements Predicate<RecordedThread> {
     private Long id;

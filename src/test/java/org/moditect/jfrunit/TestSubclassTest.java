@@ -17,14 +17,14 @@
  */
 package org.moditect.jfrunit;
 
-import static org.moditect.jfrunit.ExpectedEvent.event;
-import static org.moditect.jfrunit.JfrEventsAssert.assertThat;
-
 import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
+
+import static org.moditect.jfrunit.ExpectedEvent.event;
+import static org.moditect.jfrunit.JfrEventsAssert.assertThat;
 
 class TestSuperclass {
     public JfrEvents jfrEvents = new JfrEvents();
@@ -35,8 +35,7 @@ public class TestSubclassTest extends TestSuperclass {
 
     @Test
     @EnableEvent("jfrunit.test.StackTraceDisabledSampleEvent")
-    @DisplayName(
-        "Can detect a submitted event when instantiated as a subclass of the test class holding the JfrEvents field")
+    @DisplayName("Can detect a submitted event when instantiated as a subclass of the test class holding the JfrEvents field")
     @Timeout(value = 10, unit = TimeUnit.SECONDS)
     void simple() {
         StackTraceDisabledSampleEvent event = new StackTraceDisabledSampleEvent();

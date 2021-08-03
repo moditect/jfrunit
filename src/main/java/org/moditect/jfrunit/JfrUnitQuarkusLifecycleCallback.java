@@ -23,11 +23,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import io.quarkus.test.junit.callback.QuarkusTestAfterEachCallback;
 import io.quarkus.test.junit.callback.QuarkusTestBeforeEachCallback;
 import io.quarkus.test.junit.callback.QuarkusTestMethodContext;
-import java.util.stream.Stream;
 
 public class JfrUnitQuarkusLifecycleCallback implements QuarkusTestBeforeEachCallback, QuarkusTestAfterEachCallback {
 
@@ -62,22 +62,22 @@ public class JfrUnitQuarkusLifecycleCallback implements QuarkusTestBeforeEachCal
 
     private List<EventConfiguration> getEnabledEvents(Method testMethod) {
         return Arrays.stream(testMethod.getAnnotationsByType(EnableEvent.class))
-            .map(e -> new EventConfiguration(e.value(), e.stackTrace(), e.threshold(), e.period()))
-            .collect(Collectors.toList());
+                .map(e -> new EventConfiguration(e.value(), e.stackTrace(), e.threshold(), e.period()))
+                .collect(Collectors.toList());
     }
 
     private List<JfrEvents> getJfrEvents(Object instance) {
         return getAllFields(instance.getClass())
-            .filter(f -> f.getType() == JfrEvents.class)
-            .map(f -> {
-                try {
-                    return (JfrEvents) f.get(instance);
-                }
-                catch (IllegalArgumentException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            })
-            .collect(Collectors.toList());
+                .filter(f -> f.getType() == JfrEvents.class)
+                .map(f -> {
+                    try {
+                        return (JfrEvents) f.get(instance);
+                    }
+                    catch (IllegalArgumentException | IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -88,7 +88,7 @@ public class JfrUnitQuarkusLifecycleCallback implements QuarkusTestBeforeEachCal
     private static Stream<Field> getAllFields(Class<?> c) {
         Class<?> superclass = c.getSuperclass();
         return Stream.concat(
-            Arrays.stream(c.getDeclaredFields()),
-            superclass == null ? Stream.empty() : getAllFields(superclass));
+                Arrays.stream(c.getDeclaredFields()),
+                superclass == null ? Stream.empty() : getAllFields(superclass));
     }
 }

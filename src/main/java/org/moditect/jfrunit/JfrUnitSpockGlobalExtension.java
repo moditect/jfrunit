@@ -17,15 +17,15 @@
  */
 package org.moditect.jfrunit;
 
-import org.spockframework.runtime.extension.AbstractMethodInterceptor;
-import org.spockframework.runtime.extension.IGlobalExtension;
-import org.spockframework.runtime.extension.IMethodInvocation;
-import org.spockframework.runtime.model.SpecInfo;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.spockframework.runtime.extension.AbstractMethodInterceptor;
+import org.spockframework.runtime.extension.IGlobalExtension;
+import org.spockframework.runtime.extension.IMethodInvocation;
+import org.spockframework.runtime.model.SpecInfo;
 
 public class JfrUnitSpockGlobalExtension implements IGlobalExtension {
 
@@ -57,7 +57,8 @@ public class JfrUnitSpockGlobalExtension implements IGlobalExtension {
             });
             try {
                 invocation.proceed();
-            } finally {
+            }
+            finally {
                 getJfrEvents(invocation).stream().forEach(JfrEvents::stopRecordingEvents);
             }
         }

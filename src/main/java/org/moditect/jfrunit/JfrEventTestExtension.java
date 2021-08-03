@@ -34,15 +34,14 @@ public class JfrEventTestExtension implements Extension, BeforeEachCallback, Aft
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         String enabledConfiguration = AnnotationSupport.findAnnotation(context.getRequiredTestMethod(), EnableConfiguration.class)
-            .map(EnableConfiguration::value)
-            .map(String::trim)
-            .orElse(null);
+                .map(EnableConfiguration::value)
+                .map(String::trim)
+                .orElse(null);
 
         List<EventConfiguration> enabledEvents = AnnotationSupport.findRepeatableAnnotations(context.getRequiredTestMethod(), EnableEvent.class)
                 .stream()
                 .map(e -> new EventConfiguration(e.value(), e.stackTrace(), e.threshold(), e.period()))
                 .collect(Collectors.toList());
-
 
         Object instance = context.getRequiredTestInstance();
         List<JfrEvents> allJfrEvents = getJfrEvents(instance);
@@ -63,16 +62,16 @@ public class JfrEventTestExtension implements Extension, BeforeEachCallback, Aft
 
     private List<JfrEvents> getJfrEvents(Object instance) {
         return getAllFields(instance.getClass())
-            .filter(f -> f.getType() == JfrEvents.class)
-            .map(f -> {
-                try {
-                    return (JfrEvents) f.get(instance);
-                }
-                catch (IllegalArgumentException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
-                }
-            })
-            .collect(Collectors.toList());
+                .filter(f -> f.getType() == JfrEvents.class)
+                .map(f -> {
+                    try {
+                        return (JfrEvents) f.get(instance);
+                    }
+                    catch (IllegalArgumentException | IllegalAccessException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -84,7 +83,7 @@ public class JfrEventTestExtension implements Extension, BeforeEachCallback, Aft
     private static Stream<Field> getAllFields(Class<?> c) {
         Class<?> superclass = c.getSuperclass();
         return Stream.concat(
-            Arrays.stream(c.getDeclaredFields()),
-            superclass == null ? Stream.empty() : getAllFields(superclass));
+                Arrays.stream(c.getDeclaredFields()),
+                superclass == null ? Stream.empty() : getAllFields(superclass));
     }
 }
