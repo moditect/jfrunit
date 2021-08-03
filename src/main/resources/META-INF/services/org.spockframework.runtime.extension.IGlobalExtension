@@ -1,1 +1,1 @@
-dev.morling.jfrunit.JfrUnitSpockGlobalExtension
+org.moditect.jfrunit.JfrUnitSpockGlobalExtension

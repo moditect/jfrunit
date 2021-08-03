@@ -40,7 +40,7 @@ Alternatively, build JfrUnit from source (see below) yourself and add the follow
 ```xml
 ...
 <dependency>
-  <groupId>dev.morling.jfrunit</groupId>
+  <groupId>org.moditect.jfrunit</groupId>
   <artifactId>jfrunit</artifactId>
   <version>1.0-SNAPSHOT</version>
 </dependency>
@@ -50,10 +50,10 @@ Alternatively, build JfrUnit from source (see below) yourself and add the follow
 Then you can implement tests expecting specific JFR events like so:
 
 ```java
-import dev.morling.jfrunit.*;
+import org.moditect.jfrunit.*;
 
-import static dev.morling.jfrunit.JfrEventsAssert.*;
-import static dev.morling.jfrunit.ExpectedEvent.*;
+import static org.moditect.jfrunit.JfrEventsAssert.*;
+import static org.moditect.jfrunit.ExpectedEvent.*;
 
 @JfrEventTest
 public class JfrTest {
@@ -107,7 +107,7 @@ JFR configuration files are located in the _$JAVA_HOME/bin/jfr_ directory.
 You can also write JfrUnit tests using the [Spock Framework](https://spockframework.org/) like this:
 
 ```groovy
-import dev.morling.jfrunit.JfrEvents
+import org.moditect.jfrunit.JfrEvents
 import spock.lang.Specification
 
 import java.time.Duration
