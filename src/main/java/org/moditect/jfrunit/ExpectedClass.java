@@ -17,9 +17,9 @@
  */
 package org.moditect.jfrunit;
 
-import jdk.jfr.consumer.RecordedClass;
-
 import java.util.function.Predicate;
+
+import jdk.jfr.consumer.RecordedClass;
 
 public class ExpectedClass implements Predicate<RecordedClass> {
     private Long id;
@@ -30,7 +30,7 @@ public class ExpectedClass implements Predicate<RecordedClass> {
     public ExpectedClass() {
     }
 
-    public ExpectedClass(Class aClass) {
+    public ExpectedClass(Class<?> aClass) {
         this.name = aClass.getName();
         ClassLoader classLoader = aClass.getClassLoader();
         if (classLoader != null) {

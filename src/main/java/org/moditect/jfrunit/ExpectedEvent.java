@@ -33,8 +33,6 @@ import jdk.jfr.consumer.RecordedStackTrace;
 
 public class ExpectedEvent implements Predicate<RecordedEvent> {
 
-    private static final System.Logger LOGGER = System.getLogger(ExpectedEvent.class.getName());
-
     private String name;
     private Map<String, Object> withProps = new HashMap<>();
     private List<String> hasProps = new ArrayList<>();
