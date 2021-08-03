@@ -30,7 +30,7 @@
 
   <groupId>org.moditect.jfrunit</groupId>
   <artifactId>jfrunit</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0.Alpha1</version>
   <packaging>jar</packaging>
 
   <name>JfrUnit</name>
