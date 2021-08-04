@@ -30,6 +30,7 @@ add the following dependency to your project's _pom.xml_:
   <groupId>org.moditect.jfrunit</groupId>
   <artifactId>jfrunit</artifactId>
   <version>1.0.0.Alpha1</version>
+  <scope>test</scope>
 </dependency>
 ...
 ```
