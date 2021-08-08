@@ -55,6 +55,7 @@ public class JfrEvents {
     private static final long INTERNAL_WAIT_TIME = 97;
 
     private Method testMethod;
+    private String dumpFileName;
     private Queue<RecordedEvent> events = new ConcurrentLinkedQueue<>();
     private AtomicLong sequence = new AtomicLong();
     private AtomicLong watermark = new AtomicLong();
@@ -65,7 +66,7 @@ public class JfrEvents {
     public JfrEvents() {
     }
 
-    void startRecordingEvents(String configurationName, List<EventConfiguration> enabledEvents, Method testMethod) {
+    void startRecordingEvents(String configurationName, List<EventConfiguration> enabledEvents, Method testMethod, String dumpFileName) {
         if (configurationName != null && !enabledEvents.isEmpty()) {
             throw new IllegalArgumentException("Either @EnableConfiguration or @EnableEvent may be given, but not both at the same time");
         }
@@ -78,6 +79,7 @@ public class JfrEvents {
 
         try {
             this.testMethod = testMethod;
+            this.dumpFileName = dumpFileName;
             stream = startRecordingStream(configurationName, allEnabledEventTypes, streamStarted);
             recording = startRecording(configurationName, allEnabledEventTypes);
 
@@ -102,12 +104,28 @@ public class JfrEvents {
                 LOGGER.log(Level.WARNING, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
             }
 
-            Path recordingPath = dumpDir.resolve(testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr");
+            String fileName = getDumpFileName();
+            Path recordingPath = dumpDir.resolve(fileName);
 
             LOGGER.log(Level.INFO, "Stop recording: " + recordingPath);
             capturing = false;
             recording.stop();
-            recording.dump(recordingPath);
+            try {
+                recording.dump(recordingPath);
+            }
+            catch (IOException ex) {
+                LOGGER.log(Level.WARNING, "Could not dump to: " + recordingPath, ex);
+                String defaultFileName = getDefaultDumpFileName();
+                if (!defaultFileName.equals(fileName)) {
+                    // perhaps the FS was not able to handle special characters
+                    recordingPath = dumpDir.resolve(defaultFileName);
+                    LOGGER.log(Level.INFO, "Retrying dump: " + recordingPath);
+                    recording.dump(recordingPath);
+                }
+                else {
+                    throw ex;
+                }
+            }
             recording.close();
 
             stream.close();
@@ -273,5 +291,18 @@ public class JfrEvents {
         }
 
         return allEvents;
+    }
+
+    private String getDumpFileName() {
+        if (dumpFileName == null) {
+            return getDefaultDumpFileName();
+        }
+        else {
+            return dumpFileName.endsWith(".jfr") ? dumpFileName : dumpFileName + ".jfr";
+        }
+    }
+
+    private String getDefaultDumpFileName() {
+        return testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr";
     }
 }

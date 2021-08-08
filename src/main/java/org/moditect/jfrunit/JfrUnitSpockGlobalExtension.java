@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 import org.spockframework.runtime.extension.AbstractMethodInterceptor;
 import org.spockframework.runtime.extension.IGlobalExtension;
 import org.spockframework.runtime.extension.IMethodInvocation;
+import org.spockframework.runtime.model.FeatureInfo;
+import org.spockframework.runtime.model.IterationInfo;
+import org.spockframework.runtime.model.NameProvider;
 import org.spockframework.runtime.model.SpecInfo;
 
 public class JfrUnitSpockGlobalExtension implements IGlobalExtension {
@@ -53,7 +56,8 @@ public class JfrUnitSpockGlobalExtension implements IGlobalExtension {
             List<EventConfiguration> enabledEvents = getEnabledEvents(invocation);
 
             getJfrEvents(invocation).stream().forEach(jfrEvents -> {
-                jfrEvents.startRecordingEvents(enabledConfiguration, enabledEvents, invocation.getMethod().getReflection());
+                jfrEvents.startRecordingEvents(enabledConfiguration, enabledEvents,
+                        invocation.getMethod().getReflection(), getDumpFileName(invocation));
             });
             try {
                 invocation.proceed();
@@ -82,6 +86,33 @@ public class JfrUnitSpockGlobalExtension implements IGlobalExtension {
                     .map(fieldInfo -> (JfrEvents) fieldInfo.readValue(
                             fieldInfo.isShared() ? invocation.getSharedInstance() : invocation.getInstance()))
                     .collect(Collectors.toList());
+        }
+
+        private String getDumpFileName(IMethodInvocation invocation) {
+            FeatureInfo featureInfo = invocation.getFeature();
+            if (featureInfo != null) {
+                StringBuilder dumpFileName = new StringBuilder();
+                dumpFileName.append(featureInfo.getSpec().getReflection().getName());
+                dumpFileName.append('-');
+                if (featureInfo.isParameterized()) {
+                    NameProvider<IterationInfo> nameProvider = featureInfo.getIterationNameProvider();
+                    if (nameProvider != null && invocation.getIteration() != null) {
+                        dumpFileName.append(nameProvider.getName(invocation.getIteration()));
+                    }
+                    else if (invocation.getIteration() != null) {
+                        dumpFileName.append(featureInfo.getDisplayName());
+                        dumpFileName.append('_');
+                        dumpFileName.append(invocation.getIteration().getIterationIndex());
+                    }
+                }
+                else {
+                    dumpFileName.append(featureInfo.getDisplayName());
+                }
+                return dumpFileName.toString();
+            }
+            else {
+                return null;
+            }
         }
 
     }

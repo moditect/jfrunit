@@ -46,7 +46,7 @@ public class JfrEventTestExtension implements Extension, BeforeEachCallback, Aft
         Object instance = context.getRequiredTestInstance();
         List<JfrEvents> allJfrEvents = getJfrEvents(instance);
         for (JfrEvents jfrEvents : allJfrEvents) {
-            jfrEvents.startRecordingEvents(enabledConfiguration, enabledEvents, context.getRequiredTestMethod());
+            jfrEvents.startRecordingEvents(enabledConfiguration, enabledEvents, context.getRequiredTestMethod(), null);
         }
     }
 
