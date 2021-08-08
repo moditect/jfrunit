@@ -39,7 +39,7 @@ public class JfrUnitQuarkusLifecycleCallback implements QuarkusTestBeforeEachCal
 
         List<JfrEvents> allJfrEvents = getJfrEvents(instance);
         for (JfrEvents jfrEvents : allJfrEvents) {
-            jfrEvents.startRecordingEvents(enabledConfiguration, enabledEvents, context.getTestMethod());
+            jfrEvents.startRecordingEvents(enabledConfiguration, enabledEvents, context.getTestMethod(), null);
         }
     }
 
