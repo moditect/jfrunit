@@ -143,10 +143,10 @@ Java Mission Control provides an Automatic Analysis tool that performs pattern a
 It is possible to write assertions against the Automatic Analysis results to verify that unit tests against common performance issues:
 
 ```java
-import dev.morling.jfrunit.*;
+import org.moditect.jfrunit.*;
 
-import static dev.morling.jfrunit.JfrEventsAssert.*;
-import static dev.morling.jfrunit.ExpectedEvent.*;
+import static org.moditect.jfrunit.JfrEventsAssert.*;
+import static org.moditect.jfrunit.ExpectedEvent.*;
 
 @Test
 @EnableConfiguration("profile")

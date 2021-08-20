@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moditect.jfrunit;
+package org.moditect.jfrunit.internal;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,15 +31,11 @@ import org.openjdk.jmc.flightrecorder.rules.RuleRegistry;
 import org.openjdk.jmc.flightrecorder.rules.Severity;
 import org.openjdk.jmc.flightrecorder.rules.util.RulesToolkit;
 
-public class JfrAnalysis {
+public class JmcAutomaticAnalysis {
 
-    private static final System.Logger LOGGER = System.getLogger(JfrAnalysis.class.getName());
+    private static final System.Logger LOGGER = System.getLogger(JmcAutomaticAnalysis.class.getName());
 
     public static List<IResult> analysisRecording(String fileName, Severity minSeverity) {
-        return JfrAnalysis.analysisRecording(fileName, minSeverity, false);
-    }
-
-    public static List<IResult> analysisRecording(String fileName, Severity minSeverity, boolean verbose) {
         try {
             File file = new File(fileName);
 
@@ -51,35 +47,40 @@ public class JfrAnalysis {
                 LOGGER.log(System.Logger.Level.ERROR, "Unable to analyse jfr recording: " + e.getLocalizedMessage());
                 return null;
             }
+            return analyseEvents(events, minSeverity);
 
-            // TODO: Provide configuration
-            Map<IRule, Future<IResult>> resultFutures = RulesToolkit.evaluateParallel(RuleRegistry.getRules(), events,
-                    null, 0);
-            List<Map.Entry<IRule, Future<IResult>>> resultFutureList = new ArrayList<>(resultFutures.entrySet());
-            Collections.sort(resultFutureList, Comparator.comparing(o -> o.getKey().getId()));
-
-            List<IResult> analysisResults = new ArrayList();
-
-            for (Map.Entry<IRule, Future<IResult>> resultEntry : resultFutureList) {
-                IResult result;
-                try {
-                    result = resultEntry.getValue().get();
-                }
-                catch (Throwable t) {
-                    LOGGER.log(System.Logger.Level.WARNING, "Unable to analyse analysis result: " + t.getLocalizedMessage());
-                    continue;
-                }
-
-                if (result != null && result.getSeverity().compareTo(minSeverity) >= 0) {
-                    // TODO: further results processing
-                    analysisResults.add(result);
-                }
-            }
-            return analysisResults;
         }
         catch (Throwable t) {
             System.err.println("Got exception when creating report for " + fileName); //$NON-NLS-1$
             throw t;
         }
     }
+
+    public static List<IResult> analyseEvents(IItemCollection events, Severity minSeverity) {
+        // TODO: Provide configuration
+        Map<IRule, Future<IResult>> resultFutures = RulesToolkit.evaluateParallel(RuleRegistry.getRules(), events,
+                null, 0);
+        List<Map.Entry<IRule, Future<IResult>>> resultFutureList = new ArrayList<>(resultFutures.entrySet());
+        Collections.sort(resultFutureList, Comparator.comparing(o -> o.getKey().getId()));
+
+        List<IResult> analysisResults = new ArrayList();
+
+        for (Map.Entry<IRule, Future<IResult>> resultEntry : resultFutureList) {
+            IResult result;
+            try {
+                result = resultEntry.getValue().get();
+            }
+            catch (Throwable t) {
+                LOGGER.log(System.Logger.Level.WARNING, "Unable to analyse analysis result: " + t.getLocalizedMessage());
+                continue;
+            }
+
+            if (result != null && result.getSeverity().compareTo(minSeverity) >= 0) {
+                analysisResults.add(result);
+            }
+        }
+        return analysisResults;
+
+    }
+
 }

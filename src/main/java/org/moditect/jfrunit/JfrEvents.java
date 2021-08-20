@@ -32,13 +32,16 @@ import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.moditect.jfrunit.EnableEvent.StacktracePolicy;
+import org.moditect.jfrunit.internal.JmcAutomaticAnalysis;
 import org.moditect.jfrunit.internal.SyncEvent;
+import org.openjdk.jmc.flightrecorder.rules.IResult;
 import org.openjdk.jmc.flightrecorder.rules.Severity;
 
 import jdk.jfr.Configuration;
@@ -64,7 +67,7 @@ public class JfrEvents {
     private Recording recording;
     private boolean capturing;
 
-    private JfrAnalysisResults analysis = null;
+    private AtomicInteger analysisCounter = new AtomicInteger(0);
 
     public JfrEvents() {
     }
@@ -138,6 +141,10 @@ public class JfrEvents {
     }
 
     private Path getRecordingFilePath() throws URISyntaxException, IOException {
+        return getRecordingFilePath(null);
+    }
+
+    private Path getRecordingFilePath(String suffix) throws URISyntaxException, IOException {
         URI testSourceUri = testMethod.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toURI();
         Path dumpDir;
         try {
@@ -148,7 +155,7 @@ public class JfrEvents {
             dumpDir = Files.createTempDirectory(null);
             LOGGER.log(Level.WARNING, "'" + testSourceUri.getScheme() + "' is not a valid file system, dumping recording to a temporary location.");
         }
-        String fileName = getDumpFileName();
+        String fileName = getDumpFileName(suffix);
         return dumpDir.resolve(fileName);
     }
 
@@ -314,9 +321,9 @@ public class JfrEvents {
         return allEvents;
     }
 
-    private String getDumpFileName() {
+    private String getDumpFileName(String suffix) {
         if (dumpFileName == null) {
-            return getDefaultDumpFileName();
+            return getDefaultDumpFileName(suffix);
         }
         else {
             return dumpFileName.endsWith(".jfr") ? dumpFileName : dumpFileName + ".jfr";
@@ -324,21 +331,29 @@ public class JfrEvents {
     }
 
     private String getDefaultDumpFileName() {
-        return testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + ".jfr";
+        return getDefaultDumpFileName(null);
     }
 
-    public JfrAnalysisResults automaticAnalysis() {
-        if (analysis == null) {
-            try {
-                Path recordingPath = getRecordingFilePath();
-                dumpRecording(recordingPath);
+    private String getDefaultDumpFileName(String suffix) {
+        return testMethod.getDeclaringClass().getName() + "-" + testMethod.getName() + (suffix != null ? "-" + suffix : "") + ".jfr";
+    }
 
-                analysis = new JfrAnalysisResults(JfrAnalysis.analysisRecording(recordingPath.toAbsolutePath().toString(), Severity.INFO));
-            }
-            catch (IOException | URISyntaxException e) {
-                LOGGER.log(Level.WARNING, "Unable to analyse jfr recording: " + e.getLocalizedMessage());
-            }
+    // TODO: Do we move out of JfrEvents?
+    public List<IResult> automaticAnalysis() {
+        try {
+            awaitEvents();
+
+            int counter = analysisCounter.getAndIncrement();
+            Path recordingPath = getRecordingFilePath("analysis" + (counter != 0 ? "-" + counter : ""));
+
+            LOGGER.log(Level.INFO, "Analysis recording: " + recordingPath.toAbsolutePath());
+            dumpRecording(recordingPath);
+
+            return JmcAutomaticAnalysis.analysisRecording(recordingPath.toAbsolutePath().toString(), Severity.INFO);
+
         }
-        return analysis;
+        catch (IOException | URISyntaxException e) {
+            throw new RuntimeException("Unable to analyse jfr recording", e);
+        }
     }
 }
