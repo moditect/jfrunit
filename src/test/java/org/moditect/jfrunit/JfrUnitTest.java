@@ -21,6 +21,8 @@ import java.time.Duration;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.moditect.jfrunit.events.GarbageCollection;
+import org.moditect.jfrunit.events.ThreadSleep;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.moditect.jfrunit.ExpectedEvent.event;
@@ -32,8 +34,8 @@ public class JfrUnitTest {
     public JfrEvents jfrEvents = new JfrEvents();
 
     @Test
-    @EnableEvent("jdk.GarbageCollection")
-    @EnableEvent("jdk.ThreadSleep")
+    @EnableEvent(GarbageCollection.EVENT_NAME)
+    @EnableEvent(ThreadSleep.EVENT_NAME)
     @DisplayName("Should have Gc and Sleep events recorded when explicitly enabled individually with @EnableEvent")
     public void shouldHaveGcAndSleepEvents() throws Exception {
         System.gc();
@@ -41,13 +43,13 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event("jdk.GarbageCollection"));
+        assertThat(jfrEvents).contains(event(GarbageCollection.EVENT_NAME));
         assertThat(jfrEvents).contains(
-                event("jdk.GarbageCollection").with("cause", "System.gc()"));
+                event(GarbageCollection.EVENT_NAME).with(GarbageCollection.ATTRIBUTE_CAUSE_NAME, "System.gc()"));
         assertThat(jfrEvents).contains(
-                event("jdk.ThreadSleep").with("time", Duration.ofMillis(50)));
+                event(ThreadSleep.EVENT_NAME).with(ThreadSleep.ATTRIBUTE_TIME_NAME, Duration.ofMillis(50)));
 
-        assertThat(jfrEvents.filter(event("jdk.GarbageCollection"))).hasSize(1);
+        assertThat(jfrEvents.filter(event(GarbageCollection.EVENT_NAME))).hasSize(1);
     }
 
     @Test
