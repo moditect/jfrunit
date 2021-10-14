@@ -22,6 +22,11 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <modules>
+    <module>jfrunit-events-generator</module>
+    <module>jfrunit-core</module>
+  </modules>
+
   <parent>
     <groupId>org.moditect</groupId>
     <artifactId>moditect-org-parent</artifactId>
@@ -31,7 +36,7 @@
   <groupId>org.moditect.jfrunit</groupId>
   <artifactId>jfrunit</artifactId>
   <version>1.0.0.Alpha1</version>
-  <packaging>jar</packaging>
+  <packaging>pom</packaging>
 
   <name>JfrUnit</name>
   <url>https://github.com/gunnarmorling/jfrunit/</url>
@@ -49,6 +54,7 @@
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <quarkus.platform.version>2.3.0.Final</quarkus.platform.version>
     <version.surefire.plugin>3.0.0-M5</version.surefire.plugin>
+    <jrfDocUrl>https://bestsolution-at.github.io/jfr-doc/openjdk-17.json</jrfDocUrl>
   </properties>
 
   <scm>
@@ -82,43 +88,6 @@
     </dependencies>
   </dependencyManagement>
 
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>io.quarkus</groupId>
-      <artifactId>quarkus-junit5</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.spockframework</groupId>
-      <artifactId>spock-core</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.spockframework</groupId>
-      <artifactId>spock-junit4</artifactId>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.groovy</groupId>
-      <artifactId>groovy</artifactId>
-      <version>3.0.8</version>
-      <type>pom</type>
-      <scope>provided</scope>
-    </dependency>
-  </dependencies>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -127,7 +96,7 @@
           <artifactId>formatter-maven-plugin</artifactId>
           <version>2.16.0</version>
           <configuration>
-              <configFile>etc/eclipse-formatter-config.xml</configFile>
+            <configFile>../etc/eclipse-formatter-config.xml</configFile>
           </configuration>
         </plugin>
 
