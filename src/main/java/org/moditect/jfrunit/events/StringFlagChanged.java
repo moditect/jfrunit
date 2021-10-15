@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class StringFlagChanged {
+public class StringFlagChanged extends JfrEventType {
+    public static final StringFlagChanged INSTANCE = new StringFlagChanged();
     public static final String EVENT_NAME = "jdk.StringFlagChanged";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_NAME_NAME = "name";
-    public static final String ATTRIBUTE_NAME_TYPE = "String";
-    public static final String ATTRIBUTE_OLDVALUE_NAME = "oldValue";
-    public static final String ATTRIBUTE_OLDVALUE_TYPE = "String";
-    public static final String ATTRIBUTE_NEWVALUE_NAME = "newValue";
-    public static final String ATTRIBUTE_NEWVALUE_TYPE = "String";
-    public static final String ATTRIBUTE_ORIGIN_NAME = "origin";
-    public static final String ATTRIBUTE_ORIGIN_TYPE = "String";
+    public static final Attribute<StringFlagChanged, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<StringFlagChanged, java.lang.String> NAME = new Attribute("name");
+    public static final Attribute<StringFlagChanged, java.lang.String> OLD_VALUE = new Attribute("oldValue");
+    public static final Attribute<StringFlagChanged, java.lang.String> NEW_VALUE = new Attribute("newValue");
+    public static final Attribute<StringFlagChanged, java.lang.String> ORIGIN = new Attribute("origin");
+
+    public StringFlagChanged() {
+        super(EVENT_NAME);
+    }
 }

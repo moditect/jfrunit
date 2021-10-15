@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ClassDefine {
+public class ClassDefine extends JfrEventType {
+    public static final ClassDefine INSTANCE = new ClassDefine();
     public static final String EVENT_NAME = "jdk.ClassDefine";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_DEFINEDCLASS_NAME = "definedClass";
-    public static final String ATTRIBUTE_DEFINEDCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_DEFININGCLASSLOADER_NAME = "definingClassLoader";
-    public static final String ATTRIBUTE_DEFININGCLASSLOADER_TYPE = "ClassLoader";
+    public static final Attribute<ClassDefine, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ClassDefine, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ClassDefine, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ClassDefine, org.moditect.jfrunit.ExpectedClass> DEFINED_CLASS = new Attribute("definedClass");
+    public static final Attribute<ClassDefine, org.moditect.jfrunit.ExpectedClassLoader> DEFINING_CLASS_LOADER = new Attribute("definingClassLoader");
+
+    public ClassDefine() {
+        super(EVENT_NAME);
+    }
 }

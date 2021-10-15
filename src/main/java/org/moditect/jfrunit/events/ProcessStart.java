@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Operating system process started
  */
-public class ProcessStart {
+public class ProcessStart extends JfrEventType {
+    public static final ProcessStart INSTANCE = new ProcessStart();
     public static final String EVENT_NAME = "jdk.ProcessStart";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_PID_NAME = "pid";
-    public static final String ATTRIBUTE_PID_TYPE = "long";
-    public static final String ATTRIBUTE_DIRECTORY_NAME = "directory";
-    public static final String ATTRIBUTE_DIRECTORY_TYPE = "String";
-    public static final String ATTRIBUTE_COMMAND_NAME = "command";
-    public static final String ATTRIBUTE_COMMAND_TYPE = "String";
+    public static final Attribute<ProcessStart, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ProcessStart, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ProcessStart, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ProcessStart, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ProcessStart, Long> PID = new Attribute("pid");
+    public static final Attribute<ProcessStart, java.lang.String> DIRECTORY = new Attribute("directory");
+    public static final Attribute<ProcessStart, java.lang.String> COMMAND = new Attribute("command");
+
+    public ProcessStart() {
+        super(EVENT_NAME);
+    }
 }

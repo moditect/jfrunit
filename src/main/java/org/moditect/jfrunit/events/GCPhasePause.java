@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class GCPhasePause {
+public class GCPhasePause extends JfrEventType {
+    public static final GCPhasePause INSTANCE = new GCPhasePause();
     public static final String EVENT_NAME = "jdk.GCPhasePause";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_NAME_NAME = "name";
-    public static final String ATTRIBUTE_NAME_TYPE = "String";
+    public static final Attribute<GCPhasePause, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GCPhasePause, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<GCPhasePause, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<GCPhasePause, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<GCPhasePause, java.lang.String> NAME = new Attribute("name");
+
+    public GCPhasePause() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,29 +17,28 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class EvacuationInformation {
+public class EvacuationInformation extends JfrEventType {
+    public static final EvacuationInformation INSTANCE = new EvacuationInformation();
     public static final String EVENT_NAME = "jdk.EvacuationInformation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_CSETREGIONS_NAME = "cSetRegions";
-    public static final String ATTRIBUTE_CSETREGIONS_TYPE = "int";
-    public static final String ATTRIBUTE_CSETUSEDBEFORE_NAME = "cSetUsedBefore";
-    public static final String ATTRIBUTE_CSETUSEDBEFORE_TYPE = "long";
-    public static final String ATTRIBUTE_CSETUSEDAFTER_NAME = "cSetUsedAfter";
-    public static final String ATTRIBUTE_CSETUSEDAFTER_TYPE = "long";
-    public static final String ATTRIBUTE_ALLOCATIONREGIONS_NAME = "allocationRegions";
-    public static final String ATTRIBUTE_ALLOCATIONREGIONS_TYPE = "int";
-    public static final String ATTRIBUTE_ALLOCATIONREGIONSUSEDBEFORE_NAME = "allocationRegionsUsedBefore";
-    public static final String ATTRIBUTE_ALLOCATIONREGIONSUSEDBEFORE_TYPE = "long";
-    public static final String ATTRIBUTE_ALLOCATIONREGIONSUSEDAFTER_NAME = "allocationRegionsUsedAfter";
-    public static final String ATTRIBUTE_ALLOCATIONREGIONSUSEDAFTER_TYPE = "long";
-    public static final String ATTRIBUTE_BYTESCOPIED_NAME = "bytesCopied";
-    public static final String ATTRIBUTE_BYTESCOPIED_TYPE = "long";
-    public static final String ATTRIBUTE_REGIONSFREED_NAME = "regionsFreed";
-    public static final String ATTRIBUTE_REGIONSFREED_TYPE = "int";
+    public static final Attribute<EvacuationInformation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<EvacuationInformation, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<EvacuationInformation, Integer> C_SET_REGIONS = new Attribute("cSetRegions");
+    public static final Attribute<EvacuationInformation, Long> C_SET_USED_BEFORE = new Attribute("cSetUsedBefore");
+    public static final Attribute<EvacuationInformation, Long> C_SET_USED_AFTER = new Attribute("cSetUsedAfter");
+    public static final Attribute<EvacuationInformation, Integer> ALLOCATION_REGIONS = new Attribute("allocationRegions");
+    public static final Attribute<EvacuationInformation, Long> ALLOCATION_REGIONS_USED_BEFORE = new Attribute("allocationRegionsUsedBefore");
+    public static final Attribute<EvacuationInformation, Long> ALLOCATION_REGIONS_USED_AFTER = new Attribute("allocationRegionsUsedAfter");
+    public static final Attribute<EvacuationInformation, Long> BYTES_COPIED = new Attribute("bytesCopied");
+    public static final Attribute<EvacuationInformation, Integer> REGIONS_FREED = new Attribute("regionsFreed");
+
+    public EvacuationInformation() {
+        super(EVENT_NAME);
+    }
 }

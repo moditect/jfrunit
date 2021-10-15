@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Information about a G1 heap region type change
  */
-public class G1HeapRegionTypeChange {
+public class G1HeapRegionTypeChange extends JfrEventType {
+    public static final G1HeapRegionTypeChange INSTANCE = new G1HeapRegionTypeChange();
     public static final String EVENT_NAME = "jdk.G1HeapRegionTypeChange";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_INDEX_NAME = "index";
-    public static final String ATTRIBUTE_INDEX_TYPE = "int";
-    public static final String ATTRIBUTE_FROM_NAME = "from";
-    public static final String ATTRIBUTE_FROM_TYPE = "String";
-    public static final String ATTRIBUTE_TO_NAME = "to";
-    public static final String ATTRIBUTE_TO_TYPE = "String";
-    public static final String ATTRIBUTE_START_NAME = "start";
-    public static final String ATTRIBUTE_START_TYPE = "long";
-    public static final String ATTRIBUTE_USED_NAME = "used";
-    public static final String ATTRIBUTE_USED_TYPE = "long";
+    public static final Attribute<G1HeapRegionTypeChange, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<G1HeapRegionTypeChange, Integer> INDEX = new Attribute("index");
+    public static final Attribute<G1HeapRegionTypeChange, java.lang.String> FROM = new Attribute("from");
+    public static final Attribute<G1HeapRegionTypeChange, java.lang.String> TO = new Attribute("to");
+    public static final Attribute<G1HeapRegionTypeChange, Long> START = new Attribute("start");
+    public static final Attribute<G1HeapRegionTypeChange, Long> USED = new Attribute("used");
+
+    public G1HeapRegionTypeChange() {
+        super(EVENT_NAME);
+    }
 }

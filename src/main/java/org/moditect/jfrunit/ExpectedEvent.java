@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Predicate;
 
@@ -34,57 +33,21 @@ import jdk.jfr.consumer.RecordedStackTrace;
 public class ExpectedEvent implements Predicate<RecordedEvent> {
 
     private String name;
-    private Map<String, Object> withProps = new HashMap<>();
-    private List<String> hasProps = new ArrayList<>();
-    private List<String> hasNotProps = new ArrayList<>();
+    private Map<Attribute<?, ?>, Object> withProps = new HashMap<>();
+    private List<Attribute<?, ?>> hasProps = new ArrayList<>();
+    private List<Attribute<?, ?>> hasNotProps = new ArrayList<>();
     private List<ExpectedStackFrame> frames = new ArrayList<>();
 
     private ExpectedEvent(String name) {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public Map<String, Object> getWithProps() {
-        return withProps;
-    }
-
-    public List<String> getHasProps() {
-        return hasProps;
-    }
-
-    public List<String> getHasNotProps() {
-        return hasNotProps;
-    }
-
-    public List<ExpectedStackFrame> getFrames() {
-        return frames;
-    }
-
-    public ExpectedEvent with(String name, Object value) {
-        this.withProps.put(name, value);
-        return this;
-    }
-
-    public ExpectedEvent has(String name) {
-        this.hasProps.add(name);
-        return this;
-    }
-
-    public ExpectedEvent hasNot(String name) {
-        this.hasNotProps.add(name);
-        return this;
-    }
-
-    public ExpectedEvent containStackFrame(ExpectedStackFrame value) {
-        this.frames.add(value);
-        return this;
-    }
-
     public static ExpectedEvent event(String name) {
         return new ExpectedEvent(name);
+    }
+
+    public static ExpectedEvent event(JfrEventType jfrEventType) {
+        return new ExpectedEvent(jfrEventType.getName());
     }
 
     /* default */ static boolean matches(ExpectedEvent expectedEvent, RecordedEvent recordedEvent) {
@@ -94,23 +57,23 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
         }
 
         if (!expectedEvent.getHasProps().isEmpty()) {
-            for (String name : expectedEvent.getHasProps()) {
-                if (!hasPropertyMatching(recordedEvent, name))
+            for (Attribute<?, ?> attribute : expectedEvent.getHasProps()) {
+                if (!hasPropertyMatching(recordedEvent, attribute.getName()))
                     return false;
             }
         }
 
         if (!expectedEvent.getHasNotProps().isEmpty()) {
-            for (String name : expectedEvent.getHasNotProps()) {
-                if (hasPropertyMatching(recordedEvent, name)) {
+            for (Attribute<?, ?> attribute : expectedEvent.getHasNotProps()) {
+                if (hasPropertyMatching(recordedEvent, attribute.getName())) {
                     return false;
                 }
             }
         }
 
         if (!expectedEvent.getWithProps().isEmpty()) {
-            for (Entry<String, Object> prop : expectedEvent.getWithProps().entrySet()) {
-                if (!withPropertyMatching(recordedEvent, prop.getKey(), prop.getValue())) {
+            for (Map.Entry<Attribute<?, ?>, Object> prop : expectedEvent.getWithProps().entrySet()) {
+                if (!withPropertyMatching(recordedEvent, prop.getKey().getName(), prop.getValue())) {
                     return false;
                 }
             }
@@ -192,6 +155,61 @@ public class ExpectedEvent implements Predicate<RecordedEvent> {
         else {
             throw new IllegalArgumentException(String.format("Unsupported property type: %s, %s", name, value));
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Map<Attribute<?, ?>, Object> getWithProps() {
+        return withProps;
+    }
+
+    public List<Attribute<?, ?>> getHasProps() {
+        return hasProps;
+    }
+
+    public List<Attribute<?, ?>> getHasNotProps() {
+        return hasNotProps;
+    }
+
+    public List<ExpectedStackFrame> getFrames() {
+        return frames;
+    }
+
+    public <A extends JfrEventType, B> ExpectedEvent with(Attribute<A, B> attribute, B value) {
+        this.withProps.put(attribute, value);
+        return this;
+    }
+
+    public ExpectedEvent with(String name, Object value) {
+        this.withProps.put(new Attribute<>(name), value);
+        return this;
+    }
+
+    public ExpectedEvent has(Attribute<?, ?> attribute) {
+        this.hasProps.add(attribute);
+        return this;
+    }
+
+    public ExpectedEvent has(String name) {
+        this.hasProps.add(new Attribute<>(name));
+        return this;
+    }
+
+    public ExpectedEvent hasNot(Attribute<?, ?> attribute) {
+        this.hasNotProps.add(attribute);
+        return this;
+    }
+
+    public ExpectedEvent hasNot(String name) {
+        this.hasNotProps.add(new Attribute<>(name));
+        return this;
+    }
+
+    public ExpectedEvent containStackFrame(ExpectedStackFrame value) {
+        this.frames.add(value);
+        return this;
     }
 
     @Override

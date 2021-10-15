@@ -17,35 +17,31 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Results of deserialization and ObjectInputFilter checks
  */
-public class Deserialization {
+public class Deserialization extends JfrEventType {
+    public static final Deserialization INSTANCE = new Deserialization();
     public static final String EVENT_NAME = "jdk.Deserialization";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_FILTERCONFIGURED_NAME = "filterConfigured";
-    public static final String ATTRIBUTE_FILTERCONFIGURED_TYPE = "boolean";
-    public static final String ATTRIBUTE_FILTERSTATUS_NAME = "filterStatus";
-    public static final String ATTRIBUTE_FILTERSTATUS_TYPE = "String";
-    public static final String ATTRIBUTE_TYPE_NAME = "type";
-    public static final String ATTRIBUTE_TYPE_TYPE = "Class";
-    public static final String ATTRIBUTE_ARRAYLENGTH_NAME = "arrayLength";
-    public static final String ATTRIBUTE_ARRAYLENGTH_TYPE = "int";
-    public static final String ATTRIBUTE_OBJECTREFERENCES_NAME = "objectReferences";
-    public static final String ATTRIBUTE_OBJECTREFERENCES_TYPE = "long";
-    public static final String ATTRIBUTE_DEPTH_NAME = "depth";
-    public static final String ATTRIBUTE_DEPTH_TYPE = "long";
-    public static final String ATTRIBUTE_BYTESREAD_NAME = "bytesRead";
-    public static final String ATTRIBUTE_BYTESREAD_TYPE = "long";
-    public static final String ATTRIBUTE_EXCEPTIONTYPE_NAME = "exceptionType";
-    public static final String ATTRIBUTE_EXCEPTIONTYPE_TYPE = "Class";
-    public static final String ATTRIBUTE_EXCEPTIONMESSAGE_NAME = "exceptionMessage";
-    public static final String ATTRIBUTE_EXCEPTIONMESSAGE_TYPE = "String";
+    public static final Attribute<Deserialization, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<Deserialization, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<Deserialization, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<Deserialization, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<Deserialization, Boolean> FILTER_CONFIGURED = new Attribute("filterConfigured");
+    public static final Attribute<Deserialization, java.lang.String> FILTER_STATUS = new Attribute("filterStatus");
+    public static final Attribute<Deserialization, org.moditect.jfrunit.ExpectedClass> TYPE = new Attribute("type");
+    public static final Attribute<Deserialization, Integer> ARRAY_LENGTH = new Attribute("arrayLength");
+    public static final Attribute<Deserialization, Long> OBJECT_REFERENCES = new Attribute("objectReferences");
+    public static final Attribute<Deserialization, Long> DEPTH = new Attribute("depth");
+    public static final Attribute<Deserialization, Long> BYTES_READ = new Attribute("bytesRead");
+    public static final Attribute<Deserialization, org.moditect.jfrunit.ExpectedClass> EXCEPTION_TYPE = new Attribute("exceptionType");
+    public static final Attribute<Deserialization, java.lang.String> EXCEPTION_MESSAGE = new Attribute("exceptionMessage");
+
+    public Deserialization() {
+        super(EVENT_NAME);
+    }
 }

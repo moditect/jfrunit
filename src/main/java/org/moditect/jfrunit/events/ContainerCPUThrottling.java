@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Container CPU throttling related information
  */
-public class ContainerCPUThrottling {
+public class ContainerCPUThrottling extends JfrEventType {
+    public static final ContainerCPUThrottling INSTANCE = new ContainerCPUThrottling();
     public static final String EVENT_NAME = "jdk.ContainerCPUThrottling";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_CPUELAPSEDSLICES_NAME = "cpuElapsedSlices";
-    public static final String ATTRIBUTE_CPUELAPSEDSLICES_TYPE = "long";
-    public static final String ATTRIBUTE_CPUTHROTTLEDSLICES_NAME = "cpuThrottledSlices";
-    public static final String ATTRIBUTE_CPUTHROTTLEDSLICES_TYPE = "long";
-    public static final String ATTRIBUTE_CPUTHROTTLEDTIME_NAME = "cpuThrottledTime";
-    public static final String ATTRIBUTE_CPUTHROTTLEDTIME_TYPE = "long";
+    public static final Attribute<ContainerCPUThrottling, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ContainerCPUThrottling, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ContainerCPUThrottling, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ContainerCPUThrottling, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ContainerCPUThrottling, Long> CPU_ELAPSED_SLICES = new Attribute("cpuElapsedSlices");
+    public static final Attribute<ContainerCPUThrottling, Long> CPU_THROTTLED_SLICES = new Attribute("cpuThrottledSlices");
+    public static final Attribute<ContainerCPUThrottling, java.time.Duration> CPU_THROTTLED_TIME = new Attribute("cpuThrottledTime");
+
+    public ContainerCPUThrottling() {
+        super(EVENT_NAME);
+    }
 }

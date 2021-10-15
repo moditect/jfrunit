@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class SweepCodeCache {
+public class SweepCodeCache extends JfrEventType {
+    public static final SweepCodeCache INSTANCE = new SweepCodeCache();
     public static final String EVENT_NAME = "jdk.SweepCodeCache";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_SWEEPID_NAME = "sweepId";
-    public static final String ATTRIBUTE_SWEEPID_TYPE = "int";
-    public static final String ATTRIBUTE_SWEPTCOUNT_NAME = "sweptCount";
-    public static final String ATTRIBUTE_SWEPTCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_FLUSHEDCOUNT_NAME = "flushedCount";
-    public static final String ATTRIBUTE_FLUSHEDCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_ZOMBIFIEDCOUNT_NAME = "zombifiedCount";
-    public static final String ATTRIBUTE_ZOMBIFIEDCOUNT_TYPE = "int";
+    public static final Attribute<SweepCodeCache, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<SweepCodeCache, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<SweepCodeCache, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<SweepCodeCache, Integer> SWEEP_ID = new Attribute("sweepId");
+    public static final Attribute<SweepCodeCache, Integer> SWEPT_COUNT = new Attribute("sweptCount");
+    public static final Attribute<SweepCodeCache, Integer> FLUSHED_COUNT = new Attribute("flushedCount");
+    public static final Attribute<SweepCodeCache, Integer> ZOMBIFIED_COUNT = new Attribute("zombifiedCount");
+
+    public SweepCodeCache() {
+        super(EVENT_NAME);
+    }
 }

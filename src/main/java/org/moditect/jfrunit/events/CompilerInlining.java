@@ -17,25 +17,26 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CompilerInlining {
+public class CompilerInlining extends JfrEventType {
+    public static final CompilerInlining INSTANCE = new CompilerInlining();
     public static final String EVENT_NAME = "jdk.CompilerInlining";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_COMPILEID_NAME = "compileId";
-    public static final String ATTRIBUTE_COMPILEID_TYPE = "int";
-    public static final String ATTRIBUTE_CALLER_NAME = "caller";
-    public static final String ATTRIBUTE_CALLER_TYPE = "Method";
-    public static final String ATTRIBUTE_CALLEE_NAME = "callee";
-    public static final String ATTRIBUTE_CALLEE_TYPE = "CalleeMethod";
-    public static final String ATTRIBUTE_SUCCEEDED_NAME = "succeeded";
-    public static final String ATTRIBUTE_SUCCEEDED_TYPE = "boolean";
-    public static final String ATTRIBUTE_MESSAGE_NAME = "message";
-    public static final String ATTRIBUTE_MESSAGE_TYPE = "String";
-    public static final String ATTRIBUTE_BCI_NAME = "bci";
-    public static final String ATTRIBUTE_BCI_TYPE = "int";
+    public static final Attribute<CompilerInlining, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CompilerInlining, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<CompilerInlining, Integer> COMPILE_ID = new Attribute("compileId");
+    public static final Attribute<CompilerInlining, org.moditect.jfrunit.ExpectedMethod> CALLER = new Attribute("caller");
+    public static final Attribute<CompilerInlining, CalleeMethod> CALLEE = new Attribute("callee");
+    public static final Attribute<CompilerInlining, Boolean> SUCCEEDED = new Attribute("succeeded");
+    public static final Attribute<CompilerInlining, java.lang.String> MESSAGE = new Attribute("message");
+    public static final Attribute<CompilerInlining, Integer> BCI = new Attribute("bci");
+
+    public CompilerInlining() {
+        super(EVENT_NAME);
+    }
 }

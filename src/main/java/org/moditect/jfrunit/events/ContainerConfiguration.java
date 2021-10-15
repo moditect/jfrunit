@@ -17,33 +17,30 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * A set of container specific attributes
  */
-public class ContainerConfiguration {
+public class ContainerConfiguration extends JfrEventType {
+    public static final ContainerConfiguration INSTANCE = new ContainerConfiguration();
     public static final String EVENT_NAME = "jdk.ContainerConfiguration";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_CONTAINERTYPE_NAME = "containerType";
-    public static final String ATTRIBUTE_CONTAINERTYPE_TYPE = "String";
-    public static final String ATTRIBUTE_CPUSLICEPERIOD_NAME = "cpuSlicePeriod";
-    public static final String ATTRIBUTE_CPUSLICEPERIOD_TYPE = "long";
-    public static final String ATTRIBUTE_CPUQUOTA_NAME = "cpuQuota";
-    public static final String ATTRIBUTE_CPUQUOTA_TYPE = "long";
-    public static final String ATTRIBUTE_CPUSHARES_NAME = "cpuShares";
-    public static final String ATTRIBUTE_CPUSHARES_TYPE = "long";
-    public static final String ATTRIBUTE_EFFECTIVECPUCOUNT_NAME = "effectiveCpuCount";
-    public static final String ATTRIBUTE_EFFECTIVECPUCOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_MEMORYSOFTLIMIT_NAME = "memorySoftLimit";
-    public static final String ATTRIBUTE_MEMORYSOFTLIMIT_TYPE = "long";
-    public static final String ATTRIBUTE_MEMORYLIMIT_NAME = "memoryLimit";
-    public static final String ATTRIBUTE_MEMORYLIMIT_TYPE = "long";
-    public static final String ATTRIBUTE_SWAPMEMORYLIMIT_NAME = "swapMemoryLimit";
-    public static final String ATTRIBUTE_SWAPMEMORYLIMIT_TYPE = "long";
+    public static final Attribute<ContainerConfiguration, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ContainerConfiguration, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ContainerConfiguration, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ContainerConfiguration, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ContainerConfiguration, java.lang.String> CONTAINER_TYPE = new Attribute("containerType");
+    public static final Attribute<ContainerConfiguration, java.time.Duration> CPU_SLICE_PERIOD = new Attribute("cpuSlicePeriod");
+    public static final Attribute<ContainerConfiguration, java.time.Duration> CPU_QUOTA = new Attribute("cpuQuota");
+    public static final Attribute<ContainerConfiguration, Long> CPU_SHARES = new Attribute("cpuShares");
+    public static final Attribute<ContainerConfiguration, Long> EFFECTIVE_CPU_COUNT = new Attribute("effectiveCpuCount");
+    public static final Attribute<ContainerConfiguration, Long> MEMORY_SOFT_LIMIT = new Attribute("memorySoftLimit");
+    public static final Attribute<ContainerConfiguration, Long> MEMORY_LIMIT = new Attribute("memoryLimit");
+    public static final Attribute<ContainerConfiguration, Long> SWAP_MEMORY_LIMIT = new Attribute("swapMemoryLimit");
+
+    public ContainerConfiguration() {
+        super(EVENT_NAME);
+    }
 }

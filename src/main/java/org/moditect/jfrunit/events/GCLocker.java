@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class GCLocker {
+public class GCLocker extends JfrEventType {
+    public static final GCLocker INSTANCE = new GCLocker();
     public static final String EVENT_NAME = "jdk.GCLocker";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_LOCKCOUNT_NAME = "lockCount";
-    public static final String ATTRIBUTE_LOCKCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_STALLCOUNT_NAME = "stallCount";
-    public static final String ATTRIBUTE_STALLCOUNT_TYPE = "int";
+    public static final Attribute<GCLocker, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GCLocker, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<GCLocker, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<GCLocker, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<GCLocker, Integer> LOCK_COUNT = new Attribute("lockCount");
+    public static final Attribute<GCLocker, Integer> STALL_COUNT = new Attribute("stallCount");
+
+    public GCLocker() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Garbage collection performed by the JVM
  */
-public class GarbageCollection {
+public class GarbageCollection extends JfrEventType {
+    public static final GarbageCollection INSTANCE = new GarbageCollection();
     public static final String EVENT_NAME = "jdk.GarbageCollection";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_NAME_NAME = "name";
-    public static final String ATTRIBUTE_NAME_TYPE = "String";
-    public static final String ATTRIBUTE_CAUSE_NAME = "cause";
-    public static final String ATTRIBUTE_CAUSE_TYPE = "String";
-    public static final String ATTRIBUTE_SUMOFPAUSES_NAME = "sumOfPauses";
-    public static final String ATTRIBUTE_SUMOFPAUSES_TYPE = "long";
-    public static final String ATTRIBUTE_LONGESTPAUSE_NAME = "longestPause";
-    public static final String ATTRIBUTE_LONGESTPAUSE_TYPE = "long";
+    public static final Attribute<GarbageCollection, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GarbageCollection, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<GarbageCollection, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<GarbageCollection, java.lang.String> NAME = new Attribute("name");
+    public static final Attribute<GarbageCollection, java.lang.String> CAUSE = new Attribute("cause");
+    public static final Attribute<GarbageCollection, Long> SUM_OF_PAUSES = new Attribute("sumOfPauses");
+    public static final Attribute<GarbageCollection, Long> LONGEST_PAUSE = new Attribute("longestPause");
+
+    public GarbageCollection() {
+        super(EVENT_NAME);
+    }
 }

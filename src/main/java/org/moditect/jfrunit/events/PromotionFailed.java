@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Promotion of an object failed
  */
-public class PromotionFailed {
+public class PromotionFailed extends JfrEventType {
+    public static final PromotionFailed INSTANCE = new PromotionFailed();
     public static final String EVENT_NAME = "jdk.PromotionFailed";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_PROMOTIONFAILED_NAME = "promotionFailed";
-    public static final String ATTRIBUTE_PROMOTIONFAILED_TYPE = "CopyFailed";
-    public static final String ATTRIBUTE_THREAD_NAME = "thread";
-    public static final String ATTRIBUTE_THREAD_TYPE = "Thread";
+    public static final Attribute<PromotionFailed, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<PromotionFailed, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<PromotionFailed, CopyFailed> PROMOTION_FAILED = new Attribute("promotionFailed");
+    public static final Attribute<PromotionFailed, org.moditect.jfrunit.ExpectedThread> THREAD = new Attribute("thread");
+
+    public PromotionFailed() {
+        super(EVENT_NAME);
+    }
 }

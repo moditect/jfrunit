@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class JavaMonitorEnter {
+public class JavaMonitorEnter extends JfrEventType {
+    public static final JavaMonitorEnter INSTANCE = new JavaMonitorEnter();
     public static final String EVENT_NAME = "jdk.JavaMonitorEnter";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_MONITORCLASS_NAME = "monitorClass";
-    public static final String ATTRIBUTE_MONITORCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_PREVIOUSOWNER_NAME = "previousOwner";
-    public static final String ATTRIBUTE_PREVIOUSOWNER_TYPE = "Thread";
-    public static final String ATTRIBUTE_ADDRESS_NAME = "address";
-    public static final String ATTRIBUTE_ADDRESS_TYPE = "long";
+    public static final Attribute<JavaMonitorEnter, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<JavaMonitorEnter, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<JavaMonitorEnter, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<JavaMonitorEnter, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<JavaMonitorEnter, org.moditect.jfrunit.ExpectedClass> MONITOR_CLASS = new Attribute("monitorClass");
+    public static final Attribute<JavaMonitorEnter, org.moditect.jfrunit.ExpectedThread> PREVIOUS_OWNER = new Attribute("previousOwner");
+    public static final Attribute<JavaMonitorEnter, Long> ADDRESS = new Attribute("address");
+
+    public JavaMonitorEnter() {
+        super(EVENT_NAME);
+    }
 }

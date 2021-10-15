@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Uncommitting of memory
  */
-public class ZUncommit {
+public class ZUncommit extends JfrEventType {
+    public static final ZUncommit INSTANCE = new ZUncommit();
     public static final String EVENT_NAME = "jdk.ZUncommit";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_UNCOMMITTED_NAME = "uncommitted";
-    public static final String ATTRIBUTE_UNCOMMITTED_TYPE = "long";
+    public static final Attribute<ZUncommit, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ZUncommit, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ZUncommit, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ZUncommit, Long> UNCOMMITTED = new Attribute("uncommitted");
+
+    public ZUncommit() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Information about a specific heap region in the Shenandoah GC
  */
-public class ShenandoahHeapRegionInformation {
+public class ShenandoahHeapRegionInformation extends JfrEventType {
+    public static final ShenandoahHeapRegionInformation INSTANCE = new ShenandoahHeapRegionInformation();
     public static final String EVENT_NAME = "jdk.ShenandoahHeapRegionInformation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_INDEX_NAME = "index";
-    public static final String ATTRIBUTE_INDEX_TYPE = "int";
-    public static final String ATTRIBUTE_STATE_NAME = "state";
-    public static final String ATTRIBUTE_STATE_TYPE = "String";
-    public static final String ATTRIBUTE_START_NAME = "start";
-    public static final String ATTRIBUTE_START_TYPE = "long";
-    public static final String ATTRIBUTE_USED_NAME = "used";
-    public static final String ATTRIBUTE_USED_TYPE = "long";
+    public static final Attribute<ShenandoahHeapRegionInformation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ShenandoahHeapRegionInformation, Integer> INDEX = new Attribute("index");
+    public static final Attribute<ShenandoahHeapRegionInformation, java.lang.String> STATE = new Attribute("state");
+    public static final Attribute<ShenandoahHeapRegionInformation, Long> START = new Attribute("start");
+    public static final Attribute<ShenandoahHeapRegionInformation, Long> USED = new Attribute("used");
+
+    public ShenandoahHeapRegionInformation() {
+        super(EVENT_NAME);
+    }
 }

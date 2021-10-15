@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class Flush {
+public class Flush extends JfrEventType {
+    public static final Flush INSTANCE = new Flush();
     public static final String EVENT_NAME = "jdk.Flush";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_FLUSHID_NAME = "flushId";
-    public static final String ATTRIBUTE_FLUSHID_TYPE = "long";
-    public static final String ATTRIBUTE_ELEMENTS_NAME = "elements";
-    public static final String ATTRIBUTE_ELEMENTS_TYPE = "long";
-    public static final String ATTRIBUTE_SIZE_NAME = "size";
-    public static final String ATTRIBUTE_SIZE_TYPE = "long";
+    public static final Attribute<Flush, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<Flush, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<Flush, Long> FLUSH_ID = new Attribute("flushId");
+    public static final Attribute<Flush, Long> ELEMENTS = new Attribute("elements");
+    public static final Attribute<Flush, Long> SIZE = new Attribute("size");
+
+    public Flush() {
+        super(EVENT_NAME);
+    }
 }

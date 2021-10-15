@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Activation of Reserved Stack Area caused by stack overflow with ReservedStackAccess annotated method in call stack
  */
-public class ReservedStackActivation {
+public class ReservedStackActivation extends JfrEventType {
+    public static final ReservedStackActivation INSTANCE = new ReservedStackActivation();
     public static final String EVENT_NAME = "jdk.ReservedStackActivation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_METHOD_NAME = "method";
-    public static final String ATTRIBUTE_METHOD_TYPE = "Method";
+    public static final Attribute<ReservedStackActivation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ReservedStackActivation, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ReservedStackActivation, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ReservedStackActivation, org.moditect.jfrunit.ExpectedMethod> METHOD = new Attribute("method");
+
+    public ReservedStackActivation() {
+        super(EVENT_NAME);
+    }
 }

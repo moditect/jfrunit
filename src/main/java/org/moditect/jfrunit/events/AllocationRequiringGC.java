@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class AllocationRequiringGC {
+public class AllocationRequiringGC extends JfrEventType {
+    public static final AllocationRequiringGC INSTANCE = new AllocationRequiringGC();
     public static final String EVENT_NAME = "jdk.AllocationRequiringGC";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_SIZE_NAME = "size";
-    public static final String ATTRIBUTE_SIZE_TYPE = "long";
+    public static final Attribute<AllocationRequiringGC, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<AllocationRequiringGC, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<AllocationRequiringGC, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<AllocationRequiringGC, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<AllocationRequiringGC, Long> SIZE = new Attribute("size");
+
+    public AllocationRequiringGC() {
+        super(EVENT_NAME);
+    }
 }

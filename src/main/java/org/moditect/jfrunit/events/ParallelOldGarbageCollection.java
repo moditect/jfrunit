@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Extra information specific to Parallel Old Garbage Collections
  */
-public class ParallelOldGarbageCollection {
+public class ParallelOldGarbageCollection extends JfrEventType {
+    public static final ParallelOldGarbageCollection INSTANCE = new ParallelOldGarbageCollection();
     public static final String EVENT_NAME = "jdk.ParallelOldGarbageCollection";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_DENSEPREFIX_NAME = "densePrefix";
-    public static final String ATTRIBUTE_DENSEPREFIX_TYPE = "long";
+    public static final Attribute<ParallelOldGarbageCollection, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ParallelOldGarbageCollection, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ParallelOldGarbageCollection, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<ParallelOldGarbageCollection, Long> DENSE_PREFIX = new Attribute("densePrefix");
+
+    public ParallelOldGarbageCollection() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class SystemProcess {
+public class SystemProcess extends JfrEventType {
+    public static final SystemProcess INSTANCE = new SystemProcess();
     public static final String EVENT_NAME = "jdk.SystemProcess";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_PID_NAME = "pid";
-    public static final String ATTRIBUTE_PID_TYPE = "String";
-    public static final String ATTRIBUTE_COMMANDLINE_NAME = "commandLine";
-    public static final String ATTRIBUTE_COMMANDLINE_TYPE = "String";
+    public static final Attribute<SystemProcess, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<SystemProcess, java.lang.String> PID = new Attribute("pid");
+    public static final Attribute<SystemProcess, java.lang.String> COMMAND_LINE = new Attribute("commandLine");
+
+    public SystemProcess() {
+        super(EVENT_NAME);
+    }
 }

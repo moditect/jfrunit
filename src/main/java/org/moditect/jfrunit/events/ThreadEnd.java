@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ThreadEnd {
+public class ThreadEnd extends JfrEventType {
+    public static final ThreadEnd INSTANCE = new ThreadEnd();
     public static final String EVENT_NAME = "jdk.ThreadEnd";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_THREAD_NAME = "thread";
-    public static final String ATTRIBUTE_THREAD_TYPE = "Thread";
+    public static final Attribute<ThreadEnd, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ThreadEnd, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ThreadEnd, org.moditect.jfrunit.ExpectedThread> THREAD = new Attribute("thread");
+
+    public ThreadEnd() {
+        super(EVENT_NAME);
+    }
 }

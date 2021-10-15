@@ -17,25 +17,26 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ThreadPark {
+public class ThreadPark extends JfrEventType {
+    public static final ThreadPark INSTANCE = new ThreadPark();
     public static final String EVENT_NAME = "jdk.ThreadPark";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_PARKEDCLASS_NAME = "parkedClass";
-    public static final String ATTRIBUTE_PARKEDCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_TIMEOUT_NAME = "timeout";
-    public static final String ATTRIBUTE_TIMEOUT_TYPE = "long";
-    public static final String ATTRIBUTE_UNTIL_NAME = "until";
-    public static final String ATTRIBUTE_UNTIL_TYPE = "long";
-    public static final String ATTRIBUTE_ADDRESS_NAME = "address";
-    public static final String ATTRIBUTE_ADDRESS_TYPE = "long";
+    public static final Attribute<ThreadPark, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ThreadPark, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ThreadPark, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ThreadPark, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ThreadPark, org.moditect.jfrunit.ExpectedClass> PARKED_CLASS = new Attribute("parkedClass");
+    public static final Attribute<ThreadPark, java.time.Duration> TIMEOUT = new Attribute("timeout");
+    public static final Attribute<ThreadPark, java.time.Instant> UNTIL = new Attribute("until");
+    public static final Attribute<ThreadPark, Long> ADDRESS = new Attribute("address");
+
+    public ThreadPark() {
+        super(EVENT_NAME);
+    }
 }

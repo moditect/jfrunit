@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Allocation in new Thread Local Allocation Buffer
  */
-public class ObjectAllocationInNewTLAB {
+public class ObjectAllocationInNewTLAB extends JfrEventType {
+    public static final ObjectAllocationInNewTLAB INSTANCE = new ObjectAllocationInNewTLAB();
     public static final String EVENT_NAME = "jdk.ObjectAllocationInNewTLAB";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_OBJECTCLASS_NAME = "objectClass";
-    public static final String ATTRIBUTE_OBJECTCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_ALLOCATIONSIZE_NAME = "allocationSize";
-    public static final String ATTRIBUTE_ALLOCATIONSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_TLABSIZE_NAME = "tlabSize";
-    public static final String ATTRIBUTE_TLABSIZE_TYPE = "long";
+    public static final Attribute<ObjectAllocationInNewTLAB, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ObjectAllocationInNewTLAB, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ObjectAllocationInNewTLAB, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ObjectAllocationInNewTLAB, org.moditect.jfrunit.ExpectedClass> OBJECT_CLASS = new Attribute("objectClass");
+    public static final Attribute<ObjectAllocationInNewTLAB, Long> ALLOCATION_SIZE = new Attribute("allocationSize");
+    public static final Attribute<ObjectAllocationInNewTLAB, Long> TLAB_SIZE = new Attribute("tlabSize");
+
+    public ObjectAllocationInNewTLAB() {
+        super(EVENT_NAME);
+    }
 }

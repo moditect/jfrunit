@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
+import org.moditect.jfrunit.events.ThreadSleep;
 
 import jdk.jfr.consumer.RecordedEvent;
 
@@ -42,7 +43,7 @@ public class ThreadSleepTest {
 
         List<RecordedEvent> threadSleepEvents = jfrEvents.filter(
                 event("jdk.ThreadSleep")
-                        .with("eventThread", new ExpectedThread(Thread.currentThread()))
+                        .with(ThreadSleep.EVENT_THREAD, new ExpectedThread(Thread.currentThread()))
                         .containStackFrame(new ExpectedStackFrame(elements[0])))
                 .collect(Collectors.toList());
         assertThat(threadSleepEvents.size()).isEqualTo(1);
@@ -58,7 +59,7 @@ public class ThreadSleepTest {
 
         List<RecordedEvent> threadSleepEvents = jfrEvents.filter(
                 event("jdk.ThreadSleep")
-                        .with("eventThread", new ExpectedThread(Thread.currentThread())))
+                        .with(ThreadSleep.EVENT_THREAD, new ExpectedThread(Thread.currentThread())))
                 .collect(Collectors.toList());
         assertThat(threadSleepEvents.size()).isEqualTo(1);
         assertThat(threadSleepEvents.get(0).getStackTrace() == null);
@@ -76,11 +77,10 @@ public class ThreadSleepTest {
 
         List<RecordedEvent> threadSleepEvents = jfrEvents.filter(
                 event("jdk.ThreadSleep")
-                        .with("eventThread", new ExpectedThread(Thread.currentThread()))
+                        .with(ThreadSleep.EVENT_THREAD, new ExpectedThread(Thread.currentThread()))
                         .containStackFrame(new ExpectedStackFrame(elements[0])))
                 .collect(Collectors.toList());
         assertThat(threadSleepEvents.size()).isEqualTo(1);
         assertThat(threadSleepEvents.get(0).getStackTrace() != null);
     }
-
 }

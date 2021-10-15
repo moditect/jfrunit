@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ClassRedefinition {
+public class ClassRedefinition extends JfrEventType {
+    public static final ClassRedefinition INSTANCE = new ClassRedefinition();
     public static final String EVENT_NAME = "jdk.ClassRedefinition";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_REDEFINEDCLASS_NAME = "redefinedClass";
-    public static final String ATTRIBUTE_REDEFINEDCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_CLASSMODIFICATIONCOUNT_NAME = "classModificationCount";
-    public static final String ATTRIBUTE_CLASSMODIFICATIONCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_REDEFINITIONID_NAME = "redefinitionId";
-    public static final String ATTRIBUTE_REDEFINITIONID_TYPE = "long";
+    public static final Attribute<ClassRedefinition, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ClassRedefinition, org.moditect.jfrunit.ExpectedClass> REDEFINED_CLASS = new Attribute("redefinedClass");
+    public static final Attribute<ClassRedefinition, Integer> CLASS_MODIFICATION_COUNT = new Attribute("classModificationCount");
+    public static final Attribute<ClassRedefinition, Long> REDEFINITION_ID = new Attribute("redefinitionId");
+
+    public ClassRedefinition() {
+        super(EVENT_NAME);
+    }
 }

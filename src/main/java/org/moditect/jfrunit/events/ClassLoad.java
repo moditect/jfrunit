@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ClassLoad {
+public class ClassLoad extends JfrEventType {
+    public static final ClassLoad INSTANCE = new ClassLoad();
     public static final String EVENT_NAME = "jdk.ClassLoad";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_LOADEDCLASS_NAME = "loadedClass";
-    public static final String ATTRIBUTE_LOADEDCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_DEFININGCLASSLOADER_NAME = "definingClassLoader";
-    public static final String ATTRIBUTE_DEFININGCLASSLOADER_TYPE = "ClassLoader";
-    public static final String ATTRIBUTE_INITIATINGCLASSLOADER_NAME = "initiatingClassLoader";
-    public static final String ATTRIBUTE_INITIATINGCLASSLOADER_TYPE = "ClassLoader";
+    public static final Attribute<ClassLoad, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ClassLoad, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ClassLoad, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ClassLoad, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ClassLoad, org.moditect.jfrunit.ExpectedClass> LOADED_CLASS = new Attribute("loadedClass");
+    public static final Attribute<ClassLoad, org.moditect.jfrunit.ExpectedClassLoader> DEFINING_CLASS_LOADER = new Attribute("definingClassLoader");
+    public static final Attribute<ClassLoad, org.moditect.jfrunit.ExpectedClassLoader> INITIATING_CLASS_LOADER = new Attribute("initiatingClassLoader");
+
+    public ClassLoad() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ThreadCPULoad {
+public class ThreadCPULoad extends JfrEventType {
+    public static final ThreadCPULoad INSTANCE = new ThreadCPULoad();
     public static final String EVENT_NAME = "jdk.ThreadCPULoad";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_USER_NAME = "user";
-    public static final String ATTRIBUTE_USER_TYPE = "float";
-    public static final String ATTRIBUTE_SYSTEM_NAME = "system";
-    public static final String ATTRIBUTE_SYSTEM_TYPE = "float";
+    public static final Attribute<ThreadCPULoad, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ThreadCPULoad, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ThreadCPULoad, Float> USER = new Attribute("user");
+    public static final Attribute<ThreadCPULoad, Float> SYSTEM = new Attribute("system");
+
+    public ThreadCPULoad() {
+        super(EVENT_NAME);
+    }
 }

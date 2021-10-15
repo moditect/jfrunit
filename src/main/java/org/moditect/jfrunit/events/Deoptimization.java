@@ -17,31 +17,29 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class Deoptimization {
+public class Deoptimization extends JfrEventType {
+    public static final Deoptimization INSTANCE = new Deoptimization();
     public static final String EVENT_NAME = "jdk.Deoptimization";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_COMPILEID_NAME = "compileId";
-    public static final String ATTRIBUTE_COMPILEID_TYPE = "int";
-    public static final String ATTRIBUTE_COMPILER_NAME = "compiler";
-    public static final String ATTRIBUTE_COMPILER_TYPE = "String";
-    public static final String ATTRIBUTE_METHOD_NAME = "method";
-    public static final String ATTRIBUTE_METHOD_TYPE = "Method";
-    public static final String ATTRIBUTE_LINENUMBER_NAME = "lineNumber";
-    public static final String ATTRIBUTE_LINENUMBER_TYPE = "int";
-    public static final String ATTRIBUTE_BCI_NAME = "bci";
-    public static final String ATTRIBUTE_BCI_TYPE = "int";
-    public static final String ATTRIBUTE_INSTRUCTION_NAME = "instruction";
-    public static final String ATTRIBUTE_INSTRUCTION_TYPE = "String";
-    public static final String ATTRIBUTE_REASON_NAME = "reason";
-    public static final String ATTRIBUTE_REASON_TYPE = "String";
-    public static final String ATTRIBUTE_ACTION_NAME = "action";
-    public static final String ATTRIBUTE_ACTION_TYPE = "String";
+    public static final Attribute<Deoptimization, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<Deoptimization, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<Deoptimization, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<Deoptimization, Integer> COMPILE_ID = new Attribute("compileId");
+    public static final Attribute<Deoptimization, java.lang.String> COMPILER = new Attribute("compiler");
+    public static final Attribute<Deoptimization, org.moditect.jfrunit.ExpectedMethod> METHOD = new Attribute("method");
+    public static final Attribute<Deoptimization, Integer> LINE_NUMBER = new Attribute("lineNumber");
+    public static final Attribute<Deoptimization, Integer> BCI = new Attribute("bci");
+    public static final Attribute<Deoptimization, java.lang.String> INSTRUCTION = new Attribute("instruction");
+    public static final Attribute<Deoptimization, java.lang.String> REASON = new Attribute("reason");
+    public static final Attribute<Deoptimization, java.lang.String> ACTION = new Attribute("action");
+
+    public Deoptimization() {
+        super(EVENT_NAME);
+    }
 }

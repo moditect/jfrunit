@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * OS Physical Memory
  */
-public class PhysicalMemory {
+public class PhysicalMemory extends JfrEventType {
+    public static final PhysicalMemory INSTANCE = new PhysicalMemory();
     public static final String EVENT_NAME = "jdk.PhysicalMemory";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_TOTALSIZE_NAME = "totalSize";
-    public static final String ATTRIBUTE_TOTALSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_USEDSIZE_NAME = "usedSize";
-    public static final String ATTRIBUTE_USEDSIZE_TYPE = "long";
+    public static final Attribute<PhysicalMemory, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<PhysicalMemory, Long> TOTAL_SIZE = new Attribute("totalSize");
+    public static final Attribute<PhysicalMemory, Long> USED_SIZE = new Attribute("usedSize");
+
+    public PhysicalMemory() {
+        super(EVENT_NAME);
+    }
 }

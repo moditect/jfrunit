@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * The configuration of the survivors of garbage collection
  */
-public class GCSurvivorConfiguration {
+public class GCSurvivorConfiguration extends JfrEventType {
+    public static final GCSurvivorConfiguration INSTANCE = new GCSurvivorConfiguration();
     public static final String EVENT_NAME = "jdk.GCSurvivorConfiguration";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_MAXTENURINGTHRESHOLD_NAME = "maxTenuringThreshold";
-    public static final String ATTRIBUTE_MAXTENURINGTHRESHOLD_TYPE = "byte";
-    public static final String ATTRIBUTE_INITIALTENURINGTHRESHOLD_NAME = "initialTenuringThreshold";
-    public static final String ATTRIBUTE_INITIALTENURINGTHRESHOLD_TYPE = "byte";
+    public static final Attribute<GCSurvivorConfiguration, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GCSurvivorConfiguration, Byte> MAX_TENURING_THRESHOLD = new Attribute("maxTenuringThreshold");
+    public static final Attribute<GCSurvivorConfiguration, Byte> INITIAL_TENURING_THRESHOLD = new Attribute("initialTenuringThreshold");
+
+    public GCSurvivorConfiguration() {
+        super(EVENT_NAME);
+    }
 }

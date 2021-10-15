@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Reading data from a file
  */
-public class FileRead {
+public class FileRead extends JfrEventType {
+    public static final FileRead INSTANCE = new FileRead();
     public static final String EVENT_NAME = "jdk.FileRead";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_PATH_NAME = "path";
-    public static final String ATTRIBUTE_PATH_TYPE = "String";
-    public static final String ATTRIBUTE_BYTESREAD_NAME = "bytesRead";
-    public static final String ATTRIBUTE_BYTESREAD_TYPE = "long";
-    public static final String ATTRIBUTE_ENDOFFILE_NAME = "endOfFile";
-    public static final String ATTRIBUTE_ENDOFFILE_TYPE = "boolean";
+    public static final Attribute<FileRead, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<FileRead, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<FileRead, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<FileRead, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<FileRead, java.lang.String> PATH = new Attribute("path");
+    public static final Attribute<FileRead, Long> BYTES_READ = new Attribute("bytesRead");
+    public static final Attribute<FileRead, Boolean> END_OF_FILE = new Attribute("endOfFile");
+
+    public FileRead() {
+        super(EVENT_NAME);
+    }
 }

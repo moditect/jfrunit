@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Container CPU usage related information
  */
-public class ContainerCPUUsage {
+public class ContainerCPUUsage extends JfrEventType {
+    public static final ContainerCPUUsage INSTANCE = new ContainerCPUUsage();
     public static final String EVENT_NAME = "jdk.ContainerCPUUsage";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_CPUTIME_NAME = "cpuTime";
-    public static final String ATTRIBUTE_CPUTIME_TYPE = "long";
-    public static final String ATTRIBUTE_CPUUSERTIME_NAME = "cpuUserTime";
-    public static final String ATTRIBUTE_CPUUSERTIME_TYPE = "long";
-    public static final String ATTRIBUTE_CPUSYSTEMTIME_NAME = "cpuSystemTime";
-    public static final String ATTRIBUTE_CPUSYSTEMTIME_TYPE = "long";
+    public static final Attribute<ContainerCPUUsage, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ContainerCPUUsage, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ContainerCPUUsage, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ContainerCPUUsage, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ContainerCPUUsage, java.time.Duration> CPU_TIME = new Attribute("cpuTime");
+    public static final Attribute<ContainerCPUUsage, java.time.Duration> CPU_USER_TIME = new Attribute("cpuUserTime");
+    public static final Attribute<ContainerCPUUsage, java.time.Duration> CPU_SYSTEM_TIME = new Attribute("cpuSystemTime");
+
+    public ContainerCPUUsage() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class G1MMU {
+public class G1MMU extends JfrEventType {
+    public static final G1MMU INSTANCE = new G1MMU();
     public static final String EVENT_NAME = "jdk.G1MMU";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_TIMESLICE_NAME = "timeSlice";
-    public static final String ATTRIBUTE_TIMESLICE_TYPE = "long";
-    public static final String ATTRIBUTE_GCTIME_NAME = "gcTime";
-    public static final String ATTRIBUTE_GCTIME_TYPE = "long";
-    public static final String ATTRIBUTE_PAUSETARGET_NAME = "pauseTarget";
-    public static final String ATTRIBUTE_PAUSETARGET_TYPE = "long";
+    public static final Attribute<G1MMU, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<G1MMU, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<G1MMU, java.time.Duration> TIME_SLICE = new Attribute("timeSlice");
+    public static final Attribute<G1MMU, java.time.Duration> GC_TIME = new Attribute("gcTime");
+    public static final Attribute<G1MMU, java.time.Duration> PAUSE_TARGET = new Attribute("pauseTarget");
+
+    public G1MMU() {
+        super(EVENT_NAME);
+    }
 }

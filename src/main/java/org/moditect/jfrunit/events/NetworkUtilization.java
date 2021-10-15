@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class NetworkUtilization {
+public class NetworkUtilization extends JfrEventType {
+    public static final NetworkUtilization INSTANCE = new NetworkUtilization();
     public static final String EVENT_NAME = "jdk.NetworkUtilization";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_NETWORKINTERFACE_NAME = "networkInterface";
-    public static final String ATTRIBUTE_NETWORKINTERFACE_TYPE = "String";
-    public static final String ATTRIBUTE_READRATE_NAME = "readRate";
-    public static final String ATTRIBUTE_READRATE_TYPE = "long";
-    public static final String ATTRIBUTE_WRITERATE_NAME = "writeRate";
-    public static final String ATTRIBUTE_WRITERATE_TYPE = "long";
+    public static final Attribute<NetworkUtilization, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<NetworkUtilization, java.lang.String> NETWORK_INTERFACE = new Attribute("networkInterface");
+    public static final Attribute<NetworkUtilization, Long> READ_RATE = new Attribute("readRate");
+    public static final Attribute<NetworkUtilization, Long> WRITE_RATE = new Attribute("writeRate");
+
+    public NetworkUtilization() {
+        super(EVENT_NAME);
+    }
 }

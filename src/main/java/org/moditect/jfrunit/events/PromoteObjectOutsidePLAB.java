@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Object survived scavenge and was copied directly to the heap. Supported GCs are Parallel Scavange, G1 and CMS with Parallel New. Due to promotion being done in parallel an object might be reported multiple times as the GC threads race to copy all objects.
  */
-public class PromoteObjectOutsidePLAB {
+public class PromoteObjectOutsidePLAB extends JfrEventType {
+    public static final PromoteObjectOutsidePLAB INSTANCE = new PromoteObjectOutsidePLAB();
     public static final String EVENT_NAME = "jdk.PromoteObjectOutsidePLAB";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_OBJECTCLASS_NAME = "objectClass";
-    public static final String ATTRIBUTE_OBJECTCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_OBJECTSIZE_NAME = "objectSize";
-    public static final String ATTRIBUTE_OBJECTSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_TENURINGAGE_NAME = "tenuringAge";
-    public static final String ATTRIBUTE_TENURINGAGE_TYPE = "int";
-    public static final String ATTRIBUTE_TENURED_NAME = "tenured";
-    public static final String ATTRIBUTE_TENURED_TYPE = "boolean";
+    public static final Attribute<PromoteObjectOutsidePLAB, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<PromoteObjectOutsidePLAB, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<PromoteObjectOutsidePLAB, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<PromoteObjectOutsidePLAB, org.moditect.jfrunit.ExpectedClass> OBJECT_CLASS = new Attribute("objectClass");
+    public static final Attribute<PromoteObjectOutsidePLAB, Long> OBJECT_SIZE = new Attribute("objectSize");
+    public static final Attribute<PromoteObjectOutsidePLAB, Integer> TENURING_AGE = new Attribute("tenuringAge");
+    public static final Attribute<PromoteObjectOutsidePLAB, Boolean> TENURED = new Attribute("tenured");
+
+    public PromoteObjectOutsidePLAB() {
+        super(EVENT_NAME);
+    }
 }

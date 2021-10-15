@@ -17,29 +17,28 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * A potential memory leak
  */
-public class OldObjectSample {
+public class OldObjectSample extends JfrEventType {
+    public static final OldObjectSample INSTANCE = new OldObjectSample();
     public static final String EVENT_NAME = "jdk.OldObjectSample";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_ALLOCATIONTIME_NAME = "allocationTime";
-    public static final String ATTRIBUTE_ALLOCATIONTIME_TYPE = "long";
-    public static final String ATTRIBUTE_OBJECTAGE_NAME = "objectAge";
-    public static final String ATTRIBUTE_OBJECTAGE_TYPE = "long";
-    public static final String ATTRIBUTE_LASTKNOWNHEAPUSAGE_NAME = "lastKnownHeapUsage";
-    public static final String ATTRIBUTE_LASTKNOWNHEAPUSAGE_TYPE = "long";
-    public static final String ATTRIBUTE_OBJECT_NAME = "object";
-    public static final String ATTRIBUTE_OBJECT_TYPE = "OldObject";
-    public static final String ATTRIBUTE_ARRAYELEMENTS_NAME = "arrayElements";
-    public static final String ATTRIBUTE_ARRAYELEMENTS_TYPE = "int";
-    public static final String ATTRIBUTE_ROOT_NAME = "root";
-    public static final String ATTRIBUTE_ROOT_TYPE = "OldObjectGcRoot";
+    public static final Attribute<OldObjectSample, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<OldObjectSample, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<OldObjectSample, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<OldObjectSample, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<OldObjectSample, Long> ALLOCATION_TIME = new Attribute("allocationTime");
+    public static final Attribute<OldObjectSample, Long> OBJECT_AGE = new Attribute("objectAge");
+    public static final Attribute<OldObjectSample, Long> LAST_KNOWN_HEAP_USAGE = new Attribute("lastKnownHeapUsage");
+    public static final Attribute<OldObjectSample, OldObject> OBJECT = new Attribute("object");
+    public static final Attribute<OldObjectSample, Integer> ARRAY_ELEMENTS = new Attribute("arrayElements");
+    public static final Attribute<OldObjectSample, OldObjectGcRoot> ROOT = new Attribute("root");
+
+    public OldObjectSample() {
+        super(EVENT_NAME);
+    }
 }

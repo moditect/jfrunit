@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ClassUnload {
+public class ClassUnload extends JfrEventType {
+    public static final ClassUnload INSTANCE = new ClassUnload();
     public static final String EVENT_NAME = "jdk.ClassUnload";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_UNLOADEDCLASS_NAME = "unloadedClass";
-    public static final String ATTRIBUTE_UNLOADEDCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_DEFININGCLASSLOADER_NAME = "definingClassLoader";
-    public static final String ATTRIBUTE_DEFININGCLASSLOADER_TYPE = "ClassLoader";
+    public static final Attribute<ClassUnload, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ClassUnload, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ClassUnload, org.moditect.jfrunit.ExpectedClass> UNLOADED_CLASS = new Attribute("unloadedClass");
+    public static final Attribute<ClassUnload, org.moditect.jfrunit.ExpectedClassLoader> DEFINING_CLASS_LOADER = new Attribute("definingClassLoader");
+
+    public ClassUnload() {
+        super(EVENT_NAME);
+    }
 }

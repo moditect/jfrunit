@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class G1HeapSummary {
+public class G1HeapSummary extends JfrEventType {
+    public static final G1HeapSummary INSTANCE = new G1HeapSummary();
     public static final String EVENT_NAME = "jdk.G1HeapSummary";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_WHEN_NAME = "when";
-    public static final String ATTRIBUTE_WHEN_TYPE = "String";
-    public static final String ATTRIBUTE_EDENUSEDSIZE_NAME = "edenUsedSize";
-    public static final String ATTRIBUTE_EDENUSEDSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_EDENTOTALSIZE_NAME = "edenTotalSize";
-    public static final String ATTRIBUTE_EDENTOTALSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_SURVIVORUSEDSIZE_NAME = "survivorUsedSize";
-    public static final String ATTRIBUTE_SURVIVORUSEDSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_NUMBEROFREGIONS_NAME = "numberOfRegions";
-    public static final String ATTRIBUTE_NUMBEROFREGIONS_TYPE = "int";
+    public static final Attribute<G1HeapSummary, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<G1HeapSummary, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<G1HeapSummary, java.lang.String> WHEN = new Attribute("when");
+    public static final Attribute<G1HeapSummary, Long> EDEN_USED_SIZE = new Attribute("edenUsedSize");
+    public static final Attribute<G1HeapSummary, Long> EDEN_TOTAL_SIZE = new Attribute("edenTotalSize");
+    public static final Attribute<G1HeapSummary, Long> SURVIVOR_USED_SIZE = new Attribute("survivorUsedSize");
+    public static final Attribute<G1HeapSummary, Integer> NUMBER_OF_REGIONS = new Attribute("numberOfRegions");
+
+    public G1HeapSummary() {
+        super(EVENT_NAME);
+    }
 }

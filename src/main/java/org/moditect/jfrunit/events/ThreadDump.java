@@ -17,13 +17,20 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ThreadDump {
+public class ThreadDump extends JfrEventType {
+    public static final ThreadDump INSTANCE = new ThreadDump();
     public static final String EVENT_NAME = "jdk.ThreadDump";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_RESULT_NAME = "result";
-    public static final String ATTRIBUTE_RESULT_TYPE = "String";
+    public static final Attribute<ThreadDump, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ThreadDump, java.lang.String> RESULT = new Attribute("result");
+
+    public ThreadDump() {
+        super(EVENT_NAME);
+    }
 }

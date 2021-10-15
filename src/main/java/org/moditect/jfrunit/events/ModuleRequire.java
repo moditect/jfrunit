@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * A directed edge representing a dependency
  */
-public class ModuleRequire {
+public class ModuleRequire extends JfrEventType {
+    public static final ModuleRequire INSTANCE = new ModuleRequire();
     public static final String EVENT_NAME = "jdk.ModuleRequire";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_SOURCE_NAME = "source";
-    public static final String ATTRIBUTE_SOURCE_TYPE = "Module";
-    public static final String ATTRIBUTE_REQUIREDMODULE_NAME = "requiredModule";
-    public static final String ATTRIBUTE_REQUIREDMODULE_TYPE = "Module";
+    public static final Attribute<ModuleRequire, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ModuleRequire, org.moditect.jfrunit.events.model.Module> SOURCE = new Attribute("source");
+    public static final Attribute<ModuleRequire, org.moditect.jfrunit.events.model.Module> REQUIRED_MODULE = new Attribute("requiredModule");
+
+    public ModuleRequire() {
+        super(EVENT_NAME);
+    }
 }

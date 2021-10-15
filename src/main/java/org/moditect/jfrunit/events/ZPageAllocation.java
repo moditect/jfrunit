@@ -17,29 +17,28 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Allocation of a ZPage
  */
-public class ZPageAllocation {
+public class ZPageAllocation extends JfrEventType {
+    public static final ZPageAllocation INSTANCE = new ZPageAllocation();
     public static final String EVENT_NAME = "jdk.ZPageAllocation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_TYPE_NAME = "type";
-    public static final String ATTRIBUTE_TYPE_TYPE = "String";
-    public static final String ATTRIBUTE_SIZE_NAME = "size";
-    public static final String ATTRIBUTE_SIZE_TYPE = "long";
-    public static final String ATTRIBUTE_FLUSHED_NAME = "flushed";
-    public static final String ATTRIBUTE_FLUSHED_TYPE = "long";
-    public static final String ATTRIBUTE_COMMITTED_NAME = "committed";
-    public static final String ATTRIBUTE_COMMITTED_TYPE = "long";
-    public static final String ATTRIBUTE_SEGMENTS_NAME = "segments";
-    public static final String ATTRIBUTE_SEGMENTS_TYPE = "int";
-    public static final String ATTRIBUTE_NONBLOCKING_NAME = "nonBlocking";
-    public static final String ATTRIBUTE_NONBLOCKING_TYPE = "boolean";
+    public static final Attribute<ZPageAllocation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ZPageAllocation, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ZPageAllocation, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ZPageAllocation, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ZPageAllocation, java.lang.String> TYPE = new Attribute("type");
+    public static final Attribute<ZPageAllocation, Long> SIZE = new Attribute("size");
+    public static final Attribute<ZPageAllocation, Long> FLUSHED = new Attribute("flushed");
+    public static final Attribute<ZPageAllocation, Long> COMMITTED = new Attribute("committed");
+    public static final Attribute<ZPageAllocation, Integer> SEGMENTS = new Attribute("segments");
+    public static final Attribute<ZPageAllocation, Boolean> NON_BLOCKING = new Attribute("nonBlocking");
+
+    public ZPageAllocation() {
+        super(EVENT_NAME);
+    }
 }

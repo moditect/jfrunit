@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ObjectAllocationSample {
+public class ObjectAllocationSample extends JfrEventType {
+    public static final ObjectAllocationSample INSTANCE = new ObjectAllocationSample();
     public static final String EVENT_NAME = "jdk.ObjectAllocationSample";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_OBJECTCLASS_NAME = "objectClass";
-    public static final String ATTRIBUTE_OBJECTCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_WEIGHT_NAME = "weight";
-    public static final String ATTRIBUTE_WEIGHT_TYPE = "long";
+    public static final Attribute<ObjectAllocationSample, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ObjectAllocationSample, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ObjectAllocationSample, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ObjectAllocationSample, org.moditect.jfrunit.ExpectedClass> OBJECT_CLASS = new Attribute("objectClass");
+    public static final Attribute<ObjectAllocationSample, Long> WEIGHT = new Attribute("weight");
+
+    public ObjectAllocationSample() {
+        super(EVENT_NAME);
+    }
 }

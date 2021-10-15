@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * JVM shutting down
  */
-public class Shutdown {
+public class Shutdown extends JfrEventType {
+    public static final Shutdown INSTANCE = new Shutdown();
     public static final String EVENT_NAME = "jdk.Shutdown";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_REASON_NAME = "reason";
-    public static final String ATTRIBUTE_REASON_TYPE = "String";
+    public static final Attribute<Shutdown, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<Shutdown, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<Shutdown, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<Shutdown, java.lang.String> REASON = new Attribute("reason");
+
+    public Shutdown() {
+        super(EVENT_NAME);
+    }
 }

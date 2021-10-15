@@ -17,13 +17,20 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class OSInformation {
+public class OSInformation extends JfrEventType {
+    public static final OSInformation INSTANCE = new OSInformation();
     public static final String EVENT_NAME = "jdk.OSInformation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_OSVERSION_NAME = "osVersion";
-    public static final String ATTRIBUTE_OSVERSION_TYPE = "String";
+    public static final Attribute<OSInformation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<OSInformation, java.lang.String> OS_VERSION = new Attribute("osVersion");
+
+    public OSInformation() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Time spent waiting for memory to become available
  */
-public class ZAllocationStall {
+public class ZAllocationStall extends JfrEventType {
+    public static final ZAllocationStall INSTANCE = new ZAllocationStall();
     public static final String EVENT_NAME = "jdk.ZAllocationStall";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_TYPE_NAME = "type";
-    public static final String ATTRIBUTE_TYPE_TYPE = "String";
-    public static final String ATTRIBUTE_SIZE_NAME = "size";
-    public static final String ATTRIBUTE_SIZE_TYPE = "long";
+    public static final Attribute<ZAllocationStall, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ZAllocationStall, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ZAllocationStall, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ZAllocationStall, java.lang.String> TYPE = new Attribute("type");
+    public static final Attribute<ZAllocationStall, Long> SIZE = new Attribute("size");
+
+    public ZAllocationStall() {
+        super(EVENT_NAME);
+    }
 }

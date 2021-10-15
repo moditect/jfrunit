@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CompilerConfiguration {
+public class CompilerConfiguration extends JfrEventType {
+    public static final CompilerConfiguration INSTANCE = new CompilerConfiguration();
     public static final String EVENT_NAME = "jdk.CompilerConfiguration";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_THREADCOUNT_NAME = "threadCount";
-    public static final String ATTRIBUTE_THREADCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_TIEREDCOMPILATION_NAME = "tieredCompilation";
-    public static final String ATTRIBUTE_TIEREDCOMPILATION_TYPE = "boolean";
+    public static final Attribute<CompilerConfiguration, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CompilerConfiguration, Integer> THREAD_COUNT = new Attribute("threadCount");
+    public static final Attribute<CompilerConfiguration, Boolean> TIERED_COMPILATION = new Attribute("tieredCompilation");
+
+    public CompilerConfiguration() {
+        super(EVENT_NAME);
+    }
 }

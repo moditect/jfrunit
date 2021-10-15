@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class TenuringDistribution {
+public class TenuringDistribution extends JfrEventType {
+    public static final TenuringDistribution INSTANCE = new TenuringDistribution();
     public static final String EVENT_NAME = "jdk.TenuringDistribution";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_AGE_NAME = "age";
-    public static final String ATTRIBUTE_AGE_TYPE = "int";
-    public static final String ATTRIBUTE_SIZE_NAME = "size";
-    public static final String ATTRIBUTE_SIZE_TYPE = "long";
+    public static final Attribute<TenuringDistribution, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<TenuringDistribution, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<TenuringDistribution, Integer> AGE = new Attribute("age");
+    public static final Attribute<TenuringDistribution, Long> SIZE = new Attribute("size");
+
+    public TenuringDistribution() {
+        super(EVENT_NAME);
+    }
 }

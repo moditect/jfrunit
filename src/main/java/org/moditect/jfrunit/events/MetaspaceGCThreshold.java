@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class MetaspaceGCThreshold {
+public class MetaspaceGCThreshold extends JfrEventType {
+    public static final MetaspaceGCThreshold INSTANCE = new MetaspaceGCThreshold();
     public static final String EVENT_NAME = "jdk.MetaspaceGCThreshold";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_OLDVALUE_NAME = "oldValue";
-    public static final String ATTRIBUTE_OLDVALUE_TYPE = "long";
-    public static final String ATTRIBUTE_NEWVALUE_NAME = "newValue";
-    public static final String ATTRIBUTE_NEWVALUE_TYPE = "long";
-    public static final String ATTRIBUTE_UPDATER_NAME = "updater";
-    public static final String ATTRIBUTE_UPDATER_TYPE = "String";
+    public static final Attribute<MetaspaceGCThreshold, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<MetaspaceGCThreshold, Long> OLD_VALUE = new Attribute("oldValue");
+    public static final Attribute<MetaspaceGCThreshold, Long> NEW_VALUE = new Attribute("newValue");
+    public static final Attribute<MetaspaceGCThreshold, java.lang.String> UPDATER = new Attribute("updater");
+
+    public MetaspaceGCThreshold() {
+        super(EVENT_NAME);
+    }
 }

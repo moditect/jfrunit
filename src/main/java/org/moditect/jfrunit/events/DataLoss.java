@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Data could not be copied out from a buffer, typically because of contention
  */
-public class DataLoss {
+public class DataLoss extends JfrEventType {
+    public static final DataLoss INSTANCE = new DataLoss();
     public static final String EVENT_NAME = "jdk.DataLoss";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_AMOUNT_NAME = "amount";
-    public static final String ATTRIBUTE_AMOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_TOTAL_NAME = "total";
-    public static final String ATTRIBUTE_TOTAL_TYPE = "long";
+    public static final Attribute<DataLoss, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<DataLoss, Long> AMOUNT = new Attribute("amount");
+    public static final Attribute<DataLoss, Long> TOTAL = new Attribute("total");
+
+    public DataLoss() {
+        super(EVENT_NAME);
+    }
 }

@@ -22,6 +22,7 @@ import java.time.Duration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.moditect.jfrunit.events.GarbageCollection;
+import org.moditect.jfrunit.events.JfrEventTypes;
 import org.moditect.jfrunit.events.ThreadSleep;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,13 +44,13 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event(GarbageCollection.EVENT_NAME));
+        assertThat(jfrEvents).contains(event(JfrEventTypes.GARBAGE_COLLECTION));
         assertThat(jfrEvents).contains(
-                event(GarbageCollection.EVENT_NAME).with(GarbageCollection.ATTRIBUTE_CAUSE_NAME, "System.gc()"));
+                event(JfrEventTypes.GARBAGE_COLLECTION).with(GarbageCollection.CAUSE, "System.gc()"));
         assertThat(jfrEvents).contains(
-                event(ThreadSleep.EVENT_NAME).with(ThreadSleep.ATTRIBUTE_TIME_NAME, Duration.ofMillis(50)));
+                event(JfrEventTypes.THREAD_SLEEP).with(ThreadSleep.TIME, Duration.ofMillis(50)));
 
-        assertThat(jfrEvents.filter(event(GarbageCollection.EVENT_NAME))).hasSize(1);
+        assertThat(jfrEvents.filter(event(JfrEventTypes.GARBAGE_COLLECTION))).hasSizeBetween(1, 2);
     }
 
     @Test
@@ -61,14 +62,14 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event("jdk.GarbageCollection"));
+        assertThat(jfrEvents).contains(event(JfrEventTypes.GARBAGE_COLLECTION));
         assertThat(jfrEvents).contains(
-                event("jdk.GarbageCollection").with("cause", "System.gc()"));
+                event(JfrEventTypes.GARBAGE_COLLECTION).with(GarbageCollection.CAUSE, "System.gc()"));
         assertThat(jfrEvents).contains(
-                event("jdk.ThreadSleep").with("time", Duration.ofMillis(50)));
+                event(JfrEventTypes.THREAD_SLEEP).with(ThreadSleep.TIME, Duration.ofMillis(50)));
 
         assertThat(jfrEvents.filter(
-                event("jdk.GarbageCollection").with("cause", "System.gc()")))
+                event(JfrEventTypes.GARBAGE_COLLECTION).with(GarbageCollection.CAUSE, "System.gc()")))
                         .hasSize(1);
     }
 
@@ -80,7 +81,7 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event("jdk.ThreadSleep").has("stackTrace"));
+        assertThat(jfrEvents).contains(event(JfrEventTypes.THREAD_SLEEP).has(ThreadSleep.STACK_TRACE));
     }
 
     @Test
@@ -92,7 +93,7 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event("jfrunit.test.StackTraceDisabledSampleEvent").hasNot("stackTrace"));
+        assertThat(jfrEvents).contains(event("jfrunit.test.StackTraceDisabledSampleEvent").hasNot(ThreadSleep.STACK_TRACE));
     }
 
     @Test
@@ -103,7 +104,7 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event("jdk.ThreadSleep").has("stackTrace"));
+        assertThat(jfrEvents).contains(event(JfrEventTypes.THREAD_SLEEP).has(ThreadSleep.STACK_TRACE));
     }
 
     @Test
@@ -115,7 +116,7 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event("jfrunit.test.StackTraceDisabledSampleEvent").has("stackTrace"));
+        assertThat(jfrEvents).contains(event("jfrunit.test.StackTraceDisabledSampleEvent").has(ThreadSleep.STACK_TRACE));
     }
 
     @Test
@@ -126,7 +127,7 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event("jdk.ThreadSleep").hasNot("stackTrace"));
+        assertThat(jfrEvents).contains(event(JfrEventTypes.THREAD_SLEEP).hasNot(ThreadSleep.STACK_TRACE));
     }
 
     @Test
@@ -138,6 +139,6 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event("jfrunit.test.StackTraceDisabledSampleEvent").hasNot("stackTrace"));
+        assertThat(jfrEvents).contains(event("jfrunit.test.StackTraceDisabledSampleEvent").hasNot(ThreadSleep.STACK_TRACE));
     }
 }

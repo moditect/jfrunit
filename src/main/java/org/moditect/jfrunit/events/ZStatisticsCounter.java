@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ZStatisticsCounter {
+public class ZStatisticsCounter extends JfrEventType {
+    public static final ZStatisticsCounter INSTANCE = new ZStatisticsCounter();
     public static final String EVENT_NAME = "jdk.ZStatisticsCounter";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_ID_NAME = "id";
-    public static final String ATTRIBUTE_ID_TYPE = "String";
-    public static final String ATTRIBUTE_INCREMENT_NAME = "increment";
-    public static final String ATTRIBUTE_INCREMENT_TYPE = "long";
-    public static final String ATTRIBUTE_VALUE_NAME = "value";
-    public static final String ATTRIBUTE_VALUE_TYPE = "long";
+    public static final Attribute<ZStatisticsCounter, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ZStatisticsCounter, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ZStatisticsCounter, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ZStatisticsCounter, java.lang.String> ID = new Attribute("id");
+    public static final Attribute<ZStatisticsCounter, Long> INCREMENT = new Attribute("increment");
+    public static final Attribute<ZStatisticsCounter, Long> VALUE = new Attribute("value");
+
+    public ZStatisticsCounter() {
+        super(EVENT_NAME);
+    }
 }

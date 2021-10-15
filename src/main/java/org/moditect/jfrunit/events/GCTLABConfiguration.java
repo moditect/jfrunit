@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * The configuration of the Thread Local Allocation Buffers (TLABs)
  */
-public class GCTLABConfiguration {
+public class GCTLABConfiguration extends JfrEventType {
+    public static final GCTLABConfiguration INSTANCE = new GCTLABConfiguration();
     public static final String EVENT_NAME = "jdk.GCTLABConfiguration";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_USESTLABS_NAME = "usesTLABs";
-    public static final String ATTRIBUTE_USESTLABS_TYPE = "boolean";
-    public static final String ATTRIBUTE_MINTLABSIZE_NAME = "minTLABSize";
-    public static final String ATTRIBUTE_MINTLABSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_TLABREFILLWASTELIMIT_NAME = "tlabRefillWasteLimit";
-    public static final String ATTRIBUTE_TLABREFILLWASTELIMIT_TYPE = "long";
+    public static final Attribute<GCTLABConfiguration, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GCTLABConfiguration, Boolean> USES_T_L_A_BS = new Attribute("usesTLABs");
+    public static final Attribute<GCTLABConfiguration, Long> MIN_T_L_A_B_SIZE = new Attribute("minTLABSize");
+    public static final Attribute<GCTLABConfiguration, Long> TLAB_REFILL_WASTE_LIMIT = new Attribute("tlabRefillWasteLimit");
+
+    public GCTLABConfiguration() {
+        super(EVENT_NAME);
+    }
 }

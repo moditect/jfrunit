@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Information about a specific heap region in the G1 GC
  */
-public class G1HeapRegionInformation {
+public class G1HeapRegionInformation extends JfrEventType {
+    public static final G1HeapRegionInformation INSTANCE = new G1HeapRegionInformation();
     public static final String EVENT_NAME = "jdk.G1HeapRegionInformation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_INDEX_NAME = "index";
-    public static final String ATTRIBUTE_INDEX_TYPE = "int";
-    public static final String ATTRIBUTE_TYPE_NAME = "type";
-    public static final String ATTRIBUTE_TYPE_TYPE = "String";
-    public static final String ATTRIBUTE_START_NAME = "start";
-    public static final String ATTRIBUTE_START_TYPE = "long";
-    public static final String ATTRIBUTE_USED_NAME = "used";
-    public static final String ATTRIBUTE_USED_TYPE = "long";
+    public static final Attribute<G1HeapRegionInformation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<G1HeapRegionInformation, Integer> INDEX = new Attribute("index");
+    public static final Attribute<G1HeapRegionInformation, java.lang.String> TYPE = new Attribute("type");
+    public static final Attribute<G1HeapRegionInformation, Long> START = new Attribute("start");
+    public static final Attribute<G1HeapRegionInformation, Long> USED = new Attribute("used");
+
+    public G1HeapRegionInformation() {
+        super(EVENT_NAME);
+    }
 }

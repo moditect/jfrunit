@@ -17,27 +17,27 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Parameters used in TLS Handshake
  */
-public class TLSHandshake {
+public class TLSHandshake extends JfrEventType {
+    public static final TLSHandshake INSTANCE = new TLSHandshake();
     public static final String EVENT_NAME = "jdk.TLSHandshake";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_PEERHOST_NAME = "peerHost";
-    public static final String ATTRIBUTE_PEERHOST_TYPE = "String";
-    public static final String ATTRIBUTE_PEERPORT_NAME = "peerPort";
-    public static final String ATTRIBUTE_PEERPORT_TYPE = "int";
-    public static final String ATTRIBUTE_PROTOCOLVERSION_NAME = "protocolVersion";
-    public static final String ATTRIBUTE_PROTOCOLVERSION_TYPE = "String";
-    public static final String ATTRIBUTE_CIPHERSUITE_NAME = "cipherSuite";
-    public static final String ATTRIBUTE_CIPHERSUITE_TYPE = "String";
-    public static final String ATTRIBUTE_CERTIFICATEID_NAME = "certificateId";
-    public static final String ATTRIBUTE_CERTIFICATEID_TYPE = "long";
+    public static final Attribute<TLSHandshake, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<TLSHandshake, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<TLSHandshake, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<TLSHandshake, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<TLSHandshake, java.lang.String> PEER_HOST = new Attribute("peerHost");
+    public static final Attribute<TLSHandshake, Integer> PEER_PORT = new Attribute("peerPort");
+    public static final Attribute<TLSHandshake, java.lang.String> PROTOCOL_VERSION = new Attribute("protocolVersion");
+    public static final Attribute<TLSHandshake, java.lang.String> CIPHER_SUITE = new Attribute("cipherSuite");
+    public static final Attribute<TLSHandshake, Long> CERTIFICATE_ID = new Attribute("certificateId");
+
+    public TLSHandshake() {
+        super(EVENT_NAME);
+    }
 }

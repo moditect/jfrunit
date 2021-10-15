@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Who requested the recording and why
  */
-public class DumpReason {
+public class DumpReason extends JfrEventType {
+    public static final DumpReason INSTANCE = new DumpReason();
     public static final String EVENT_NAME = "jdk.DumpReason";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_REASON_NAME = "reason";
-    public static final String ATTRIBUTE_REASON_TYPE = "String";
-    public static final String ATTRIBUTE_RECORDINGID_NAME = "recordingId";
-    public static final String ATTRIBUTE_RECORDINGID_TYPE = "int";
+    public static final Attribute<DumpReason, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<DumpReason, java.lang.String> REASON = new Attribute("reason");
+    public static final Attribute<DumpReason, Integer> RECORDING_ID = new Attribute("recordingId");
+
+    public DumpReason() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Snapshot of a threads state when in native
  */
-public class NativeMethodSample {
+public class NativeMethodSample extends JfrEventType {
+    public static final NativeMethodSample INSTANCE = new NativeMethodSample();
     public static final String EVENT_NAME = "jdk.NativeMethodSample";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_SAMPLEDTHREAD_NAME = "sampledThread";
-    public static final String ATTRIBUTE_SAMPLEDTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_STATE_NAME = "state";
-    public static final String ATTRIBUTE_STATE_TYPE = "String";
+    public static final Attribute<NativeMethodSample, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<NativeMethodSample, org.moditect.jfrunit.ExpectedThread> SAMPLED_THREAD = new Attribute("sampledThread");
+    public static final Attribute<NativeMethodSample, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<NativeMethodSample, java.lang.String> STATE = new Attribute("state");
+
+    public NativeMethodSample() {
+        super(EVENT_NAME);
+    }
 }

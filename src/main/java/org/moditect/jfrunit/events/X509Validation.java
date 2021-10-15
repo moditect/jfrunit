@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Serial numbers from X.509 Certificates forming chain of trust
  */
-public class X509Validation {
+public class X509Validation extends JfrEventType {
+    public static final X509Validation INSTANCE = new X509Validation();
     public static final String EVENT_NAME = "jdk.X509Validation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_CERTIFICATEID_NAME = "certificateId";
-    public static final String ATTRIBUTE_CERTIFICATEID_TYPE = "long";
-    public static final String ATTRIBUTE_CERTIFICATEPOSITION_NAME = "certificatePosition";
-    public static final String ATTRIBUTE_CERTIFICATEPOSITION_TYPE = "int";
-    public static final String ATTRIBUTE_VALIDATIONCOUNTER_NAME = "validationCounter";
-    public static final String ATTRIBUTE_VALIDATIONCOUNTER_TYPE = "long";
+    public static final Attribute<X509Validation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<X509Validation, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<X509Validation, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<X509Validation, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<X509Validation, Long> CERTIFICATE_ID = new Attribute("certificateId");
+    public static final Attribute<X509Validation, Integer> CERTIFICATE_POSITION = new Attribute("certificatePosition");
+    public static final Attribute<X509Validation, Long> VALIDATION_COUNTER = new Attribute("validationCounter");
+
+    public X509Validation() {
+        super(EVENT_NAME);
+    }
 }

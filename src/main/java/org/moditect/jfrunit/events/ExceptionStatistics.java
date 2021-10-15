@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Number of objects derived from java.lang.Throwable that have been created
  */
-public class ExceptionStatistics {
+public class ExceptionStatistics extends JfrEventType {
+    public static final ExceptionStatistics INSTANCE = new ExceptionStatistics();
     public static final String EVENT_NAME = "jdk.ExceptionStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_THROWABLES_NAME = "throwables";
-    public static final String ATTRIBUTE_THROWABLES_TYPE = "long";
+    public static final Attribute<ExceptionStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ExceptionStatistics, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ExceptionStatistics, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ExceptionStatistics, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ExceptionStatistics, Long> THROWABLES = new Attribute("throwables");
+
+    public ExceptionStatistics() {
+        super(EVENT_NAME);
+    }
 }

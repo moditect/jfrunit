@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Synchronize run state of threads
  */
-public class SafepointStateSynchronization {
+public class SafepointStateSynchronization extends JfrEventType {
+    public static final SafepointStateSynchronization INSTANCE = new SafepointStateSynchronization();
     public static final String EVENT_NAME = "jdk.SafepointStateSynchronization";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_SAFEPOINTID_NAME = "safepointId";
-    public static final String ATTRIBUTE_SAFEPOINTID_TYPE = "long";
-    public static final String ATTRIBUTE_INITIALTHREADCOUNT_NAME = "initialThreadCount";
-    public static final String ATTRIBUTE_INITIALTHREADCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_RUNNINGTHREADCOUNT_NAME = "runningThreadCount";
-    public static final String ATTRIBUTE_RUNNINGTHREADCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_ITERATIONS_NAME = "iterations";
-    public static final String ATTRIBUTE_ITERATIONS_TYPE = "int";
+    public static final Attribute<SafepointStateSynchronization, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<SafepointStateSynchronization, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<SafepointStateSynchronization, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<SafepointStateSynchronization, Long> SAFEPOINT_ID = new Attribute("safepointId");
+    public static final Attribute<SafepointStateSynchronization, Integer> INITIAL_THREAD_COUNT = new Attribute("initialThreadCount");
+    public static final Attribute<SafepointStateSynchronization, Integer> RUNNING_THREAD_COUNT = new Attribute("runningThreadCount");
+    public static final Attribute<SafepointStateSynchronization, Integer> ITERATIONS = new Attribute("iterations");
+
+    public SafepointStateSynchronization() {
+        super(EVENT_NAME);
+    }
 }

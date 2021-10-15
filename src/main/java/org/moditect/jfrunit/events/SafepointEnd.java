@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Safepointing end
  */
-public class SafepointEnd {
+public class SafepointEnd extends JfrEventType {
+    public static final SafepointEnd INSTANCE = new SafepointEnd();
     public static final String EVENT_NAME = "jdk.SafepointEnd";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_SAFEPOINTID_NAME = "safepointId";
-    public static final String ATTRIBUTE_SAFEPOINTID_TYPE = "long";
+    public static final Attribute<SafepointEnd, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<SafepointEnd, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<SafepointEnd, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<SafepointEnd, Long> SAFEPOINT_ID = new Attribute("safepointId");
+
+    public SafepointEnd() {
+        super(EVENT_NAME);
+    }
 }

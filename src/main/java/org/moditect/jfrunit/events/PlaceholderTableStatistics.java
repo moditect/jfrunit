@@ -17,29 +17,28 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class PlaceholderTableStatistics {
+public class PlaceholderTableStatistics extends JfrEventType {
+    public static final PlaceholderTableStatistics INSTANCE = new PlaceholderTableStatistics();
     public static final String EVENT_NAME = "jdk.PlaceholderTableStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_BUCKETCOUNT_NAME = "bucketCount";
-    public static final String ATTRIBUTE_BUCKETCOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_ENTRYCOUNT_NAME = "entryCount";
-    public static final String ATTRIBUTE_ENTRYCOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_TOTALFOOTPRINT_NAME = "totalFootprint";
-    public static final String ATTRIBUTE_TOTALFOOTPRINT_TYPE = "long";
-    public static final String ATTRIBUTE_BUCKETCOUNTMAXIMUM_NAME = "bucketCountMaximum";
-    public static final String ATTRIBUTE_BUCKETCOUNTMAXIMUM_TYPE = "long";
-    public static final String ATTRIBUTE_BUCKETCOUNTAVERAGE_NAME = "bucketCountAverage";
-    public static final String ATTRIBUTE_BUCKETCOUNTAVERAGE_TYPE = "float";
-    public static final String ATTRIBUTE_BUCKETCOUNTVARIANCE_NAME = "bucketCountVariance";
-    public static final String ATTRIBUTE_BUCKETCOUNTVARIANCE_TYPE = "float";
-    public static final String ATTRIBUTE_BUCKETCOUNTSTANDARDDEVIATION_NAME = "bucketCountStandardDeviation";
-    public static final String ATTRIBUTE_BUCKETCOUNTSTANDARDDEVIATION_TYPE = "float";
-    public static final String ATTRIBUTE_INSERTIONRATE_NAME = "insertionRate";
-    public static final String ATTRIBUTE_INSERTIONRATE_TYPE = "float";
-    public static final String ATTRIBUTE_REMOVALRATE_NAME = "removalRate";
-    public static final String ATTRIBUTE_REMOVALRATE_TYPE = "float";
+    public static final Attribute<PlaceholderTableStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<PlaceholderTableStatistics, Long> BUCKET_COUNT = new Attribute("bucketCount");
+    public static final Attribute<PlaceholderTableStatistics, Long> ENTRY_COUNT = new Attribute("entryCount");
+    public static final Attribute<PlaceholderTableStatistics, Long> TOTAL_FOOTPRINT = new Attribute("totalFootprint");
+    public static final Attribute<PlaceholderTableStatistics, Long> BUCKET_COUNT_MAXIMUM = new Attribute("bucketCountMaximum");
+    public static final Attribute<PlaceholderTableStatistics, Float> BUCKET_COUNT_AVERAGE = new Attribute("bucketCountAverage");
+    public static final Attribute<PlaceholderTableStatistics, Float> BUCKET_COUNT_VARIANCE = new Attribute("bucketCountVariance");
+    public static final Attribute<PlaceholderTableStatistics, Float> BUCKET_COUNT_STANDARD_DEVIATION = new Attribute("bucketCountStandardDeviation");
+    public static final Attribute<PlaceholderTableStatistics, Float> INSERTION_RATE = new Attribute("insertionRate");
+    public static final Attribute<PlaceholderTableStatistics, Float> REMOVAL_RATE = new Attribute("removalRate");
+
+    public PlaceholderTableStatistics() {
+        super(EVENT_NAME);
+    }
 }

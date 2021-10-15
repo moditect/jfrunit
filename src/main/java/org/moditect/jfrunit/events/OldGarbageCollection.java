@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Extra information specific to Old Garbage Collections
  */
-public class OldGarbageCollection {
+public class OldGarbageCollection extends JfrEventType {
+    public static final OldGarbageCollection INSTANCE = new OldGarbageCollection();
     public static final String EVENT_NAME = "jdk.OldGarbageCollection";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
+    public static final Attribute<OldGarbageCollection, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<OldGarbageCollection, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<OldGarbageCollection, Integer> GC_ID = new Attribute("gcId");
+
+    public OldGarbageCollection() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class MetaspaceAllocationFailure {
+public class MetaspaceAllocationFailure extends JfrEventType {
+    public static final MetaspaceAllocationFailure INSTANCE = new MetaspaceAllocationFailure();
     public static final String EVENT_NAME = "jdk.MetaspaceAllocationFailure";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_CLASSLOADER_NAME = "classLoader";
-    public static final String ATTRIBUTE_CLASSLOADER_TYPE = "ClassLoader";
-    public static final String ATTRIBUTE_HIDDENCLASSLOADER_NAME = "hiddenClassLoader";
-    public static final String ATTRIBUTE_HIDDENCLASSLOADER_TYPE = "boolean";
-    public static final String ATTRIBUTE_SIZE_NAME = "size";
-    public static final String ATTRIBUTE_SIZE_TYPE = "long";
-    public static final String ATTRIBUTE_METADATATYPE_NAME = "metadataType";
-    public static final String ATTRIBUTE_METADATATYPE_TYPE = "String";
-    public static final String ATTRIBUTE_METASPACEOBJECTTYPE_NAME = "metaspaceObjectType";
-    public static final String ATTRIBUTE_METASPACEOBJECTTYPE_TYPE = "String";
+    public static final Attribute<MetaspaceAllocationFailure, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<MetaspaceAllocationFailure, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<MetaspaceAllocationFailure, org.moditect.jfrunit.ExpectedClassLoader> CLASS_LOADER = new Attribute("classLoader");
+    public static final Attribute<MetaspaceAllocationFailure, Boolean> HIDDEN_CLASS_LOADER = new Attribute("hiddenClassLoader");
+    public static final Attribute<MetaspaceAllocationFailure, Long> SIZE = new Attribute("size");
+    public static final Attribute<MetaspaceAllocationFailure, java.lang.String> METADATA_TYPE = new Attribute("metadataType");
+    public static final Attribute<MetaspaceAllocationFailure, java.lang.String> METASPACE_OBJECT_TYPE = new Attribute("metaspaceObjectType");
+
+    public MetaspaceAllocationFailure() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class InitialEnvironmentVariable {
+public class InitialEnvironmentVariable extends JfrEventType {
+    public static final InitialEnvironmentVariable INSTANCE = new InitialEnvironmentVariable();
     public static final String EVENT_NAME = "jdk.InitialEnvironmentVariable";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_KEY_NAME = "key";
-    public static final String ATTRIBUTE_KEY_TYPE = "String";
-    public static final String ATTRIBUTE_VALUE_NAME = "value";
-    public static final String ATTRIBUTE_VALUE_TYPE = "String";
+    public static final Attribute<InitialEnvironmentVariable, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<InitialEnvironmentVariable, java.lang.String> KEY = new Attribute("key");
+    public static final Attribute<InitialEnvironmentVariable, java.lang.String> VALUE = new Attribute("value");
+
+    public InitialEnvironmentVariable() {
+        super(EVENT_NAME);
+    }
 }

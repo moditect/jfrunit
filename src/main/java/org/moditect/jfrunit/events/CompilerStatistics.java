@@ -17,33 +17,30 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CompilerStatistics {
+public class CompilerStatistics extends JfrEventType {
+    public static final CompilerStatistics INSTANCE = new CompilerStatistics();
     public static final String EVENT_NAME = "jdk.CompilerStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_COMPILECOUNT_NAME = "compileCount";
-    public static final String ATTRIBUTE_COMPILECOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_BAILOUTCOUNT_NAME = "bailoutCount";
-    public static final String ATTRIBUTE_BAILOUTCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_INVALIDATEDCOUNT_NAME = "invalidatedCount";
-    public static final String ATTRIBUTE_INVALIDATEDCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_OSRCOMPILECOUNT_NAME = "osrCompileCount";
-    public static final String ATTRIBUTE_OSRCOMPILECOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_STANDARDCOMPILECOUNT_NAME = "standardCompileCount";
-    public static final String ATTRIBUTE_STANDARDCOMPILECOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_OSRBYTESCOMPILED_NAME = "osrBytesCompiled";
-    public static final String ATTRIBUTE_OSRBYTESCOMPILED_TYPE = "long";
-    public static final String ATTRIBUTE_STANDARDBYTESCOMPILED_NAME = "standardBytesCompiled";
-    public static final String ATTRIBUTE_STANDARDBYTESCOMPILED_TYPE = "long";
-    public static final String ATTRIBUTE_NMETHODSSIZE_NAME = "nmethodsSize";
-    public static final String ATTRIBUTE_NMETHODSSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_NMETHODCODESIZE_NAME = "nmethodCodeSize";
-    public static final String ATTRIBUTE_NMETHODCODESIZE_TYPE = "long";
-    public static final String ATTRIBUTE_PEAKTIMESPENT_NAME = "peakTimeSpent";
-    public static final String ATTRIBUTE_PEAKTIMESPENT_TYPE = "long";
-    public static final String ATTRIBUTE_TOTALTIMESPENT_NAME = "totalTimeSpent";
-    public static final String ATTRIBUTE_TOTALTIMESPENT_TYPE = "long";
+    public static final Attribute<CompilerStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CompilerStatistics, Integer> COMPILE_COUNT = new Attribute("compileCount");
+    public static final Attribute<CompilerStatistics, Integer> BAILOUT_COUNT = new Attribute("bailoutCount");
+    public static final Attribute<CompilerStatistics, Integer> INVALIDATED_COUNT = new Attribute("invalidatedCount");
+    public static final Attribute<CompilerStatistics, Integer> OSR_COMPILE_COUNT = new Attribute("osrCompileCount");
+    public static final Attribute<CompilerStatistics, Integer> STANDARD_COMPILE_COUNT = new Attribute("standardCompileCount");
+    public static final Attribute<CompilerStatistics, Long> OSR_BYTES_COMPILED = new Attribute("osrBytesCompiled");
+    public static final Attribute<CompilerStatistics, Long> STANDARD_BYTES_COMPILED = new Attribute("standardBytesCompiled");
+    public static final Attribute<CompilerStatistics, Long> NMETHODS_SIZE = new Attribute("nmethodsSize");
+    public static final Attribute<CompilerStatistics, Long> NMETHOD_CODE_SIZE = new Attribute("nmethodCodeSize");
+    public static final Attribute<CompilerStatistics, java.time.Duration> PEAK_TIME_SPENT = new Attribute("peakTimeSpent");
+    public static final Attribute<CompilerStatistics, java.time.Duration> TOTAL_TIME_SPENT = new Attribute("totalTimeSpent");
+
+    public CompilerStatistics() {
+        super(EVENT_NAME);
+    }
 }

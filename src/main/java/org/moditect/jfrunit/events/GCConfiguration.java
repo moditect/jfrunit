@@ -17,29 +17,28 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * The configuration of the garbage collector
  */
-public class GCConfiguration {
+public class GCConfiguration extends JfrEventType {
+    public static final GCConfiguration INSTANCE = new GCConfiguration();
     public static final String EVENT_NAME = "jdk.GCConfiguration";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_YOUNGCOLLECTOR_NAME = "youngCollector";
-    public static final String ATTRIBUTE_YOUNGCOLLECTOR_TYPE = "String";
-    public static final String ATTRIBUTE_OLDCOLLECTOR_NAME = "oldCollector";
-    public static final String ATTRIBUTE_OLDCOLLECTOR_TYPE = "String";
-    public static final String ATTRIBUTE_PARALLELGCTHREADS_NAME = "parallelGCThreads";
-    public static final String ATTRIBUTE_PARALLELGCTHREADS_TYPE = "int";
-    public static final String ATTRIBUTE_CONCURRENTGCTHREADS_NAME = "concurrentGCThreads";
-    public static final String ATTRIBUTE_CONCURRENTGCTHREADS_TYPE = "int";
-    public static final String ATTRIBUTE_USESDYNAMICGCTHREADS_NAME = "usesDynamicGCThreads";
-    public static final String ATTRIBUTE_USESDYNAMICGCTHREADS_TYPE = "boolean";
-    public static final String ATTRIBUTE_ISEXPLICITGCCONCURRENT_NAME = "isExplicitGCConcurrent";
-    public static final String ATTRIBUTE_ISEXPLICITGCCONCURRENT_TYPE = "boolean";
-    public static final String ATTRIBUTE_ISEXPLICITGCDISABLED_NAME = "isExplicitGCDisabled";
-    public static final String ATTRIBUTE_ISEXPLICITGCDISABLED_TYPE = "boolean";
-    public static final String ATTRIBUTE_PAUSETARGET_NAME = "pauseTarget";
-    public static final String ATTRIBUTE_PAUSETARGET_TYPE = "long";
-    public static final String ATTRIBUTE_GCTIMERATIO_NAME = "gcTimeRatio";
-    public static final String ATTRIBUTE_GCTIMERATIO_TYPE = "int";
+    public static final Attribute<GCConfiguration, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GCConfiguration, java.lang.String> YOUNG_COLLECTOR = new Attribute("youngCollector");
+    public static final Attribute<GCConfiguration, java.lang.String> OLD_COLLECTOR = new Attribute("oldCollector");
+    public static final Attribute<GCConfiguration, Integer> PARALLEL_G_C_THREADS = new Attribute("parallelGCThreads");
+    public static final Attribute<GCConfiguration, Integer> CONCURRENT_G_C_THREADS = new Attribute("concurrentGCThreads");
+    public static final Attribute<GCConfiguration, Boolean> USES_DYNAMIC_G_C_THREADS = new Attribute("usesDynamicGCThreads");
+    public static final Attribute<GCConfiguration, Boolean> IS_EXPLICIT_G_C_CONCURRENT = new Attribute("isExplicitGCConcurrent");
+    public static final Attribute<GCConfiguration, Boolean> IS_EXPLICIT_G_C_DISABLED = new Attribute("isExplicitGCDisabled");
+    public static final Attribute<GCConfiguration, java.time.Duration> PAUSE_TARGET = new Attribute("pauseTarget");
+    public static final Attribute<GCConfiguration, Integer> GC_TIME_RATIO = new Attribute("gcTimeRatio");
+
+    public GCConfiguration() {
+        super(EVENT_NAME);
+    }
 }

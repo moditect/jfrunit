@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class SyncOnValueBasedClass {
+public class SyncOnValueBasedClass extends JfrEventType {
+    public static final SyncOnValueBasedClass INSTANCE = new SyncOnValueBasedClass();
     public static final String EVENT_NAME = "jdk.SyncOnValueBasedClass";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_VALUEBASEDCLASS_NAME = "valueBasedClass";
-    public static final String ATTRIBUTE_VALUEBASEDCLASS_TYPE = "Class";
+    public static final Attribute<SyncOnValueBasedClass, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<SyncOnValueBasedClass, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<SyncOnValueBasedClass, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<SyncOnValueBasedClass, org.moditect.jfrunit.ExpectedClass> VALUE_BASED_CLASS = new Attribute("valueBasedClass");
+
+    public SyncOnValueBasedClass() {
+        super(EVENT_NAME);
+    }
 }

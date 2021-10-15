@@ -17,29 +17,28 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CodeCacheConfiguration {
+public class CodeCacheConfiguration extends JfrEventType {
+    public static final CodeCacheConfiguration INSTANCE = new CodeCacheConfiguration();
     public static final String EVENT_NAME = "jdk.CodeCacheConfiguration";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_INITIALSIZE_NAME = "initialSize";
-    public static final String ATTRIBUTE_INITIALSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_RESERVEDSIZE_NAME = "reservedSize";
-    public static final String ATTRIBUTE_RESERVEDSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_NONNMETHODSIZE_NAME = "nonNMethodSize";
-    public static final String ATTRIBUTE_NONNMETHODSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_PROFILEDSIZE_NAME = "profiledSize";
-    public static final String ATTRIBUTE_PROFILEDSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_NONPROFILEDSIZE_NAME = "nonProfiledSize";
-    public static final String ATTRIBUTE_NONPROFILEDSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_EXPANSIONSIZE_NAME = "expansionSize";
-    public static final String ATTRIBUTE_EXPANSIONSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_MINBLOCKLENGTH_NAME = "minBlockLength";
-    public static final String ATTRIBUTE_MINBLOCKLENGTH_TYPE = "long";
-    public static final String ATTRIBUTE_STARTADDRESS_NAME = "startAddress";
-    public static final String ATTRIBUTE_STARTADDRESS_TYPE = "long";
-    public static final String ATTRIBUTE_RESERVEDTOPADDRESS_NAME = "reservedTopAddress";
-    public static final String ATTRIBUTE_RESERVEDTOPADDRESS_TYPE = "long";
+    public static final Attribute<CodeCacheConfiguration, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CodeCacheConfiguration, Long> INITIAL_SIZE = new Attribute("initialSize");
+    public static final Attribute<CodeCacheConfiguration, Long> RESERVED_SIZE = new Attribute("reservedSize");
+    public static final Attribute<CodeCacheConfiguration, Long> NON_N_METHOD_SIZE = new Attribute("nonNMethodSize");
+    public static final Attribute<CodeCacheConfiguration, Long> PROFILED_SIZE = new Attribute("profiledSize");
+    public static final Attribute<CodeCacheConfiguration, Long> NON_PROFILED_SIZE = new Attribute("nonProfiledSize");
+    public static final Attribute<CodeCacheConfiguration, Long> EXPANSION_SIZE = new Attribute("expansionSize");
+    public static final Attribute<CodeCacheConfiguration, Long> MIN_BLOCK_LENGTH = new Attribute("minBlockLength");
+    public static final Attribute<CodeCacheConfiguration, Long> START_ADDRESS = new Attribute("startAddress");
+    public static final Attribute<CodeCacheConfiguration, Long> RESERVED_TOP_ADDRESS = new Attribute("reservedTopAddress");
+
+    public CodeCacheConfiguration() {
+        super(EVENT_NAME);
+    }
 }

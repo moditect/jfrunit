@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Modification of Security property
  */
-public class SecurityPropertyModification {
+public class SecurityPropertyModification extends JfrEventType {
+    public static final SecurityPropertyModification INSTANCE = new SecurityPropertyModification();
     public static final String EVENT_NAME = "jdk.SecurityPropertyModification";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_KEY_NAME = "key";
-    public static final String ATTRIBUTE_KEY_TYPE = "String";
-    public static final String ATTRIBUTE_VALUE_NAME = "value";
-    public static final String ATTRIBUTE_VALUE_TYPE = "String";
+    public static final Attribute<SecurityPropertyModification, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<SecurityPropertyModification, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<SecurityPropertyModification, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<SecurityPropertyModification, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<SecurityPropertyModification, java.lang.String> KEY = new Attribute("key");
+    public static final Attribute<SecurityPropertyModification, java.lang.String> VALUE = new Attribute("value");
+
+    public SecurityPropertyModification() {
+        super(EVENT_NAME);
+    }
 }

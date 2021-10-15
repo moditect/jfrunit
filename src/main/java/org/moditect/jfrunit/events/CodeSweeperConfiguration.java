@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CodeSweeperConfiguration {
+public class CodeSweeperConfiguration extends JfrEventType {
+    public static final CodeSweeperConfiguration INSTANCE = new CodeSweeperConfiguration();
     public static final String EVENT_NAME = "jdk.CodeSweeperConfiguration";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_SWEEPERENABLED_NAME = "sweeperEnabled";
-    public static final String ATTRIBUTE_SWEEPERENABLED_TYPE = "boolean";
-    public static final String ATTRIBUTE_FLUSHINGENABLED_NAME = "flushingEnabled";
-    public static final String ATTRIBUTE_FLUSHINGENABLED_TYPE = "boolean";
-    public static final String ATTRIBUTE_SWEEPTHRESHOLD_NAME = "sweepThreshold";
-    public static final String ATTRIBUTE_SWEEPTHRESHOLD_TYPE = "long";
+    public static final Attribute<CodeSweeperConfiguration, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CodeSweeperConfiguration, Boolean> SWEEPER_ENABLED = new Attribute("sweeperEnabled");
+    public static final Attribute<CodeSweeperConfiguration, Boolean> FLUSHING_ENABLED = new Attribute("flushingEnabled");
+    public static final Attribute<CodeSweeperConfiguration, Long> SWEEP_THRESHOLD = new Attribute("sweepThreshold");
+
+    public CodeSweeperConfiguration() {
+        super(EVENT_NAME);
+    }
 }

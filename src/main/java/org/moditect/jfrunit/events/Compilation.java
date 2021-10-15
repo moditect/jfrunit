@@ -17,31 +17,29 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class Compilation {
+public class Compilation extends JfrEventType {
+    public static final Compilation INSTANCE = new Compilation();
     public static final String EVENT_NAME = "jdk.Compilation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_COMPILEID_NAME = "compileId";
-    public static final String ATTRIBUTE_COMPILEID_TYPE = "int";
-    public static final String ATTRIBUTE_COMPILER_NAME = "compiler";
-    public static final String ATTRIBUTE_COMPILER_TYPE = "String";
-    public static final String ATTRIBUTE_METHOD_NAME = "method";
-    public static final String ATTRIBUTE_METHOD_TYPE = "Method";
-    public static final String ATTRIBUTE_COMPILELEVEL_NAME = "compileLevel";
-    public static final String ATTRIBUTE_COMPILELEVEL_TYPE = "short";
-    public static final String ATTRIBUTE_SUCCEDED_NAME = "succeded";
-    public static final String ATTRIBUTE_SUCCEDED_TYPE = "boolean";
-    public static final String ATTRIBUTE_ISOSR_NAME = "isOsr";
-    public static final String ATTRIBUTE_ISOSR_TYPE = "boolean";
-    public static final String ATTRIBUTE_CODESIZE_NAME = "codeSize";
-    public static final String ATTRIBUTE_CODESIZE_TYPE = "long";
-    public static final String ATTRIBUTE_INLINEDBYTES_NAME = "inlinedBytes";
-    public static final String ATTRIBUTE_INLINEDBYTES_TYPE = "long";
+    public static final Attribute<Compilation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<Compilation, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<Compilation, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<Compilation, Integer> COMPILE_ID = new Attribute("compileId");
+    public static final Attribute<Compilation, java.lang.String> COMPILER = new Attribute("compiler");
+    public static final Attribute<Compilation, org.moditect.jfrunit.ExpectedMethod> METHOD = new Attribute("method");
+    public static final Attribute<Compilation, Short> COMPILE_LEVEL = new Attribute("compileLevel");
+    public static final Attribute<Compilation, Boolean> SUCCEDED = new Attribute("succeded");
+    public static final Attribute<Compilation, Boolean> IS_OSR = new Attribute("isOsr");
+    public static final Attribute<Compilation, Long> CODE_SIZE = new Attribute("codeSize");
+    public static final Attribute<Compilation, Long> INLINED_BYTES = new Attribute("inlinedBytes");
+
+    public Compilation() {
+        super(EVENT_NAME);
+    }
 }

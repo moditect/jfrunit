@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CPUInformation {
+public class CPUInformation extends JfrEventType {
+    public static final CPUInformation INSTANCE = new CPUInformation();
     public static final String EVENT_NAME = "jdk.CPUInformation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_CPU_NAME = "cpu";
-    public static final String ATTRIBUTE_CPU_TYPE = "String";
-    public static final String ATTRIBUTE_DESCRIPTION_NAME = "description";
-    public static final String ATTRIBUTE_DESCRIPTION_TYPE = "String";
-    public static final String ATTRIBUTE_SOCKETS_NAME = "sockets";
-    public static final String ATTRIBUTE_SOCKETS_TYPE = "int";
-    public static final String ATTRIBUTE_CORES_NAME = "cores";
-    public static final String ATTRIBUTE_CORES_TYPE = "int";
-    public static final String ATTRIBUTE_HWTHREADS_NAME = "hwThreads";
-    public static final String ATTRIBUTE_HWTHREADS_TYPE = "int";
+    public static final Attribute<CPUInformation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CPUInformation, java.lang.String> CPU = new Attribute("cpu");
+    public static final Attribute<CPUInformation, java.lang.String> DESCRIPTION = new Attribute("description");
+    public static final Attribute<CPUInformation, Integer> SOCKETS = new Attribute("sockets");
+    public static final Attribute<CPUInformation, Integer> CORES = new Attribute("cores");
+    public static final Attribute<CPUInformation, Integer> HW_THREADS = new Attribute("hwThreads");
+
+    public CPUInformation() {
+        super(EVENT_NAME);
+    }
 }

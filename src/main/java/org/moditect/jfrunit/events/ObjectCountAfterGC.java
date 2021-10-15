@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ObjectCountAfterGC {
+public class ObjectCountAfterGC extends JfrEventType {
+    public static final ObjectCountAfterGC INSTANCE = new ObjectCountAfterGC();
     public static final String EVENT_NAME = "jdk.ObjectCountAfterGC";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_OBJECTCLASS_NAME = "objectClass";
-    public static final String ATTRIBUTE_OBJECTCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_COUNT_NAME = "count";
-    public static final String ATTRIBUTE_COUNT_TYPE = "long";
-    public static final String ATTRIBUTE_TOTALSIZE_NAME = "totalSize";
-    public static final String ATTRIBUTE_TOTALSIZE_TYPE = "long";
+    public static final Attribute<ObjectCountAfterGC, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ObjectCountAfterGC, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<ObjectCountAfterGC, org.moditect.jfrunit.ExpectedClass> OBJECT_CLASS = new Attribute("objectClass");
+    public static final Attribute<ObjectCountAfterGC, Long> COUNT = new Attribute("count");
+    public static final Attribute<ObjectCountAfterGC, Long> TOTAL_SIZE = new Attribute("totalSize");
+
+    public ObjectCountAfterGC() {
+        super(EVENT_NAME);
+    }
 }

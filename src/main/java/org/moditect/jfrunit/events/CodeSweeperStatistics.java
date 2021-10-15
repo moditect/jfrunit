@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CodeSweeperStatistics {
+public class CodeSweeperStatistics extends JfrEventType {
+    public static final CodeSweeperStatistics INSTANCE = new CodeSweeperStatistics();
     public static final String EVENT_NAME = "jdk.CodeSweeperStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_SWEEPCOUNT_NAME = "sweepCount";
-    public static final String ATTRIBUTE_SWEEPCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_METHODRECLAIMEDCOUNT_NAME = "methodReclaimedCount";
-    public static final String ATTRIBUTE_METHODRECLAIMEDCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_TOTALSWEEPTIME_NAME = "totalSweepTime";
-    public static final String ATTRIBUTE_TOTALSWEEPTIME_TYPE = "long";
-    public static final String ATTRIBUTE_PEAKFRACTIONTIME_NAME = "peakFractionTime";
-    public static final String ATTRIBUTE_PEAKFRACTIONTIME_TYPE = "long";
-    public static final String ATTRIBUTE_PEAKSWEEPTIME_NAME = "peakSweepTime";
-    public static final String ATTRIBUTE_PEAKSWEEPTIME_TYPE = "long";
+    public static final Attribute<CodeSweeperStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CodeSweeperStatistics, Integer> SWEEP_COUNT = new Attribute("sweepCount");
+    public static final Attribute<CodeSweeperStatistics, Integer> METHOD_RECLAIMED_COUNT = new Attribute("methodReclaimedCount");
+    public static final Attribute<CodeSweeperStatistics, Long> TOTAL_SWEEP_TIME = new Attribute("totalSweepTime");
+    public static final Attribute<CodeSweeperStatistics, Long> PEAK_FRACTION_TIME = new Attribute("peakFractionTime");
+    public static final Attribute<CodeSweeperStatistics, Long> PEAK_SWEEP_TIME = new Attribute("peakSweepTime");
+
+    public CodeSweeperStatistics() {
+        super(EVENT_NAME);
+    }
 }

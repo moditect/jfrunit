@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CompilationFailure {
+public class CompilationFailure extends JfrEventType {
+    public static final CompilationFailure INSTANCE = new CompilationFailure();
     public static final String EVENT_NAME = "jdk.CompilationFailure";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_FAILUREMESSAGE_NAME = "failureMessage";
-    public static final String ATTRIBUTE_FAILUREMESSAGE_TYPE = "String";
-    public static final String ATTRIBUTE_COMPILEID_NAME = "compileId";
-    public static final String ATTRIBUTE_COMPILEID_TYPE = "int";
+    public static final Attribute<CompilationFailure, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CompilationFailure, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<CompilationFailure, java.lang.String> FAILURE_MESSAGE = new Attribute("failureMessage");
+    public static final Attribute<CompilationFailure, Integer> COMPILE_ID = new Attribute("compileId");
+
+    public CompilationFailure() {
+        super(EVENT_NAME);
+    }
 }

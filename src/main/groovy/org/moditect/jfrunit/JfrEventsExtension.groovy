@@ -22,7 +22,7 @@ import java.util.stream.Collectors
 class JfrEventsExtension {
 
     static JfrEventsList list(JfrEvents self) {
-        return list(self, ExpectedEvent.event(null))
+        return list(self, ExpectedEvent.event((String) null))
     }
 
     static JfrEventsList list(JfrEvents self, String eventName) {

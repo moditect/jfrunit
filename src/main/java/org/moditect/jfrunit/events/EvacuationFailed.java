@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Evacuation of an object failed
  */
-public class EvacuationFailed {
+public class EvacuationFailed extends JfrEventType {
+    public static final EvacuationFailed INSTANCE = new EvacuationFailed();
     public static final String EVENT_NAME = "jdk.EvacuationFailed";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_EVACUATIONFAILED_NAME = "evacuationFailed";
-    public static final String ATTRIBUTE_EVACUATIONFAILED_TYPE = "CopyFailed";
+    public static final Attribute<EvacuationFailed, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<EvacuationFailed, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<EvacuationFailed, CopyFailed> EVACUATION_FAILED = new Attribute("evacuationFailed");
+
+    public EvacuationFailed() {
+        super(EVENT_NAME);
+    }
 }

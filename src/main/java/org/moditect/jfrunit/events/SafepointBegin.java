@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Safepointing begin
  */
-public class SafepointBegin {
+public class SafepointBegin extends JfrEventType {
+    public static final SafepointBegin INSTANCE = new SafepointBegin();
     public static final String EVENT_NAME = "jdk.SafepointBegin";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_SAFEPOINTID_NAME = "safepointId";
-    public static final String ATTRIBUTE_SAFEPOINTID_TYPE = "long";
-    public static final String ATTRIBUTE_TOTALTHREADCOUNT_NAME = "totalThreadCount";
-    public static final String ATTRIBUTE_TOTALTHREADCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_JNICRITICALTHREADCOUNT_NAME = "jniCriticalThreadCount";
-    public static final String ATTRIBUTE_JNICRITICALTHREADCOUNT_TYPE = "int";
+    public static final Attribute<SafepointBegin, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<SafepointBegin, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<SafepointBegin, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<SafepointBegin, Long> SAFEPOINT_ID = new Attribute("safepointId");
+    public static final Attribute<SafepointBegin, Integer> TOTAL_THREAD_COUNT = new Attribute("totalThreadCount");
+    public static final Attribute<SafepointBegin, Integer> JNI_CRITICAL_THREAD_COUNT = new Attribute("jniCriticalThreadCount");
+
+    public SafepointBegin() {
+        super(EVENT_NAME);
+    }
 }

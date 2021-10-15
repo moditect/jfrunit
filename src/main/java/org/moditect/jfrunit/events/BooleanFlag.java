@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class BooleanFlag {
+public class BooleanFlag extends JfrEventType {
+    public static final BooleanFlag INSTANCE = new BooleanFlag();
     public static final String EVENT_NAME = "jdk.BooleanFlag";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_NAME_NAME = "name";
-    public static final String ATTRIBUTE_NAME_TYPE = "String";
-    public static final String ATTRIBUTE_VALUE_NAME = "value";
-    public static final String ATTRIBUTE_VALUE_TYPE = "boolean";
-    public static final String ATTRIBUTE_ORIGIN_NAME = "origin";
-    public static final String ATTRIBUTE_ORIGIN_TYPE = "String";
+    public static final Attribute<BooleanFlag, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<BooleanFlag, java.lang.String> NAME = new Attribute("name");
+    public static final Attribute<BooleanFlag, Boolean> VALUE = new Attribute("value");
+    public static final Attribute<BooleanFlag, java.lang.String> ORIGIN = new Attribute("origin");
+
+    public BooleanFlag() {
+        super(EVENT_NAME);
+    }
 }

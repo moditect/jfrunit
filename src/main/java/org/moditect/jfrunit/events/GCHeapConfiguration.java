@@ -17,25 +17,26 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * The configuration of the garbage collected heap
  */
-public class GCHeapConfiguration {
+public class GCHeapConfiguration extends JfrEventType {
+    public static final GCHeapConfiguration INSTANCE = new GCHeapConfiguration();
     public static final String EVENT_NAME = "jdk.GCHeapConfiguration";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_MINSIZE_NAME = "minSize";
-    public static final String ATTRIBUTE_MINSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_MAXSIZE_NAME = "maxSize";
-    public static final String ATTRIBUTE_MAXSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_INITIALSIZE_NAME = "initialSize";
-    public static final String ATTRIBUTE_INITIALSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_USESCOMPRESSEDOOPS_NAME = "usesCompressedOops";
-    public static final String ATTRIBUTE_USESCOMPRESSEDOOPS_TYPE = "boolean";
-    public static final String ATTRIBUTE_COMPRESSEDOOPSMODE_NAME = "compressedOopsMode";
-    public static final String ATTRIBUTE_COMPRESSEDOOPSMODE_TYPE = "String";
-    public static final String ATTRIBUTE_OBJECTALIGNMENT_NAME = "objectAlignment";
-    public static final String ATTRIBUTE_OBJECTALIGNMENT_TYPE = "long";
-    public static final String ATTRIBUTE_HEAPADDRESSBITS_NAME = "heapAddressBits";
-    public static final String ATTRIBUTE_HEAPADDRESSBITS_TYPE = "byte";
+    public static final Attribute<GCHeapConfiguration, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GCHeapConfiguration, Long> MIN_SIZE = new Attribute("minSize");
+    public static final Attribute<GCHeapConfiguration, Long> MAX_SIZE = new Attribute("maxSize");
+    public static final Attribute<GCHeapConfiguration, Long> INITIAL_SIZE = new Attribute("initialSize");
+    public static final Attribute<GCHeapConfiguration, Boolean> USES_COMPRESSED_OOPS = new Attribute("usesCompressedOops");
+    public static final Attribute<GCHeapConfiguration, java.lang.String> COMPRESSED_OOPS_MODE = new Attribute("compressedOopsMode");
+    public static final Attribute<GCHeapConfiguration, Long> OBJECT_ALIGNMENT = new Attribute("objectAlignment");
+    public static final Attribute<GCHeapConfiguration, Byte> HEAP_ADDRESS_BITS = new Attribute("heapAddressBits");
+
+    public GCHeapConfiguration() {
+        super(EVENT_NAME);
+    }
 }

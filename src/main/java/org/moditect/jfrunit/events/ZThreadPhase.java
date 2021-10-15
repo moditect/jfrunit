@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ZThreadPhase {
+public class ZThreadPhase extends JfrEventType {
+    public static final ZThreadPhase INSTANCE = new ZThreadPhase();
     public static final String EVENT_NAME = "jdk.ZThreadPhase";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_NAME_NAME = "name";
-    public static final String ATTRIBUTE_NAME_TYPE = "String";
+    public static final Attribute<ZThreadPhase, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ZThreadPhase, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ZThreadPhase, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ZThreadPhase, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<ZThreadPhase, java.lang.String> NAME = new Attribute("name");
+
+    public ZThreadPhase() {
+        super(EVENT_NAME);
+    }
 }

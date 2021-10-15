@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class StringFlag {
+public class StringFlag extends JfrEventType {
+    public static final StringFlag INSTANCE = new StringFlag();
     public static final String EVENT_NAME = "jdk.StringFlag";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_NAME_NAME = "name";
-    public static final String ATTRIBUTE_NAME_TYPE = "String";
-    public static final String ATTRIBUTE_VALUE_NAME = "value";
-    public static final String ATTRIBUTE_VALUE_TYPE = "String";
-    public static final String ATTRIBUTE_ORIGIN_NAME = "origin";
-    public static final String ATTRIBUTE_ORIGIN_TYPE = "String";
+    public static final Attribute<StringFlag, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<StringFlag, java.lang.String> NAME = new Attribute("name");
+    public static final Attribute<StringFlag, java.lang.String> VALUE = new Attribute("value");
+    public static final Attribute<StringFlag, java.lang.String> ORIGIN = new Attribute("origin");
+
+    public StringFlag() {
+        super(EVENT_NAME);
+    }
 }

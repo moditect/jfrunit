@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Unmapping of memory
  */
-public class ZUnmap {
+public class ZUnmap extends JfrEventType {
+    public static final ZUnmap INSTANCE = new ZUnmap();
     public static final String EVENT_NAME = "jdk.ZUnmap";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_UNMAPPED_NAME = "unmapped";
-    public static final String ATTRIBUTE_UNMAPPED_TYPE = "long";
+    public static final Attribute<ZUnmap, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ZUnmap, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ZUnmap, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ZUnmap, Long> UNMAPPED = new Attribute("unmapped");
+
+    public ZUnmap() {
+        super(EVENT_NAME);
+    }
 }

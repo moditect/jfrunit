@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Writing data to a file
  */
-public class FileWrite {
+public class FileWrite extends JfrEventType {
+    public static final FileWrite INSTANCE = new FileWrite();
     public static final String EVENT_NAME = "jdk.FileWrite";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_PATH_NAME = "path";
-    public static final String ATTRIBUTE_PATH_TYPE = "String";
-    public static final String ATTRIBUTE_BYTESWRITTEN_NAME = "bytesWritten";
-    public static final String ATTRIBUTE_BYTESWRITTEN_TYPE = "long";
+    public static final Attribute<FileWrite, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<FileWrite, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<FileWrite, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<FileWrite, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<FileWrite, java.lang.String> PATH = new Attribute("path");
+    public static final Attribute<FileWrite, Long> BYTES_WRITTEN = new Attribute("bytesWritten");
+
+    public FileWrite() {
+        super(EVENT_NAME);
+    }
 }

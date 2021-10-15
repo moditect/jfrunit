@@ -17,29 +17,28 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Reading data from a socket
  */
-public class SocketRead {
+public class SocketRead extends JfrEventType {
+    public static final SocketRead INSTANCE = new SocketRead();
     public static final String EVENT_NAME = "jdk.SocketRead";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_HOST_NAME = "host";
-    public static final String ATTRIBUTE_HOST_TYPE = "String";
-    public static final String ATTRIBUTE_ADDRESS_NAME = "address";
-    public static final String ATTRIBUTE_ADDRESS_TYPE = "String";
-    public static final String ATTRIBUTE_PORT_NAME = "port";
-    public static final String ATTRIBUTE_PORT_TYPE = "int";
-    public static final String ATTRIBUTE_TIMEOUT_NAME = "timeout";
-    public static final String ATTRIBUTE_TIMEOUT_TYPE = "long";
-    public static final String ATTRIBUTE_BYTESREAD_NAME = "bytesRead";
-    public static final String ATTRIBUTE_BYTESREAD_TYPE = "long";
-    public static final String ATTRIBUTE_ENDOFSTREAM_NAME = "endOfStream";
-    public static final String ATTRIBUTE_ENDOFSTREAM_TYPE = "boolean";
+    public static final Attribute<SocketRead, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<SocketRead, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<SocketRead, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<SocketRead, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<SocketRead, java.lang.String> HOST = new Attribute("host");
+    public static final Attribute<SocketRead, java.lang.String> ADDRESS = new Attribute("address");
+    public static final Attribute<SocketRead, Integer> PORT = new Attribute("port");
+    public static final Attribute<SocketRead, java.time.Duration> TIMEOUT = new Attribute("timeout");
+    public static final Attribute<SocketRead, Long> BYTES_READ = new Attribute("bytesRead");
+    public static final Attribute<SocketRead, Boolean> END_OF_STREAM = new Attribute("endOfStream");
+
+    public SocketRead() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,25 +17,26 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class HeapDump {
+public class HeapDump extends JfrEventType {
+    public static final HeapDump INSTANCE = new HeapDump();
     public static final String EVENT_NAME = "jdk.HeapDump";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_DESTINATION_NAME = "destination";
-    public static final String ATTRIBUTE_DESTINATION_TYPE = "String";
-    public static final String ATTRIBUTE_SIZE_NAME = "size";
-    public static final String ATTRIBUTE_SIZE_TYPE = "long";
-    public static final String ATTRIBUTE_GCBEFOREDUMP_NAME = "gcBeforeDump";
-    public static final String ATTRIBUTE_GCBEFOREDUMP_TYPE = "boolean";
-    public static final String ATTRIBUTE_ONOUTOFMEMORYERROR_NAME = "onOutOfMemoryError";
-    public static final String ATTRIBUTE_ONOUTOFMEMORYERROR_TYPE = "boolean";
+    public static final Attribute<HeapDump, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<HeapDump, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<HeapDump, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<HeapDump, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<HeapDump, java.lang.String> DESTINATION = new Attribute("destination");
+    public static final Attribute<HeapDump, Long> SIZE = new Attribute("size");
+    public static final Attribute<HeapDump, Boolean> GC_BEFORE_DUMP = new Attribute("gcBeforeDump");
+    public static final Attribute<HeapDump, Boolean> ON_OUT_OF_MEMORY_ERROR = new Attribute("onOutOfMemoryError");
+
+    public HeapDump() {
+        super(EVENT_NAME);
+    }
 }

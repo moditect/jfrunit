@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ActiveSetting {
+public class ActiveSetting extends JfrEventType {
+    public static final ActiveSetting INSTANCE = new ActiveSetting();
     public static final String EVENT_NAME = "jdk.ActiveSetting";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_ID_NAME = "id";
-    public static final String ATTRIBUTE_ID_TYPE = "long";
-    public static final String ATTRIBUTE_NAME_NAME = "name";
-    public static final String ATTRIBUTE_NAME_TYPE = "String";
-    public static final String ATTRIBUTE_VALUE_NAME = "value";
-    public static final String ATTRIBUTE_VALUE_TYPE = "String";
+    public static final Attribute<ActiveSetting, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ActiveSetting, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ActiveSetting, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ActiveSetting, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ActiveSetting, Long> ID = new Attribute("id");
+    public static final Attribute<ActiveSetting, java.lang.String> NAME = new Attribute("name");
+    public static final Attribute<ActiveSetting, java.lang.String> VALUE = new Attribute("value");
+
+    public ActiveSetting() {
+        super(EVENT_NAME);
+    }
 }

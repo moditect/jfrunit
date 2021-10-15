@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CompilerPhase {
+public class CompilerPhase extends JfrEventType {
+    public static final CompilerPhase INSTANCE = new CompilerPhase();
     public static final String EVENT_NAME = "jdk.CompilerPhase";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_PHASE_NAME = "phase";
-    public static final String ATTRIBUTE_PHASE_TYPE = "String";
-    public static final String ATTRIBUTE_COMPILEID_NAME = "compileId";
-    public static final String ATTRIBUTE_COMPILEID_TYPE = "int";
-    public static final String ATTRIBUTE_PHASELEVEL_NAME = "phaseLevel";
-    public static final String ATTRIBUTE_PHASELEVEL_TYPE = "short";
+    public static final Attribute<CompilerPhase, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CompilerPhase, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<CompilerPhase, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<CompilerPhase, java.lang.String> PHASE = new Attribute("phase");
+    public static final Attribute<CompilerPhase, Integer> COMPILE_ID = new Attribute("compileId");
+    public static final Attribute<CompilerPhase, Short> PHASE_LEVEL = new Attribute("phaseLevel");
+
+    public CompilerPhase() {
+        super(EVENT_NAME);
+    }
 }

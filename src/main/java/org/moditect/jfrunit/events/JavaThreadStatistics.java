@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class JavaThreadStatistics {
+public class JavaThreadStatistics extends JfrEventType {
+    public static final JavaThreadStatistics INSTANCE = new JavaThreadStatistics();
     public static final String EVENT_NAME = "jdk.JavaThreadStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_ACTIVECOUNT_NAME = "activeCount";
-    public static final String ATTRIBUTE_ACTIVECOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_DAEMONCOUNT_NAME = "daemonCount";
-    public static final String ATTRIBUTE_DAEMONCOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_ACCUMULATEDCOUNT_NAME = "accumulatedCount";
-    public static final String ATTRIBUTE_ACCUMULATEDCOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_PEAKCOUNT_NAME = "peakCount";
-    public static final String ATTRIBUTE_PEAKCOUNT_TYPE = "long";
+    public static final Attribute<JavaThreadStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<JavaThreadStatistics, Long> ACTIVE_COUNT = new Attribute("activeCount");
+    public static final Attribute<JavaThreadStatistics, Long> DAEMON_COUNT = new Attribute("daemonCount");
+    public static final Attribute<JavaThreadStatistics, Long> ACCUMULATED_COUNT = new Attribute("accumulatedCount");
+    public static final Attribute<JavaThreadStatistics, Long> PEAK_COUNT = new Attribute("peakCount");
+
+    public JavaThreadStatistics() {
+        super(EVENT_NAME);
+    }
 }

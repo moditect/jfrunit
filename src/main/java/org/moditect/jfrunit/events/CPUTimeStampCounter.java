@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CPUTimeStampCounter {
+public class CPUTimeStampCounter extends JfrEventType {
+    public static final CPUTimeStampCounter INSTANCE = new CPUTimeStampCounter();
     public static final String EVENT_NAME = "jdk.CPUTimeStampCounter";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_FASTTIMEENABLED_NAME = "fastTimeEnabled";
-    public static final String ATTRIBUTE_FASTTIMEENABLED_TYPE = "boolean";
-    public static final String ATTRIBUTE_FASTTIMEAUTOENABLED_NAME = "fastTimeAutoEnabled";
-    public static final String ATTRIBUTE_FASTTIMEAUTOENABLED_TYPE = "boolean";
-    public static final String ATTRIBUTE_OSFREQUENCY_NAME = "osFrequency";
-    public static final String ATTRIBUTE_OSFREQUENCY_TYPE = "long";
-    public static final String ATTRIBUTE_FASTTIMEFREQUENCY_NAME = "fastTimeFrequency";
-    public static final String ATTRIBUTE_FASTTIMEFREQUENCY_TYPE = "long";
+    public static final Attribute<CPUTimeStampCounter, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CPUTimeStampCounter, Boolean> FAST_TIME_ENABLED = new Attribute("fastTimeEnabled");
+    public static final Attribute<CPUTimeStampCounter, Boolean> FAST_TIME_AUTO_ENABLED = new Attribute("fastTimeAutoEnabled");
+    public static final Attribute<CPUTimeStampCounter, Long> OS_FREQUENCY = new Attribute("osFrequency");
+    public static final Attribute<CPUTimeStampCounter, Long> FAST_TIME_FREQUENCY = new Attribute("fastTimeFrequency");
+
+    public CPUTimeStampCounter() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,25 +17,26 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Execution of a VM Operation
  */
-public class ExecuteVMOperation {
+public class ExecuteVMOperation extends JfrEventType {
+    public static final ExecuteVMOperation INSTANCE = new ExecuteVMOperation();
     public static final String EVENT_NAME = "jdk.ExecuteVMOperation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_OPERATION_NAME = "operation";
-    public static final String ATTRIBUTE_OPERATION_TYPE = "String";
-    public static final String ATTRIBUTE_SAFEPOINT_NAME = "safepoint";
-    public static final String ATTRIBUTE_SAFEPOINT_TYPE = "boolean";
-    public static final String ATTRIBUTE_BLOCKING_NAME = "blocking";
-    public static final String ATTRIBUTE_BLOCKING_TYPE = "boolean";
-    public static final String ATTRIBUTE_CALLER_NAME = "caller";
-    public static final String ATTRIBUTE_CALLER_TYPE = "Thread";
-    public static final String ATTRIBUTE_SAFEPOINTID_NAME = "safepointId";
-    public static final String ATTRIBUTE_SAFEPOINTID_TYPE = "long";
+    public static final Attribute<ExecuteVMOperation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ExecuteVMOperation, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ExecuteVMOperation, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ExecuteVMOperation, java.lang.String> OPERATION = new Attribute("operation");
+    public static final Attribute<ExecuteVMOperation, Boolean> SAFEPOINT = new Attribute("safepoint");
+    public static final Attribute<ExecuteVMOperation, Boolean> BLOCKING = new Attribute("blocking");
+    public static final Attribute<ExecuteVMOperation, org.moditect.jfrunit.ExpectedThread> CALLER = new Attribute("caller");
+    public static final Attribute<ExecuteVMOperation, Long> SAFEPOINT_ID = new Attribute("safepointId");
+
+    public ExecuteVMOperation() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class MetaspaceSummary {
+public class MetaspaceSummary extends JfrEventType {
+    public static final MetaspaceSummary INSTANCE = new MetaspaceSummary();
     public static final String EVENT_NAME = "jdk.MetaspaceSummary";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_WHEN_NAME = "when";
-    public static final String ATTRIBUTE_WHEN_TYPE = "String";
-    public static final String ATTRIBUTE_GCTHRESHOLD_NAME = "gcThreshold";
-    public static final String ATTRIBUTE_GCTHRESHOLD_TYPE = "long";
-    public static final String ATTRIBUTE_METASPACE_NAME = "metaspace";
-    public static final String ATTRIBUTE_METASPACE_TYPE = "MetaspaceSizes";
-    public static final String ATTRIBUTE_DATASPACE_NAME = "dataSpace";
-    public static final String ATTRIBUTE_DATASPACE_TYPE = "MetaspaceSizes";
-    public static final String ATTRIBUTE_CLASSSPACE_NAME = "classSpace";
-    public static final String ATTRIBUTE_CLASSSPACE_TYPE = "MetaspaceSizes";
+    public static final Attribute<MetaspaceSummary, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<MetaspaceSummary, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<MetaspaceSummary, java.lang.String> WHEN = new Attribute("when");
+    public static final Attribute<MetaspaceSummary, Long> GC_THRESHOLD = new Attribute("gcThreshold");
+    public static final Attribute<MetaspaceSummary, MetaspaceSizes> METASPACE = new Attribute("metaspace");
+    public static final Attribute<MetaspaceSummary, MetaspaceSizes> DATA_SPACE = new Attribute("dataSpace");
+    public static final Attribute<MetaspaceSummary, MetaspaceSizes> CLASS_SPACE = new Attribute("classSpace");
+
+    public MetaspaceSummary() {
+        super(EVENT_NAME);
+    }
 }

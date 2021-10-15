@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ThreadSleep {
+public class ThreadSleep extends JfrEventType {
+    public static final ThreadSleep INSTANCE = new ThreadSleep();
     public static final String EVENT_NAME = "jdk.ThreadSleep";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_TIME_NAME = "time";
-    public static final String ATTRIBUTE_TIME_TYPE = "long";
+    public static final Attribute<ThreadSleep, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ThreadSleep, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ThreadSleep, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ThreadSleep, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ThreadSleep, java.time.Duration> TIME = new Attribute("time");
+
+    public ThreadSleep() {
+        super(EVENT_NAME);
+    }
 }

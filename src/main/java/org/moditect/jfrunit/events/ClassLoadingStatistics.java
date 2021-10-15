@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ClassLoadingStatistics {
+public class ClassLoadingStatistics extends JfrEventType {
+    public static final ClassLoadingStatistics INSTANCE = new ClassLoadingStatistics();
     public static final String EVENT_NAME = "jdk.ClassLoadingStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_LOADEDCLASSCOUNT_NAME = "loadedClassCount";
-    public static final String ATTRIBUTE_LOADEDCLASSCOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_UNLOADEDCLASSCOUNT_NAME = "unloadedClassCount";
-    public static final String ATTRIBUTE_UNLOADEDCLASSCOUNT_TYPE = "long";
+    public static final Attribute<ClassLoadingStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ClassLoadingStatistics, Long> LOADED_CLASS_COUNT = new Attribute("loadedClassCount");
+    public static final Attribute<ClassLoadingStatistics, Long> UNLOADED_CLASS_COUNT = new Attribute("unloadedClassCount");
+
+    public ClassLoadingStatistics() {
+        super(EVENT_NAME);
+    }
 }

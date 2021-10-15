@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * OS CPU Load
  */
-public class CPULoad {
+public class CPULoad extends JfrEventType {
+    public static final CPULoad INSTANCE = new CPULoad();
     public static final String EVENT_NAME = "jdk.CPULoad";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_JVMUSER_NAME = "jvmUser";
-    public static final String ATTRIBUTE_JVMUSER_TYPE = "float";
-    public static final String ATTRIBUTE_JVMSYSTEM_NAME = "jvmSystem";
-    public static final String ATTRIBUTE_JVMSYSTEM_TYPE = "float";
-    public static final String ATTRIBUTE_MACHINETOTAL_NAME = "machineTotal";
-    public static final String ATTRIBUTE_MACHINETOTAL_TYPE = "float";
+    public static final Attribute<CPULoad, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CPULoad, Float> JVM_USER = new Attribute("jvmUser");
+    public static final Attribute<CPULoad, Float> JVM_SYSTEM = new Attribute("jvmSystem");
+    public static final Attribute<CPULoad, Float> MACHINE_TOTAL = new Attribute("machineTotal");
+
+    public CPULoad() {
+        super(EVENT_NAME);
+    }
 }

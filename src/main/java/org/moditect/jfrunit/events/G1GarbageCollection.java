@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Extra information specific to G1 Young Garbage Collections
  */
-public class G1GarbageCollection {
+public class G1GarbageCollection extends JfrEventType {
+    public static final G1GarbageCollection INSTANCE = new G1GarbageCollection();
     public static final String EVENT_NAME = "jdk.G1GarbageCollection";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_TYPE_NAME = "type";
-    public static final String ATTRIBUTE_TYPE_TYPE = "String";
+    public static final Attribute<G1GarbageCollection, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<G1GarbageCollection, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<G1GarbageCollection, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<G1GarbageCollection, java.lang.String> TYPE = new Attribute("type");
+
+    public G1GarbageCollection() {
+        super(EVENT_NAME);
+    }
 }

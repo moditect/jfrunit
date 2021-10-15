@@ -17,35 +17,31 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Details of X.509 Certificate parsed by JDK
  */
-public class X509Certificate {
+public class X509Certificate extends JfrEventType {
+    public static final X509Certificate INSTANCE = new X509Certificate();
     public static final String EVENT_NAME = "jdk.X509Certificate";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_ALGORITHM_NAME = "algorithm";
-    public static final String ATTRIBUTE_ALGORITHM_TYPE = "String";
-    public static final String ATTRIBUTE_SERIALNUMBER_NAME = "serialNumber";
-    public static final String ATTRIBUTE_SERIALNUMBER_TYPE = "String";
-    public static final String ATTRIBUTE_SUBJECT_NAME = "subject";
-    public static final String ATTRIBUTE_SUBJECT_TYPE = "String";
-    public static final String ATTRIBUTE_ISSUER_NAME = "issuer";
-    public static final String ATTRIBUTE_ISSUER_TYPE = "String";
-    public static final String ATTRIBUTE_KEYTYPE_NAME = "keyType";
-    public static final String ATTRIBUTE_KEYTYPE_TYPE = "String";
-    public static final String ATTRIBUTE_KEYLENGTH_NAME = "keyLength";
-    public static final String ATTRIBUTE_KEYLENGTH_TYPE = "int";
-    public static final String ATTRIBUTE_CERTIFICATEID_NAME = "certificateId";
-    public static final String ATTRIBUTE_CERTIFICATEID_TYPE = "long";
-    public static final String ATTRIBUTE_VALIDFROM_NAME = "validFrom";
-    public static final String ATTRIBUTE_VALIDFROM_TYPE = "long";
-    public static final String ATTRIBUTE_VALIDUNTIL_NAME = "validUntil";
-    public static final String ATTRIBUTE_VALIDUNTIL_TYPE = "long";
+    public static final Attribute<X509Certificate, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<X509Certificate, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<X509Certificate, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<X509Certificate, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<X509Certificate, java.lang.String> ALGORITHM = new Attribute("algorithm");
+    public static final Attribute<X509Certificate, java.lang.String> SERIAL_NUMBER = new Attribute("serialNumber");
+    public static final Attribute<X509Certificate, java.lang.String> SUBJECT = new Attribute("subject");
+    public static final Attribute<X509Certificate, java.lang.String> ISSUER = new Attribute("issuer");
+    public static final Attribute<X509Certificate, java.lang.String> KEY_TYPE = new Attribute("keyType");
+    public static final Attribute<X509Certificate, Integer> KEY_LENGTH = new Attribute("keyLength");
+    public static final Attribute<X509Certificate, Long> CERTIFICATE_ID = new Attribute("certificateId");
+    public static final Attribute<X509Certificate, java.time.Instant> VALID_FROM = new Attribute("validFrom");
+    public static final Attribute<X509Certificate, java.time.Instant> VALID_UNTIL = new Attribute("validUntil");
+
+    public X509Certificate() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Revoked biases for all instances of a class
  */
-public class BiasedLockClassRevocation {
+public class BiasedLockClassRevocation extends JfrEventType {
+    public static final BiasedLockClassRevocation INSTANCE = new BiasedLockClassRevocation();
     public static final String EVENT_NAME = "jdk.BiasedLockClassRevocation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_REVOKEDCLASS_NAME = "revokedClass";
-    public static final String ATTRIBUTE_REVOKEDCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_DISABLEBIASING_NAME = "disableBiasing";
-    public static final String ATTRIBUTE_DISABLEBIASING_TYPE = "boolean";
-    public static final String ATTRIBUTE_SAFEPOINTID_NAME = "safepointId";
-    public static final String ATTRIBUTE_SAFEPOINTID_TYPE = "long";
+    public static final Attribute<BiasedLockClassRevocation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<BiasedLockClassRevocation, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<BiasedLockClassRevocation, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<BiasedLockClassRevocation, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<BiasedLockClassRevocation, org.moditect.jfrunit.ExpectedClass> REVOKED_CLASS = new Attribute("revokedClass");
+    public static final Attribute<BiasedLockClassRevocation, Boolean> DISABLE_BIASING = new Attribute("disableBiasing");
+    public static final Attribute<BiasedLockClassRevocation, Long> SAFEPOINT_ID = new Attribute("safepointId");
+
+    public BiasedLockClassRevocation() {
+        super(EVENT_NAME);
+    }
 }

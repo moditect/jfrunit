@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Total count of processed references during GC
  */
-public class GCReferenceStatistics {
+public class GCReferenceStatistics extends JfrEventType {
+    public static final GCReferenceStatistics INSTANCE = new GCReferenceStatistics();
     public static final String EVENT_NAME = "jdk.GCReferenceStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_TYPE_NAME = "type";
-    public static final String ATTRIBUTE_TYPE_TYPE = "String";
-    public static final String ATTRIBUTE_COUNT_NAME = "count";
-    public static final String ATTRIBUTE_COUNT_TYPE = "long";
+    public static final Attribute<GCReferenceStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GCReferenceStatistics, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<GCReferenceStatistics, java.lang.String> TYPE = new Attribute("type");
+    public static final Attribute<GCReferenceStatistics, Long> COUNT = new Attribute("count");
+
+    public GCReferenceStatistics() {
+        super(EVENT_NAME);
+    }
 }

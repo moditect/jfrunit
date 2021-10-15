@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class GCPhaseConcurrent {
+public class GCPhaseConcurrent extends JfrEventType {
+    public static final GCPhaseConcurrent INSTANCE = new GCPhaseConcurrent();
     public static final String EVENT_NAME = "jdk.GCPhaseConcurrent";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_NAME_NAME = "name";
-    public static final String ATTRIBUTE_NAME_TYPE = "String";
+    public static final Attribute<GCPhaseConcurrent, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GCPhaseConcurrent, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<GCPhaseConcurrent, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<GCPhaseConcurrent, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<GCPhaseConcurrent, java.lang.String> NAME = new Attribute("name");
+
+    public GCPhaseConcurrent() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,13 +17,20 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class VirtualizationInformation {
+public class VirtualizationInformation extends JfrEventType {
+    public static final VirtualizationInformation INSTANCE = new VirtualizationInformation();
     public static final String EVENT_NAME = "jdk.VirtualizationInformation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_NAME_NAME = "name";
-    public static final String ATTRIBUTE_NAME_TYPE = "String";
+    public static final Attribute<VirtualizationInformation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<VirtualizationInformation, java.lang.String> NAME = new Attribute("name");
+
+    public VirtualizationInformation() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,13 +17,20 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ThreadContextSwitchRate {
+public class ThreadContextSwitchRate extends JfrEventType {
+    public static final ThreadContextSwitchRate INSTANCE = new ThreadContextSwitchRate();
     public static final String EVENT_NAME = "jdk.ThreadContextSwitchRate";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_SWITCHRATE_NAME = "switchRate";
-    public static final String ATTRIBUTE_SWITCHRATE_TYPE = "float";
+    public static final Attribute<ThreadContextSwitchRate, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ThreadContextSwitchRate, Float> SWITCH_RATE = new Attribute("switchRate");
+
+    public ThreadContextSwitchRate() {
+        super(EVENT_NAME);
+    }
 }

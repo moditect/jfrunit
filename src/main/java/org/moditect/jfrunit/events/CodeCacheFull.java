@@ -17,31 +17,29 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class CodeCacheFull {
+public class CodeCacheFull extends JfrEventType {
+    public static final CodeCacheFull INSTANCE = new CodeCacheFull();
     public static final String EVENT_NAME = "jdk.CodeCacheFull";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_CODEBLOBTYPE_NAME = "codeBlobType";
-    public static final String ATTRIBUTE_CODEBLOBTYPE_TYPE = "String";
-    public static final String ATTRIBUTE_STARTADDRESS_NAME = "startAddress";
-    public static final String ATTRIBUTE_STARTADDRESS_TYPE = "long";
-    public static final String ATTRIBUTE_COMMITEDTOPADDRESS_NAME = "commitedTopAddress";
-    public static final String ATTRIBUTE_COMMITEDTOPADDRESS_TYPE = "long";
-    public static final String ATTRIBUTE_RESERVEDTOPADDRESS_NAME = "reservedTopAddress";
-    public static final String ATTRIBUTE_RESERVEDTOPADDRESS_TYPE = "long";
-    public static final String ATTRIBUTE_ENTRYCOUNT_NAME = "entryCount";
-    public static final String ATTRIBUTE_ENTRYCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_METHODCOUNT_NAME = "methodCount";
-    public static final String ATTRIBUTE_METHODCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_ADAPTORCOUNT_NAME = "adaptorCount";
-    public static final String ATTRIBUTE_ADAPTORCOUNT_TYPE = "int";
-    public static final String ATTRIBUTE_UNALLOCATEDCAPACITY_NAME = "unallocatedCapacity";
-    public static final String ATTRIBUTE_UNALLOCATEDCAPACITY_TYPE = "long";
-    public static final String ATTRIBUTE_FULLCOUNT_NAME = "fullCount";
-    public static final String ATTRIBUTE_FULLCOUNT_TYPE = "int";
+    public static final Attribute<CodeCacheFull, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<CodeCacheFull, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<CodeCacheFull, java.lang.String> CODE_BLOB_TYPE = new Attribute("codeBlobType");
+    public static final Attribute<CodeCacheFull, Long> START_ADDRESS = new Attribute("startAddress");
+    public static final Attribute<CodeCacheFull, Long> COMMITED_TOP_ADDRESS = new Attribute("commitedTopAddress");
+    public static final Attribute<CodeCacheFull, Long> RESERVED_TOP_ADDRESS = new Attribute("reservedTopAddress");
+    public static final Attribute<CodeCacheFull, Integer> ENTRY_COUNT = new Attribute("entryCount");
+    public static final Attribute<CodeCacheFull, Integer> METHOD_COUNT = new Attribute("methodCount");
+    public static final Attribute<CodeCacheFull, Integer> ADAPTOR_COUNT = new Attribute("adaptorCount");
+    public static final Attribute<CodeCacheFull, Long> UNALLOCATED_CAPACITY = new Attribute("unallocatedCapacity");
+    public static final Attribute<CodeCacheFull, Integer> FULL_COUNT = new Attribute("fullCount");
+
+    public CodeCacheFull() {
+        super(EVENT_NAME);
+    }
 }

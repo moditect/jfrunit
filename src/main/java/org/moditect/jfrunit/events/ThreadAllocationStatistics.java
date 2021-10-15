@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ThreadAllocationStatistics {
+public class ThreadAllocationStatistics extends JfrEventType {
+    public static final ThreadAllocationStatistics INSTANCE = new ThreadAllocationStatistics();
     public static final String EVENT_NAME = "jdk.ThreadAllocationStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_ALLOCATED_NAME = "allocated";
-    public static final String ATTRIBUTE_ALLOCATED_TYPE = "long";
-    public static final String ATTRIBUTE_THREAD_NAME = "thread";
-    public static final String ATTRIBUTE_THREAD_TYPE = "Thread";
+    public static final Attribute<ThreadAllocationStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ThreadAllocationStatistics, Long> ALLOCATED = new Attribute("allocated");
+    public static final Attribute<ThreadAllocationStatistics, org.moditect.jfrunit.ExpectedThread> THREAD = new Attribute("thread");
+
+    public ThreadAllocationStatistics() {
+        super(EVENT_NAME);
+    }
 }

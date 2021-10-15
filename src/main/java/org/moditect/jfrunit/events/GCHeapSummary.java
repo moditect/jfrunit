@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class GCHeapSummary {
+public class GCHeapSummary extends JfrEventType {
+    public static final GCHeapSummary INSTANCE = new GCHeapSummary();
     public static final String EVENT_NAME = "jdk.GCHeapSummary";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_WHEN_NAME = "when";
-    public static final String ATTRIBUTE_WHEN_TYPE = "String";
-    public static final String ATTRIBUTE_HEAPSPACE_NAME = "heapSpace";
-    public static final String ATTRIBUTE_HEAPSPACE_TYPE = "VirtualSpace";
-    public static final String ATTRIBUTE_HEAPUSED_NAME = "heapUsed";
-    public static final String ATTRIBUTE_HEAPUSED_TYPE = "long";
+    public static final Attribute<GCHeapSummary, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<GCHeapSummary, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<GCHeapSummary, java.lang.String> WHEN = new Attribute("when");
+    public static final Attribute<GCHeapSummary, VirtualSpace> HEAP_SPACE = new Attribute("heapSpace");
+    public static final Attribute<GCHeapSummary, Long> HEAP_USED = new Attribute("heapUsed");
+
+    public GCHeapSummary() {
+        super(EVENT_NAME);
+    }
 }

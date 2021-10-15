@@ -17,29 +17,28 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ClassLoaderStatistics {
+public class ClassLoaderStatistics extends JfrEventType {
+    public static final ClassLoaderStatistics INSTANCE = new ClassLoaderStatistics();
     public static final String EVENT_NAME = "jdk.ClassLoaderStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_CLASSLOADER_NAME = "classLoader";
-    public static final String ATTRIBUTE_CLASSLOADER_TYPE = "ClassLoader";
-    public static final String ATTRIBUTE_PARENTCLASSLOADER_NAME = "parentClassLoader";
-    public static final String ATTRIBUTE_PARENTCLASSLOADER_TYPE = "ClassLoader";
-    public static final String ATTRIBUTE_CLASSLOADERDATA_NAME = "classLoaderData";
-    public static final String ATTRIBUTE_CLASSLOADERDATA_TYPE = "long";
-    public static final String ATTRIBUTE_CLASSCOUNT_NAME = "classCount";
-    public static final String ATTRIBUTE_CLASSCOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_CHUNKSIZE_NAME = "chunkSize";
-    public static final String ATTRIBUTE_CHUNKSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_BLOCKSIZE_NAME = "blockSize";
-    public static final String ATTRIBUTE_BLOCKSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_HIDDENCLASSCOUNT_NAME = "hiddenClassCount";
-    public static final String ATTRIBUTE_HIDDENCLASSCOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_HIDDENCHUNKSIZE_NAME = "hiddenChunkSize";
-    public static final String ATTRIBUTE_HIDDENCHUNKSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_HIDDENBLOCKSIZE_NAME = "hiddenBlockSize";
-    public static final String ATTRIBUTE_HIDDENBLOCKSIZE_TYPE = "long";
+    public static final Attribute<ClassLoaderStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ClassLoaderStatistics, org.moditect.jfrunit.ExpectedClassLoader> CLASS_LOADER = new Attribute("classLoader");
+    public static final Attribute<ClassLoaderStatistics, org.moditect.jfrunit.ExpectedClassLoader> PARENT_CLASS_LOADER = new Attribute("parentClassLoader");
+    public static final Attribute<ClassLoaderStatistics, Long> CLASS_LOADER_DATA = new Attribute("classLoaderData");
+    public static final Attribute<ClassLoaderStatistics, Long> CLASS_COUNT = new Attribute("classCount");
+    public static final Attribute<ClassLoaderStatistics, Long> CHUNK_SIZE = new Attribute("chunkSize");
+    public static final Attribute<ClassLoaderStatistics, Long> BLOCK_SIZE = new Attribute("blockSize");
+    public static final Attribute<ClassLoaderStatistics, Long> HIDDEN_CLASS_COUNT = new Attribute("hiddenClassCount");
+    public static final Attribute<ClassLoaderStatistics, Long> HIDDEN_CHUNK_SIZE = new Attribute("hiddenChunkSize");
+    public static final Attribute<ClassLoaderStatistics, Long> HIDDEN_BLOCK_SIZE = new Attribute("hiddenBlockSize");
+
+    public ClassLoaderStatistics() {
+        super(EVENT_NAME);
+    }
 }

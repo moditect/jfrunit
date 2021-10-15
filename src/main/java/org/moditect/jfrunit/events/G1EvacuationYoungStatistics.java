@@ -17,13 +17,20 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Memory related evacuation statistics during GC for the young generation
  */
-public class G1EvacuationYoungStatistics {
+public class G1EvacuationYoungStatistics extends JfrEventType {
+    public static final G1EvacuationYoungStatistics INSTANCE = new G1EvacuationYoungStatistics();
     public static final String EVENT_NAME = "jdk.G1EvacuationYoungStatistics";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_STATISTICS_NAME = "statistics";
-    public static final String ATTRIBUTE_STATISTICS_TYPE = "G1EvacuationStatistics";
+    public static final Attribute<G1EvacuationYoungStatistics, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<G1EvacuationYoungStatistics, G1EvacuationStatistics> STATISTICS = new Attribute("statistics");
+
+    public G1EvacuationYoungStatistics() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,25 +17,26 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Description of JVM and the Java application
  */
-public class JVMInformation {
+public class JVMInformation extends JfrEventType {
+    public static final JVMInformation INSTANCE = new JVMInformation();
     public static final String EVENT_NAME = "jdk.JVMInformation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_JVMNAME_NAME = "jvmName";
-    public static final String ATTRIBUTE_JVMNAME_TYPE = "String";
-    public static final String ATTRIBUTE_JVMVERSION_NAME = "jvmVersion";
-    public static final String ATTRIBUTE_JVMVERSION_TYPE = "String";
-    public static final String ATTRIBUTE_JVMARGUMENTS_NAME = "jvmArguments";
-    public static final String ATTRIBUTE_JVMARGUMENTS_TYPE = "String";
-    public static final String ATTRIBUTE_JVMFLAGS_NAME = "jvmFlags";
-    public static final String ATTRIBUTE_JVMFLAGS_TYPE = "String";
-    public static final String ATTRIBUTE_JAVAARGUMENTS_NAME = "javaArguments";
-    public static final String ATTRIBUTE_JAVAARGUMENTS_TYPE = "String";
-    public static final String ATTRIBUTE_JVMSTARTTIME_NAME = "jvmStartTime";
-    public static final String ATTRIBUTE_JVMSTARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_PID_NAME = "pid";
-    public static final String ATTRIBUTE_PID_TYPE = "long";
+    public static final Attribute<JVMInformation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<JVMInformation, java.lang.String> JVM_NAME = new Attribute("jvmName");
+    public static final Attribute<JVMInformation, java.lang.String> JVM_VERSION = new Attribute("jvmVersion");
+    public static final Attribute<JVMInformation, java.lang.String> JVM_ARGUMENTS = new Attribute("jvmArguments");
+    public static final Attribute<JVMInformation, java.lang.String> JVM_FLAGS = new Attribute("jvmFlags");
+    public static final Attribute<JVMInformation, java.lang.String> JAVA_ARGUMENTS = new Attribute("javaArguments");
+    public static final Attribute<JVMInformation, java.time.Instant> JVM_START_TIME = new Attribute("jvmStartTime");
+    public static final Attribute<JVMInformation, Long> PID = new Attribute("pid");
+
+    public JVMInformation() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Revoked bias of object
  */
-public class BiasedLockRevocation {
+public class BiasedLockRevocation extends JfrEventType {
+    public static final BiasedLockRevocation INSTANCE = new BiasedLockRevocation();
     public static final String EVENT_NAME = "jdk.BiasedLockRevocation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_LOCKCLASS_NAME = "lockClass";
-    public static final String ATTRIBUTE_LOCKCLASS_TYPE = "Class";
-    public static final String ATTRIBUTE_SAFEPOINTID_NAME = "safepointId";
-    public static final String ATTRIBUTE_SAFEPOINTID_TYPE = "long";
-    public static final String ATTRIBUTE_PREVIOUSOWNER_NAME = "previousOwner";
-    public static final String ATTRIBUTE_PREVIOUSOWNER_TYPE = "Thread";
+    public static final Attribute<BiasedLockRevocation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<BiasedLockRevocation, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<BiasedLockRevocation, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<BiasedLockRevocation, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<BiasedLockRevocation, org.moditect.jfrunit.ExpectedClass> LOCK_CLASS = new Attribute("lockClass");
+    public static final Attribute<BiasedLockRevocation, Long> SAFEPOINT_ID = new Attribute("safepointId");
+    public static final Attribute<BiasedLockRevocation, org.moditect.jfrunit.ExpectedThread> PREVIOUS_OWNER = new Attribute("previousOwner");
+
+    public BiasedLockRevocation() {
+        super(EVENT_NAME);
+    }
 }

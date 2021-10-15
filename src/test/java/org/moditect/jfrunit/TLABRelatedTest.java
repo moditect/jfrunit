@@ -22,6 +22,8 @@ import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.moditect.jfrunit.events.ObjectAllocationInNewTLAB;
+import org.moditect.jfrunit.events.ObjectAllocationOutsideTLAB;
 
 import jdk.jfr.consumer.RecordedEvent;
 
@@ -30,11 +32,10 @@ import static org.moditect.jfrunit.JfrEventsAssert.assertThat;
 
 @JfrEventTest
 public class TLABRelatedTest {
-    public JfrEvents jfrEvents = new JfrEvents();
-
     private static final int BYTE_ARRAY_OVERHEAD = 16;
     private static final int OBJECT_SIZE = 102400;
     public static byte[] tmp;
+    public JfrEvents jfrEvents = new JfrEvents();
 
     @Test
     @EnableEvent("jdk.ObjectAllocationOutsideTLAB")
@@ -52,14 +53,14 @@ public class TLABRelatedTest {
         assertThat(jfrEvents).contains(event("jdk.ObjectAllocationInNewTLAB"));
 
         List<RecordedEvent> allocation100KBInNewTLABEvents = jfrEvents.filter(event("jdk.ObjectAllocationInNewTLAB")
-                .with("allocationSize", (double) OBJECT_SIZE)
-                .with("objectClass", new ExpectedClass(byte[].class))
-                .with("eventThread", new ExpectedThread(Thread.currentThread()))
+                .with(ObjectAllocationInNewTLAB.ALLOCATION_SIZE, (long) OBJECT_SIZE)
+                .with(ObjectAllocationInNewTLAB.OBJECT_CLASS, new ExpectedClass(byte[].class))
+                .with(ObjectAllocationInNewTLAB.EVENT_THREAD, new ExpectedThread(Thread.currentThread()))
                 .containStackFrame(new ExpectedStackFrame(elements[0]))).collect(Collectors.toList());
         List<RecordedEvent> allocation100KBOutsideTLABEvents = jfrEvents.filter(event("jdk.ObjectAllocationOutsideTLAB")
-                .with("allocationSize", (double) OBJECT_SIZE)
-                .with("objectClass", new ExpectedClass(byte[].class))
-                .with("eventThread", new ExpectedThread(Thread.currentThread()))
+                .with(ObjectAllocationOutsideTLAB.ALLOCATION_SIZE, (long) OBJECT_SIZE)
+                .with(ObjectAllocationOutsideTLAB.OBJECT_CLASS, new ExpectedClass(byte[].class))
+                .with(ObjectAllocationOutsideTLAB.EVENT_THREAD, new ExpectedThread(Thread.currentThread()))
                 .containStackFrame(new ExpectedStackFrame(elements[0]))).collect(Collectors.toList());
         Assertions.assertThat(allocation100KBInNewTLABEvents.size()).isGreaterThan(0);
         Assertions.assertThat(allocation100KBOutsideTLABEvents.size()).isGreaterThan(0);

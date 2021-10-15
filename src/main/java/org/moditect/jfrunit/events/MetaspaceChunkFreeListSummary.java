@@ -17,33 +17,30 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class MetaspaceChunkFreeListSummary {
+public class MetaspaceChunkFreeListSummary extends JfrEventType {
+    public static final MetaspaceChunkFreeListSummary INSTANCE = new MetaspaceChunkFreeListSummary();
     public static final String EVENT_NAME = "jdk.MetaspaceChunkFreeListSummary";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_WHEN_NAME = "when";
-    public static final String ATTRIBUTE_WHEN_TYPE = "String";
-    public static final String ATTRIBUTE_METADATATYPE_NAME = "metadataType";
-    public static final String ATTRIBUTE_METADATATYPE_TYPE = "String";
-    public static final String ATTRIBUTE_SPECIALIZEDCHUNKS_NAME = "specializedChunks";
-    public static final String ATTRIBUTE_SPECIALIZEDCHUNKS_TYPE = "long";
-    public static final String ATTRIBUTE_SPECIALIZEDCHUNKSTOTALSIZE_NAME = "specializedChunksTotalSize";
-    public static final String ATTRIBUTE_SPECIALIZEDCHUNKSTOTALSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_SMALLCHUNKS_NAME = "smallChunks";
-    public static final String ATTRIBUTE_SMALLCHUNKS_TYPE = "long";
-    public static final String ATTRIBUTE_SMALLCHUNKSTOTALSIZE_NAME = "smallChunksTotalSize";
-    public static final String ATTRIBUTE_SMALLCHUNKSTOTALSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_MEDIUMCHUNKS_NAME = "mediumChunks";
-    public static final String ATTRIBUTE_MEDIUMCHUNKS_TYPE = "long";
-    public static final String ATTRIBUTE_MEDIUMCHUNKSTOTALSIZE_NAME = "mediumChunksTotalSize";
-    public static final String ATTRIBUTE_MEDIUMCHUNKSTOTALSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_HUMONGOUSCHUNKS_NAME = "humongousChunks";
-    public static final String ATTRIBUTE_HUMONGOUSCHUNKS_TYPE = "long";
-    public static final String ATTRIBUTE_HUMONGOUSCHUNKSTOTALSIZE_NAME = "humongousChunksTotalSize";
-    public static final String ATTRIBUTE_HUMONGOUSCHUNKSTOTALSIZE_TYPE = "long";
+    public static final Attribute<MetaspaceChunkFreeListSummary, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<MetaspaceChunkFreeListSummary, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<MetaspaceChunkFreeListSummary, java.lang.String> WHEN = new Attribute("when");
+    public static final Attribute<MetaspaceChunkFreeListSummary, java.lang.String> METADATA_TYPE = new Attribute("metadataType");
+    public static final Attribute<MetaspaceChunkFreeListSummary, Long> SPECIALIZED_CHUNKS = new Attribute("specializedChunks");
+    public static final Attribute<MetaspaceChunkFreeListSummary, Long> SPECIALIZED_CHUNKS_TOTAL_SIZE = new Attribute("specializedChunksTotalSize");
+    public static final Attribute<MetaspaceChunkFreeListSummary, Long> SMALL_CHUNKS = new Attribute("smallChunks");
+    public static final Attribute<MetaspaceChunkFreeListSummary, Long> SMALL_CHUNKS_TOTAL_SIZE = new Attribute("smallChunksTotalSize");
+    public static final Attribute<MetaspaceChunkFreeListSummary, Long> MEDIUM_CHUNKS = new Attribute("mediumChunks");
+    public static final Attribute<MetaspaceChunkFreeListSummary, Long> MEDIUM_CHUNKS_TOTAL_SIZE = new Attribute("mediumChunksTotalSize");
+    public static final Attribute<MetaspaceChunkFreeListSummary, Long> HUMONGOUS_CHUNKS = new Attribute("humongousChunks");
+    public static final Attribute<MetaspaceChunkFreeListSummary, Long> HUMONGOUS_CHUNKS_TOTAL_SIZE = new Attribute("humongousChunksTotalSize");
+
+    public MetaspaceChunkFreeListSummary() {
+        super(EVENT_NAME);
+    }
 }

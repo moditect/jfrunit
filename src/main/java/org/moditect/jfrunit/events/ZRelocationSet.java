@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ZRelocationSet {
+public class ZRelocationSet extends JfrEventType {
+    public static final ZRelocationSet INSTANCE = new ZRelocationSet();
     public static final String EVENT_NAME = "jdk.ZRelocationSet";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_TOTAL_NAME = "total";
-    public static final String ATTRIBUTE_TOTAL_TYPE = "long";
-    public static final String ATTRIBUTE_EMPTY_NAME = "empty";
-    public static final String ATTRIBUTE_EMPTY_TYPE = "long";
-    public static final String ATTRIBUTE_RELOCATE_NAME = "relocate";
-    public static final String ATTRIBUTE_RELOCATE_TYPE = "long";
+    public static final Attribute<ZRelocationSet, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ZRelocationSet, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ZRelocationSet, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ZRelocationSet, Long> TOTAL = new Attribute("total");
+    public static final Attribute<ZRelocationSet, Long> EMPTY = new Attribute("empty");
+    public static final Attribute<ZRelocationSet, Long> RELOCATE = new Attribute("relocate");
+
+    public ZRelocationSet() {
+        super(EVENT_NAME);
+    }
 }

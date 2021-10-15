@@ -17,23 +17,25 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Container memory usage related information
  */
-public class ContainerMemoryUsage {
+public class ContainerMemoryUsage extends JfrEventType {
+    public static final ContainerMemoryUsage INSTANCE = new ContainerMemoryUsage();
     public static final String EVENT_NAME = "jdk.ContainerMemoryUsage";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_MEMORYFAILCOUNT_NAME = "memoryFailCount";
-    public static final String ATTRIBUTE_MEMORYFAILCOUNT_TYPE = "long";
-    public static final String ATTRIBUTE_MEMORYUSAGE_NAME = "memoryUsage";
-    public static final String ATTRIBUTE_MEMORYUSAGE_TYPE = "long";
-    public static final String ATTRIBUTE_SWAPMEMORYUSAGE_NAME = "swapMemoryUsage";
-    public static final String ATTRIBUTE_SWAPMEMORYUSAGE_TYPE = "long";
+    public static final Attribute<ContainerMemoryUsage, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ContainerMemoryUsage, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<ContainerMemoryUsage, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<ContainerMemoryUsage, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<ContainerMemoryUsage, Long> MEMORY_FAIL_COUNT = new Attribute("memoryFailCount");
+    public static final Attribute<ContainerMemoryUsage, Long> MEMORY_USAGE = new Attribute("memoryUsage");
+    public static final Attribute<ContainerMemoryUsage, Long> SWAP_MEMORY_USAGE = new Attribute("swapMemoryUsage");
+
+    public ContainerMemoryUsage() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,15 +17,21 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class ModuleExport {
+public class ModuleExport extends JfrEventType {
+    public static final ModuleExport INSTANCE = new ModuleExport();
     public static final String EVENT_NAME = "jdk.ModuleExport";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_EXPORTEDPACKAGE_NAME = "exportedPackage";
-    public static final String ATTRIBUTE_EXPORTEDPACKAGE_TYPE = "Package";
-    public static final String ATTRIBUTE_TARGETMODULE_NAME = "targetModule";
-    public static final String ATTRIBUTE_TARGETMODULE_TYPE = "Module";
+    public static final Attribute<ModuleExport, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<ModuleExport, org.moditect.jfrunit.events.model.Package> EXPORTED_PACKAGE = new Attribute("exportedPackage");
+    public static final Attribute<ModuleExport, org.moditect.jfrunit.events.model.Module> TARGET_MODULE = new Attribute("targetModule");
+
+    public ModuleExport() {
+        super(EVENT_NAME);
+    }
 }

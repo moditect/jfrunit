@@ -17,29 +17,28 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Statistics related to current adaptive IHOP calculation
  */
-public class G1AdaptiveIHOP {
+public class G1AdaptiveIHOP extends JfrEventType {
+    public static final G1AdaptiveIHOP INSTANCE = new G1AdaptiveIHOP();
     public static final String EVENT_NAME = "jdk.G1AdaptiveIHOP";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_THRESHOLD_NAME = "threshold";
-    public static final String ATTRIBUTE_THRESHOLD_TYPE = "long";
-    public static final String ATTRIBUTE_THRESHOLDPERCENTAGE_NAME = "thresholdPercentage";
-    public static final String ATTRIBUTE_THRESHOLDPERCENTAGE_TYPE = "float";
-    public static final String ATTRIBUTE_IHOPTARGETOCCUPANCY_NAME = "ihopTargetOccupancy";
-    public static final String ATTRIBUTE_IHOPTARGETOCCUPANCY_TYPE = "long";
-    public static final String ATTRIBUTE_CURRENTOCCUPANCY_NAME = "currentOccupancy";
-    public static final String ATTRIBUTE_CURRENTOCCUPANCY_TYPE = "long";
-    public static final String ATTRIBUTE_ADDITIONALBUFFERSIZE_NAME = "additionalBufferSize";
-    public static final String ATTRIBUTE_ADDITIONALBUFFERSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_PREDICTEDALLOCATIONRATE_NAME = "predictedAllocationRate";
-    public static final String ATTRIBUTE_PREDICTEDALLOCATIONRATE_TYPE = "double";
-    public static final String ATTRIBUTE_PREDICTEDMARKINGDURATION_NAME = "predictedMarkingDuration";
-    public static final String ATTRIBUTE_PREDICTEDMARKINGDURATION_TYPE = "long";
-    public static final String ATTRIBUTE_PREDICTIONACTIVE_NAME = "predictionActive";
-    public static final String ATTRIBUTE_PREDICTIONACTIVE_TYPE = "boolean";
+    public static final Attribute<G1AdaptiveIHOP, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<G1AdaptiveIHOP, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<G1AdaptiveIHOP, Long> THRESHOLD = new Attribute("threshold");
+    public static final Attribute<G1AdaptiveIHOP, Float> THRESHOLD_PERCENTAGE = new Attribute("thresholdPercentage");
+    public static final Attribute<G1AdaptiveIHOP, Long> IHOP_TARGET_OCCUPANCY = new Attribute("ihopTargetOccupancy");
+    public static final Attribute<G1AdaptiveIHOP, Long> CURRENT_OCCUPANCY = new Attribute("currentOccupancy");
+    public static final Attribute<G1AdaptiveIHOP, Long> ADDITIONAL_BUFFER_SIZE = new Attribute("additionalBufferSize");
+    public static final Attribute<G1AdaptiveIHOP, Double> PREDICTED_ALLOCATION_RATE = new Attribute("predictedAllocationRate");
+    public static final Attribute<G1AdaptiveIHOP, java.time.Duration> PREDICTED_MARKING_DURATION = new Attribute("predictedMarkingDuration");
+    public static final Attribute<G1AdaptiveIHOP, Boolean> PREDICTION_ACTIVE = new Attribute("predictionActive");
+
+    public G1AdaptiveIHOP() {
+        super(EVENT_NAME);
+    }
 }

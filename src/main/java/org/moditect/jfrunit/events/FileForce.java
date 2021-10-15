@@ -17,21 +17,24 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Force updates to be written to file
  */
-public class FileForce {
+public class FileForce extends JfrEventType {
+    public static final FileForce INSTANCE = new FileForce();
     public static final String EVENT_NAME = "jdk.FileForce";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_PATH_NAME = "path";
-    public static final String ATTRIBUTE_PATH_TYPE = "String";
-    public static final String ATTRIBUTE_METADATA_NAME = "metaData";
-    public static final String ATTRIBUTE_METADATA_TYPE = "boolean";
+    public static final Attribute<FileForce, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<FileForce, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<FileForce, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<FileForce, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<FileForce, java.lang.String> PATH = new Attribute("path");
+    public static final Attribute<FileForce, Boolean> META_DATA = new Attribute("metaData");
+
+    public FileForce() {
+        super(EVENT_NAME);
+    }
 }

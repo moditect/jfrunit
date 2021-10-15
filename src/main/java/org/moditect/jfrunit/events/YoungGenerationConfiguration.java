@@ -17,17 +17,22 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * The configuration of the young generation of the garbage collected heap
  */
-public class YoungGenerationConfiguration {
+public class YoungGenerationConfiguration extends JfrEventType {
+    public static final YoungGenerationConfiguration INSTANCE = new YoungGenerationConfiguration();
     public static final String EVENT_NAME = "jdk.YoungGenerationConfiguration";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_MINSIZE_NAME = "minSize";
-    public static final String ATTRIBUTE_MINSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_MAXSIZE_NAME = "maxSize";
-    public static final String ATTRIBUTE_MAXSIZE_TYPE = "long";
-    public static final String ATTRIBUTE_NEWRATIO_NAME = "newRatio";
-    public static final String ATTRIBUTE_NEWRATIO_TYPE = "int";
+    public static final Attribute<YoungGenerationConfiguration, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<YoungGenerationConfiguration, Long> MIN_SIZE = new Attribute("minSize");
+    public static final Attribute<YoungGenerationConfiguration, Long> MAX_SIZE = new Attribute("maxSize");
+    public static final Attribute<YoungGenerationConfiguration, Integer> NEW_RATIO = new Attribute("newRatio");
+
+    public YoungGenerationConfiguration() {
+        super(EVENT_NAME);
+    }
 }

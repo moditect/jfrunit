@@ -17,19 +17,23 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * Revoked bias of object biased towards own thread
  */
-public class BiasedLockSelfRevocation {
+public class BiasedLockSelfRevocation extends JfrEventType {
+    public static final BiasedLockSelfRevocation INSTANCE = new BiasedLockSelfRevocation();
     public static final String EVENT_NAME = "jdk.BiasedLockSelfRevocation";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_DURATION_NAME = "duration";
-    public static final String ATTRIBUTE_DURATION_TYPE = "long";
-    public static final String ATTRIBUTE_EVENTTHREAD_NAME = "eventThread";
-    public static final String ATTRIBUTE_EVENTTHREAD_TYPE = "Thread";
-    public static final String ATTRIBUTE_STACKTRACE_NAME = "stackTrace";
-    public static final String ATTRIBUTE_STACKTRACE_TYPE = "StackTrace";
-    public static final String ATTRIBUTE_LOCKCLASS_NAME = "lockClass";
-    public static final String ATTRIBUTE_LOCKCLASS_TYPE = "Class";
+    public static final Attribute<BiasedLockSelfRevocation, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<BiasedLockSelfRevocation, java.time.Duration> DURATION = new Attribute("duration");
+    public static final Attribute<BiasedLockSelfRevocation, org.moditect.jfrunit.ExpectedThread> EVENT_THREAD = new Attribute("eventThread");
+    public static final Attribute<BiasedLockSelfRevocation, org.moditect.jfrunit.ExpectedStackTrace> STACK_TRACE = new Attribute("stackTrace");
+    public static final Attribute<BiasedLockSelfRevocation, org.moditect.jfrunit.ExpectedClass> LOCK_CLASS = new Attribute("lockClass");
+
+    public BiasedLockSelfRevocation() {
+        super(EVENT_NAME);
+    }
 }

@@ -17,27 +17,27 @@
  */
 package org.moditect.jfrunit.events;
 
+import org.moditect.jfrunit.Attribute;
+import org.moditect.jfrunit.JfrEventType;
+import org.moditect.jfrunit.events.model.*;
+
 /**
  * 
  */
-public class PSHeapSummary {
+public class PSHeapSummary extends JfrEventType {
+    public static final PSHeapSummary INSTANCE = new PSHeapSummary();
     public static final String EVENT_NAME = "jdk.PSHeapSummary";
-    public static final String ATTRIBUTE_STARTTIME_NAME = "startTime";
-    public static final String ATTRIBUTE_STARTTIME_TYPE = "long";
-    public static final String ATTRIBUTE_GCID_NAME = "gcId";
-    public static final String ATTRIBUTE_GCID_TYPE = "int";
-    public static final String ATTRIBUTE_WHEN_NAME = "when";
-    public static final String ATTRIBUTE_WHEN_TYPE = "String";
-    public static final String ATTRIBUTE_OLDSPACE_NAME = "oldSpace";
-    public static final String ATTRIBUTE_OLDSPACE_TYPE = "VirtualSpace";
-    public static final String ATTRIBUTE_OLDOBJECTSPACE_NAME = "oldObjectSpace";
-    public static final String ATTRIBUTE_OLDOBJECTSPACE_TYPE = "ObjectSpace";
-    public static final String ATTRIBUTE_YOUNGSPACE_NAME = "youngSpace";
-    public static final String ATTRIBUTE_YOUNGSPACE_TYPE = "VirtualSpace";
-    public static final String ATTRIBUTE_EDENSPACE_NAME = "edenSpace";
-    public static final String ATTRIBUTE_EDENSPACE_TYPE = "ObjectSpace";
-    public static final String ATTRIBUTE_FROMSPACE_NAME = "fromSpace";
-    public static final String ATTRIBUTE_FROMSPACE_TYPE = "ObjectSpace";
-    public static final String ATTRIBUTE_TOSPACE_NAME = "toSpace";
-    public static final String ATTRIBUTE_TOSPACE_TYPE = "ObjectSpace";
+    public static final Attribute<PSHeapSummary, java.time.Instant> START_TIME = new Attribute("startTime");
+    public static final Attribute<PSHeapSummary, Integer> GC_ID = new Attribute("gcId");
+    public static final Attribute<PSHeapSummary, java.lang.String> WHEN = new Attribute("when");
+    public static final Attribute<PSHeapSummary, VirtualSpace> OLD_SPACE = new Attribute("oldSpace");
+    public static final Attribute<PSHeapSummary, ObjectSpace> OLD_OBJECT_SPACE = new Attribute("oldObjectSpace");
+    public static final Attribute<PSHeapSummary, VirtualSpace> YOUNG_SPACE = new Attribute("youngSpace");
+    public static final Attribute<PSHeapSummary, ObjectSpace> EDEN_SPACE = new Attribute("edenSpace");
+    public static final Attribute<PSHeapSummary, ObjectSpace> FROM_SPACE = new Attribute("fromSpace");
+    public static final Attribute<PSHeapSummary, ObjectSpace> TO_SPACE = new Attribute("toSpace");
+
+    public PSHeapSummary() {
+        super(EVENT_NAME);
+    }
 }
