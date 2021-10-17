@@ -15,12 +15,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moditect.jfrunit.events.model;
+package org.moditect.jfrunit;
 
-import java.lang.*;
+import it.croway.jfrunit.Generator;
 
-public class MetaspaceSizes {
-    public long committed;
-    public long used;
-    public long reserved;
+@Generator
+public class JfrEventGenerator {
+
 }

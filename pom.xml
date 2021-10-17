@@ -49,6 +49,7 @@
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <quarkus.platform.version>2.3.0.Final</quarkus.platform.version>
     <version.surefire.plugin>3.0.0-M5</version.surefire.plugin>
+    <jrfDocUrl>https://bestsolution-at.github.io/jfr-doc/openjdk-17.json</jrfDocUrl>
   </properties>
 
   <scm>
@@ -116,6 +117,11 @@
       <version>3.0.8</version>
       <type>pom</type>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>it.croway</groupId>
+      <artifactId>jfr-constants-generator</artifactId>
+      <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
 
@@ -222,6 +228,26 @@
               <goal>sort</goal>
             </goals>
             <phase>process-sources</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>properties-maven-plugin</artifactId>
+        <version>1.0.0</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>set-system-properties</goal>
+            </goals>
+            <configuration>
+              <properties>
+                <property>
+                  <name>jfrDocUrl</name>
+                  <value>${jrfDocUrl}</value>
+                </property>
+              </properties>
+            </configuration>
           </execution>
         </executions>
       </plugin>
