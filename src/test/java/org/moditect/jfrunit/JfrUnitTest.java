@@ -138,4 +138,5 @@ public class JfrUnitTest {
 
         assertThat(jfrEvents).contains(event("jfrunit.test.StackTraceDisabledSampleEvent").hasNot("stackTrace"));
     }
+
 }
