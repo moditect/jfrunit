@@ -46,6 +46,8 @@ public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> 
                     return true;
                 });
 
+        jfrEventType.getPredicates().clear();
+
         if (!found) {
             failWithMessage("No JFR event of type <%s>", jfrEventType.getName());
         }

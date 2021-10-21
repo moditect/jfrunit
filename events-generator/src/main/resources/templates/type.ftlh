@@ -15,11 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moditect.jfrunit;
+package ${package}.model;
 
-import it.croway.jfrunit.Generator;
+import java.lang.*;
 
-@Generator
-public class JfrEventGenerator {
-
+public class ${type.name} {
+	<#list type.attributes as attribute>
+	public ${attribute.type} <#if attribute.name == "package">packageName<#else>${attribute.name}</#if>;
+	</#list>
 }

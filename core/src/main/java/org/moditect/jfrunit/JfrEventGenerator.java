@@ -17,25 +17,9 @@
  */
 package org.moditect.jfrunit;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Predicate;
+import org.moditect.jfrunit.generator.Generator;
 
-import jdk.jfr.consumer.RecordedEvent;
+@Generator
+public class JfrEventGenerator {
 
-public abstract class JfrEventType {
-    private String name;
-    private List<Predicate<RecordedEvent>> predicates = new ArrayList();
-
-    protected JfrEventType(String name) {
-        this.name = name;
-    }
-
-    public final String getName() {
-        return name;
-    }
-
-    public List<Predicate<RecordedEvent>> getPredicates() {
-        return predicates;
-    }
 }

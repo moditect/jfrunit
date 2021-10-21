@@ -20,7 +20,6 @@ package org.moditect.jfrunit;
 import java.util.Objects;
 import java.util.function.Predicate;
 
-import jdk.jfr.consumer.RecordedFrame;
 import jdk.jfr.consumer.RecordedStackTrace;
 
 public class ExpectedStackTrace implements Predicate<RecordedStackTrace> {
@@ -45,10 +44,9 @@ public class ExpectedStackTrace implements Predicate<RecordedStackTrace> {
         if (!Objects.equals(recordedStackTrace.isTruncated(), truncated)) {
             return false;
         }
-        for (RecordedFrame recordedFrame : recordedStackTrace.getFrames()) {
-            if (frames != null && frames.test(recordedFrame)) {
-                return false;
-            }
+
+        if (recordedStackTrace.getFrames().stream().noneMatch(frames::test)) {
+            return false;
         }
 
         return true;

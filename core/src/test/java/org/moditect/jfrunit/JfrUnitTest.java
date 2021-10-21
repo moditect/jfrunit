@@ -44,16 +44,11 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
+        assertThat(jfrEvents).contains(JfrEventTypes.GARBAGE_COLLECTION);
         assertThat(jfrEvents).contains(JfrEventTypes.GARBAGE_COLLECTION.withCause("System.gc()"));
         assertThat(jfrEvents).contains(JfrEventTypes.THREAD_SLEEP.withTime(Duration.ofMillis(50)));
 
-        assertThat(jfrEvents).contains(event(JfrEventTypes.GARBAGE_COLLECTION));
-        assertThat(jfrEvents).contains(
-                event(JfrEventTypes.GARBAGE_COLLECTION).with(GarbageCollection.CAUSE, "System.gc()"));
-        assertThat(jfrEvents).contains(
-                event(JfrEventTypes.THREAD_SLEEP).with(ThreadSleep.TIME, Duration.ofMillis(50)));
-
-        assertThat(jfrEvents.filter(event(JfrEventTypes.GARBAGE_COLLECTION))).hasSizeBetween(1, 2);
+        assertThat(jfrEvents.filter(JfrEventTypes.GARBAGE_COLLECTION.withCause("System.gc()"))).hasSize(1);
     }
 
     @Test
@@ -65,19 +60,19 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
-        assertThat(jfrEvents).contains(event(JfrEventTypes.GARBAGE_COLLECTION));
+        assertThat(jfrEvents).contains(JfrEventTypes.GARBAGE_COLLECTION);
         assertThat(jfrEvents).contains(
-                event(JfrEventTypes.GARBAGE_COLLECTION).with(GarbageCollection.CAUSE, "System.gc()"));
+                JfrEventTypes.GARBAGE_COLLECTION.withCause("System.gc()"));
         assertThat(jfrEvents).contains(
-                event(JfrEventTypes.THREAD_SLEEP).with(ThreadSleep.TIME, Duration.ofMillis(50)));
+                JfrEventTypes.THREAD_SLEEP.withTime(Duration.ofMillis(50)));
 
         assertThat(jfrEvents.filter(
-                event(JfrEventTypes.GARBAGE_COLLECTION).with(GarbageCollection.CAUSE, "System.gc()")))
+                JfrEventTypes.GARBAGE_COLLECTION.withCause("System.gc()")))
                         .hasSize(1);
     }
 
     @Test
-    @EnableEvent("jdk.ThreadSleep")
+    @EnableEvent(ThreadSleep.EVENT_NAME)
     @DisplayName("Should have StackTrace captured for StackTrace-Enabled Events by default with StackTrace policy Default")
     public void captureTracesWhenEnabledWithPolicyDefault() throws Exception {
         Thread.sleep(50);

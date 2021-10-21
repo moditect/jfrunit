@@ -21,19 +21,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Test;
+import org.moditect.jfrunit.events.JfrEventTypes;
 import org.moditect.jfrunit.events.ThreadSleep;
 
 import jdk.jfr.consumer.RecordedEvent;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.moditect.jfrunit.ExpectedEvent.event;
 
 @JfrEventTest
 public class ThreadSleepTest {
     public JfrEvents jfrEvents = new JfrEvents();
 
     @Test
-    @EnableEvent(value = "jdk.ThreadSleep", stackTrace = EnableEvent.StacktracePolicy.INCLUDED)
+    @EnableEvent(value = ThreadSleep.EVENT_NAME, stackTrace = EnableEvent.StacktracePolicy.INCLUDED)
     public void testWithStackTrace() throws Exception {
         Thread.sleep(10);
 
@@ -42,31 +42,30 @@ public class ThreadSleepTest {
         StackTraceElement[] elements = new Exception().getStackTrace();
 
         List<RecordedEvent> threadSleepEvents = jfrEvents.filter(
-                event("jdk.ThreadSleep")
-                        .with(ThreadSleep.EVENT_THREAD, new ExpectedThread(Thread.currentThread()))
-                        .containStackFrame(new ExpectedStackFrame(elements[0])))
+                JfrEventTypes.THREAD_SLEEP
+                        .withEventThread(new ExpectedThread(Thread.currentThread()))
+                        .withStackTrace(new ExpectedStackTrace(elements[0], true)))
                 .collect(Collectors.toList());
         assertThat(threadSleepEvents.size()).isEqualTo(1);
         assertThat(threadSleepEvents.get(0).getStackTrace() != null);
     }
 
     @Test
-    @EnableEvent(value = "jdk.ThreadSleep", stackTrace = EnableEvent.StacktracePolicy.EXCLUDED)
+    @EnableEvent(value = ThreadSleep.EVENT_NAME, stackTrace = EnableEvent.StacktracePolicy.EXCLUDED)
     public void testWithoutStackTrace() throws Exception {
         Thread.sleep(10);
 
         jfrEvents.awaitEvents();
 
         List<RecordedEvent> threadSleepEvents = jfrEvents.filter(
-                event("jdk.ThreadSleep")
-                        .with(ThreadSleep.EVENT_THREAD, new ExpectedThread(Thread.currentThread())))
+                JfrEventTypes.THREAD_SLEEP.withEventThread(new ExpectedThread(Thread.currentThread())))
                 .collect(Collectors.toList());
         assertThat(threadSleepEvents.size()).isEqualTo(1);
         assertThat(threadSleepEvents.get(0).getStackTrace() == null);
     }
 
     @Test
-    @EnableEvent(value = "jdk.ThreadSleep", threshold = 100)
+    @EnableEvent(value = ThreadSleep.EVENT_NAME, threshold = 100)
     public void testWithThreshold() throws Exception {
         Thread.sleep(10);
         Thread.sleep(200);
@@ -76,10 +75,11 @@ public class ThreadSleepTest {
         StackTraceElement[] elements = new Exception().getStackTrace();
 
         List<RecordedEvent> threadSleepEvents = jfrEvents.filter(
-                event("jdk.ThreadSleep")
-                        .with(ThreadSleep.EVENT_THREAD, new ExpectedThread(Thread.currentThread()))
-                        .containStackFrame(new ExpectedStackFrame(elements[0])))
+                JfrEventTypes.THREAD_SLEEP
+                        .withEventThread(new ExpectedThread(Thread.currentThread()))
+                        .withStackTrace(new ExpectedStackTrace(elements[0], true)))
                 .collect(Collectors.toList());
+
         assertThat(threadSleepEvents.size()).isEqualTo(1);
         assertThat(threadSleepEvents.get(0).getStackTrace() != null);
     }

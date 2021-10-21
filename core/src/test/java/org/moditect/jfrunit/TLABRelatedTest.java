@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.moditect.jfrunit.events.JfrEventTypes;
 import org.moditect.jfrunit.events.ObjectAllocationInNewTLAB;
 import org.moditect.jfrunit.events.ObjectAllocationOutsideTLAB;
 
 import jdk.jfr.consumer.RecordedEvent;
 
-import static org.moditect.jfrunit.ExpectedEvent.event;
 import static org.moditect.jfrunit.JfrEventsAssert.assertThat;
 
 @JfrEventTest
@@ -38,8 +38,8 @@ public class TLABRelatedTest {
     public JfrEvents jfrEvents = new JfrEvents();
 
     @Test
-    @EnableEvent("jdk.ObjectAllocationOutsideTLAB")
-    @EnableEvent("jdk.ObjectAllocationInNewTLAB")
+    @EnableEvent(ObjectAllocationOutsideTLAB.EVENT_NAME)
+    @EnableEvent(ObjectAllocationInNewTLAB.EVENT_NAME)
     public void testSlowAllocation() throws InterruptedException {
         System.gc();
         for (int i = 0; i < 512; ++i) {
@@ -49,19 +49,21 @@ public class TLABRelatedTest {
 
         StackTraceElement[] elements = new Exception().getStackTrace();
 
-        assertThat(jfrEvents).contains(event("jdk.ObjectAllocationOutsideTLAB"));
-        assertThat(jfrEvents).contains(event("jdk.ObjectAllocationInNewTLAB"));
+        assertThat(jfrEvents).contains(ObjectAllocationOutsideTLAB.INSTANCE);
+        assertThat(jfrEvents).contains(ObjectAllocationInNewTLAB.INSTANCE);
 
-        List<RecordedEvent> allocation100KBInNewTLABEvents = jfrEvents.filter(event("jdk.ObjectAllocationInNewTLAB")
-                .with(ObjectAllocationInNewTLAB.ALLOCATION_SIZE, (long) OBJECT_SIZE)
-                .with(ObjectAllocationInNewTLAB.OBJECT_CLASS, new ExpectedClass(byte[].class))
-                .with(ObjectAllocationInNewTLAB.EVENT_THREAD, new ExpectedThread(Thread.currentThread()))
-                .containStackFrame(new ExpectedStackFrame(elements[0]))).collect(Collectors.toList());
-        List<RecordedEvent> allocation100KBOutsideTLABEvents = jfrEvents.filter(event("jdk.ObjectAllocationOutsideTLAB")
-                .with(ObjectAllocationOutsideTLAB.ALLOCATION_SIZE, (long) OBJECT_SIZE)
-                .with(ObjectAllocationOutsideTLAB.OBJECT_CLASS, new ExpectedClass(byte[].class))
-                .with(ObjectAllocationOutsideTLAB.EVENT_THREAD, new ExpectedThread(Thread.currentThread()))
-                .containStackFrame(new ExpectedStackFrame(elements[0]))).collect(Collectors.toList());
+        List<RecordedEvent> allocation100KBInNewTLABEvents = jfrEvents.filter(JfrEventTypes.OBJECT_ALLOCATION_IN_NEW_TL_AB
+                .withAllocationSize((long) OBJECT_SIZE)
+                .withObjectClass(new ExpectedClass(byte[].class))
+                .withEventThread(new ExpectedThread(Thread.currentThread()))
+                .withStackTrace(new ExpectedStackTrace(elements[0], true)))
+                .collect(Collectors.toList());
+        List<RecordedEvent> allocation100KBOutsideTLABEvents = jfrEvents.filter(JfrEventTypes.OBJECT_ALLOCATION_OUTSIDE_TL_AB
+                .withAllocationSize((long) OBJECT_SIZE)
+                .withObjectClass(new ExpectedClass(byte[].class))
+                .withEventThread(new ExpectedThread(Thread.currentThread()))
+                .withStackTrace(new ExpectedStackTrace(elements[0], true)))
+                .collect(Collectors.toList());
         Assertions.assertThat(allocation100KBInNewTLABEvents.size()).isGreaterThan(0);
         Assertions.assertThat(allocation100KBOutsideTLABEvents.size()).isGreaterThan(0);
     }

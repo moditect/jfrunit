@@ -169,6 +169,15 @@ public class JfrEvents {
         return stream().filter(predicate);
     }
 
+    public Stream<RecordedEvent> filter(JfrEventType jfrEventType) {
+        Stream<RecordedEvent> result = stream()
+                .filter(recordedEvent -> jfrEventType.getName().equals(recordedEvent.getEventType().getName()))
+                .filter(jfrEventType.getPredicates().stream().reduce(x -> true, Predicate::and));
+        jfrEventType.getPredicates().clear();
+
+        return result;
+    }
+
     private Stream<RecordedEvent> stream() {
         // avoid blocking when called outside of a test such as new JfrEvents().stream()
         if (capturing) {
