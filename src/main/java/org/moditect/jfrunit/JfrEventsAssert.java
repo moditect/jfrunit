@@ -17,7 +17,11 @@
  */
 package org.moditect.jfrunit;
 
+import java.util.function.Predicate;
+
 import org.assertj.core.api.AbstractAssert;
+
+import jdk.jfr.consumer.RecordedEvent;
 
 public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> {
 
@@ -27,6 +31,26 @@ public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> 
 
     public static JfrEventsAssert assertThat(JfrEvents actual) {
         return new JfrEventsAssert(actual);
+    }
+
+    public JfrEventsAssert contains(JfrEventType jfrEventType) {
+        boolean found = actual.events()
+                .filter(event -> jfrEventType.getName().equals(event.getEventType().getName()))
+                .anyMatch(recordedEvent -> {
+                    for (Predicate<RecordedEvent> predicate : jfrEventType.getPredicates()) {
+                        if (!predicate.test(recordedEvent)) {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                });
+
+        if (!found) {
+            failWithMessage("No JFR event of type <%s>", jfrEventType.getName());
+        }
+
+        return this;
     }
 
     public JfrEventsAssert contains(ExpectedEvent expectedEvent) {

@@ -44,6 +44,9 @@ public class JfrUnitTest {
 
         jfrEvents.awaitEvents();
 
+        assertThat(jfrEvents).contains(JfrEventTypes.GARBAGE_COLLECTION.withCause("System.gc()"));
+        assertThat(jfrEvents).contains(JfrEventTypes.THREAD_SLEEP.withTime(Duration.ofMillis(50)));
+
         assertThat(jfrEvents).contains(event(JfrEventTypes.GARBAGE_COLLECTION));
         assertThat(jfrEvents).contains(
                 event(JfrEventTypes.GARBAGE_COLLECTION).with(GarbageCollection.CAUSE, "System.gc()"));
