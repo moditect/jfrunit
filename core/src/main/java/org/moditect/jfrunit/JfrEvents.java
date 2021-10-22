@@ -170,10 +170,16 @@ public class JfrEvents {
     }
 
     public Stream<RecordedEvent> filter(JfrEventType jfrEventType) {
-        Stream<RecordedEvent> result = stream()
-                .filter(recordedEvent -> jfrEventType.getName().equals(recordedEvent.getEventType().getName()))
-                .filter(jfrEventType.getPredicates().stream().reduce(x -> true, Predicate::and));
-        jfrEventType.getPredicates().clear();
+        Stream<RecordedEvent> result = null;
+
+        try {
+            result = stream()
+                    .filter(recordedEvent -> jfrEventType.getName().equals(recordedEvent.getEventType().getName()))
+                    .filter(jfrEventType.getPredicates().stream().map(JfrPredicate::getPredicate).reduce(x -> true, Predicate::and));
+        }
+        finally {
+            jfrEventType.getPredicates().clear();
+        }
 
         return result;
     }

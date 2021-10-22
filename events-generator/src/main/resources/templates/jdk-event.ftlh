@@ -39,8 +39,12 @@ public class ${event.name} extends JfrEventType {
 	<#list event.attributes as attribute>
     public ${event.name} ${attribute.methodName}(${attribute.objectType} ${attribute.name}) {
 		getPredicates().add(
-			input ->
-				matches(${attribute.name}, "${attribute.name}", input)
+			new org.moditect.jfrunit.JfrPredicate(
+				input ->
+                		matches(${attribute.name}, "${attribute.name}", input),
+                "${attribute.name}",
+                ${attribute.name}.toString()
+			)
 		);
 
 		return this;

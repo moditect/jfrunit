@@ -17,11 +17,11 @@
  */
 package org.moditect.jfrunit;
 
-import java.util.function.Predicate;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 import org.assertj.core.api.AbstractAssert;
-
-import jdk.jfr.consumer.RecordedEvent;
 
 public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> {
 
@@ -34,22 +34,47 @@ public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> 
     }
 
     public JfrEventsAssert contains(JfrEventType jfrEventType) {
-        boolean found = actual.events()
-                .filter(event -> jfrEventType.getName().equals(event.getEventType().getName()))
+        AtomicReference<Supplier> errorMessage = new AtomicReference<>(null);
+        AtomicBoolean eventFound = new AtomicBoolean();
+
+        actual.events()
                 .anyMatch(recordedEvent -> {
-                    for (Predicate<RecordedEvent> predicate : jfrEventType.getPredicates()) {
-                        if (!predicate.test(recordedEvent)) {
+                    if (!jfrEventType.getName().equals(recordedEvent.getEventType().getName())) {
+                        if (!eventFound.get()) {
+                            errorMessage.set(() -> {
+                                failWithMessage("No JFR event of type <%s>", jfrEventType.getName());
+                                return true;
+                            });
+                        }
+
+                        return false;
+                    }
+
+                    eventFound.set(true);
+
+                    for (JfrPredicate predicate : jfrEventType.getPredicates()) {
+                        if (!predicate.getPredicate().test(recordedEvent)) {
+                            errorMessage.set(() -> {
+                                failWithMessage("No JFR event of type <%s>, expected <%s> on field <%s>",
+                                        jfrEventType.getName(), predicate.getValue(), predicate.getAttributeName());
+                                return true;
+                            });
+
                             return false;
                         }
                     }
 
+                    errorMessage.set(null);
                     return true;
                 });
+        try {
 
-        jfrEventType.getPredicates().clear();
-
-        if (!found) {
-            failWithMessage("No JFR event of type <%s>", jfrEventType.getName());
+            if (errorMessage.get() != null) {
+                errorMessage.get().get();
+            }
+        }
+        finally {
+            jfrEventType.getPredicates().clear();
         }
 
         return this;

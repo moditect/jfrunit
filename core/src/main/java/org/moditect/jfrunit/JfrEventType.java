@@ -22,7 +22,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 import org.moditect.jfrunit.events.model.CalleeMethod;
 import org.moditect.jfrunit.events.model.CopyFailed;
@@ -41,7 +40,7 @@ import jdk.jfr.consumer.RecordedStackTrace;
 
 public abstract class JfrEventType {
     private String name;
-    private List<Predicate<RecordedEvent>> predicates = new ArrayList();
+    private List<JfrPredicate> predicates = new ArrayList();
 
     protected JfrEventType(String name) {
         this.name = name;
@@ -173,7 +172,7 @@ public abstract class JfrEventType {
         return name;
     }
 
-    public List<Predicate<RecordedEvent>> getPredicates() {
+    public List<JfrPredicate> getPredicates() {
         return predicates;
     }
 }
