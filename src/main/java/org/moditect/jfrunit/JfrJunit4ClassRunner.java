@@ -15,22 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.moditect.jfrunit;
 
-import org.junit.jupiter.api.extension.AfterEachCallback;
-import org.junit.jupiter.api.extension.BeforeEachCallback;
-import org.junit.jupiter.api.extension.Extension;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import java.util.List;
 
-public class JfrEventTestExtension implements Extension, BeforeEachCallback, AfterEachCallback {
+import org.junit.rules.TestRule;
+import org.junit.runners.BlockJUnit4ClassRunner;
 
-    @Override
-    public void beforeEach(ExtensionContext context) throws Exception {
-        JfrTestExtensionUtils.beforeEach(context.getRequiredTestMethod(), context.getRequiredTestInstance());
+public class JfrJunit4ClassRunner extends BlockJUnit4ClassRunner {
+
+    public JfrJunit4ClassRunner(Class<?> testClass) throws Exception {
+        super(testClass);
     }
 
     @Override
-    public void afterEach(ExtensionContext context) throws Exception {
-        JfrTestExtensionUtils.afterEach(context.getRequiredTestInstance());
+    protected List<TestRule> getTestRules(Object target) {
+        List<TestRule> testRules = super.getTestRules(target);
+
+        testRules.add(new JfrJunit4TestWatcher(target));
+
+        return testRules;
     }
 }
