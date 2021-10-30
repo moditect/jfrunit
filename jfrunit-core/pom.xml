@@ -9,7 +9,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>core</artifactId>
+	<artifactId>jfrunit-core</artifactId>
 
 	<name>JfrUnit</name>
 	<url>https://github.com/gunnarmorling/jfrunit/</url>
@@ -25,6 +25,10 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 		</dependency>
+		<dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
@@ -53,7 +57,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>events-generator</artifactId>
+			<artifactId>jfrunit-events-generator</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

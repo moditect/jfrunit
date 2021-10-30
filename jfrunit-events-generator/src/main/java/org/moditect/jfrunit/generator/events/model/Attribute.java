@@ -1,33 +1,30 @@
 package org.moditect.jfrunit.generator.events.model;
 
-import java.util.HashMap;
 import java.util.Map;
 
+import static java.util.Map.entry;
+
 public class Attribute {
-    static Map<String, String> attributeObjToJfrUnitType = new HashMap<>();
-
-    static {
-        attributeObjToJfrUnitType.put("long", "Long");
-        attributeObjToJfrUnitType.put("int", "Integer");
-        attributeObjToJfrUnitType.put("Thread", "org.moditect.jfrunit.ExpectedThread");
-        attributeObjToJfrUnitType.put("String", "java.lang.String");
-        attributeObjToJfrUnitType.put("Class", "org.moditect.jfrunit.ExpectedClass");
-        attributeObjToJfrUnitType.put("ClassLoader", "org.moditect.jfrunit.ExpectedClassLoader");
-        attributeObjToJfrUnitType.put("Module", "org.moditect.jfrunit.events.model.Module");
-        attributeObjToJfrUnitType.put("Package", "org.moditect.jfrunit.events.model.Package");
-        attributeObjToJfrUnitType.put("StackFrame", "org.moditect.jfrunit.ExpectedStackFrame");
-        attributeObjToJfrUnitType.put("StackTrace", "org.moditect.jfrunit.ExpectedStackTrace");
-        attributeObjToJfrUnitType.put("Method", "org.moditect.jfrunit.ExpectedMethod");
-        attributeObjToJfrUnitType.put("boolean", "Boolean");
-        attributeObjToJfrUnitType.put("byte", "Byte");
-        attributeObjToJfrUnitType.put("char", "Character");
-        attributeObjToJfrUnitType.put("double", "Double");
-        attributeObjToJfrUnitType.put("float", "Float");
-        attributeObjToJfrUnitType.put("short", "Short");
-
-        attributeObjToJfrUnitType.put("Timespan", "java.time.Duration");
-        attributeObjToJfrUnitType.put("Timestamp", "java.time.Instant");
-    }
+    private static Map<String, String> attributeObjToJfrUnitType = Map.ofEntries(
+            entry("long", "Long"),
+            entry("int", "Integer"),
+            entry("Thread", "org.moditect.jfrunit.ExpectedThread"),
+            entry("String", "java.lang.String"),
+            entry("Class", "org.moditect.jfrunit.ExpectedClass"),
+            entry("ClassLoader", "org.moditect.jfrunit.ExpectedClassLoader"),
+            entry("Module", "org.moditect.jfrunit.events.model.Module"),
+            entry("Package", "org.moditect.jfrunit.events.model.Package"),
+            entry("StackFrame", "org.moditect.jfrunit.ExpectedStackFrame"),
+            entry("StackTrace", "org.moditect.jfrunit.ExpectedStackTrace"),
+            entry("Method", "org.moditect.jfrunit.ExpectedMethod"),
+            entry("boolean", "Boolean"),
+            entry("byte", "Byte"),
+            entry("char", "Character"),
+            entry("double", "Double"),
+            entry("float", "Float"),
+            entry("short", "Short"),
+            entry("Timespan", "java.time.Duration"),
+            entry("Timestamp", "java.time.Instant"));
 
     private String name;
     private String type;

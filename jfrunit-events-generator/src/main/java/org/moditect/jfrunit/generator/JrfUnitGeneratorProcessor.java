@@ -20,12 +20,12 @@ import com.google.auto.service.AutoService;
 import freemarker.template.TemplateException;
 
 @SupportedOptions({ "jfrDocUrl" })
-@SupportedAnnotationTypes({ "org.moditect.jfrunit.generator.Generator" })
+@SupportedAnnotationTypes({ "*" })
 @SupportedSourceVersion(SourceVersion.RELEASE_16)
 @AutoService(Processor.class)
 public class JrfUnitGeneratorProcessor extends AbstractProcessor {
     private static final Logger LOGGER = LoggerFactory.getLogger(JrfUnitGeneratorProcessor.class);
-    static boolean processed = false;
+    private static boolean processed = false;
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
@@ -39,12 +39,10 @@ public class JrfUnitGeneratorProcessor extends AbstractProcessor {
             processed = true;
         }
         catch (IOException e) {
-            e.printStackTrace();
             LOGGER.error(e.getMessage(), e);
             return false;
         }
         catch (TemplateException e) {
-            e.printStackTrace();
             LOGGER.error(e.getMessage(), e);
             return false;
         }

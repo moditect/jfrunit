@@ -23,8 +23,8 @@ import java.util.function.Predicate;
 import jdk.jfr.consumer.RecordedStackTrace;
 
 public class ExpectedStackTrace implements Predicate<RecordedStackTrace> {
-    public boolean truncated;
-    public ExpectedStackFrame frames;
+    private boolean truncated;
+    private ExpectedStackFrame frames;
 
     public ExpectedStackTrace() {
     }
