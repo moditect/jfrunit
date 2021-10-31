@@ -3,18 +3,14 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
-    <artifactId>jfrunit</artifactId>
     <groupId>org.moditect.jfrunit</groupId>
-    <version>1.0.0.Alpha1</version>
+    <artifactId>jfrunit-aggregator</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>jfrunit-core</artifactId>
-
-  <name>JfrUnit</name>
-  <url>https://github.com/gunnarmorling/jfrunit/</url>
-  <description>A JUnit extension for asserting JDK Flight Recorder events</description>
-  <inceptionYear>2020</inceptionYear>
+  <name>JfrUnit Core</name>
 
   <dependencies>
     <dependency>
@@ -73,7 +69,6 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
         <configuration>
           <annotationProcessorPaths>
             <path>
