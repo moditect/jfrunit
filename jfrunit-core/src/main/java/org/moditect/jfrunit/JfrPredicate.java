@@ -5,6 +5,7 @@ import java.util.function.Predicate;
 import jdk.jfr.consumer.RecordedEvent;
 
 public class JfrPredicate {
+
     private final Predicate<RecordedEvent> predicate;
     private final String attributeName;
     private final String value;

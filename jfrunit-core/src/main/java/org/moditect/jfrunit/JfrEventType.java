@@ -39,8 +39,9 @@ import jdk.jfr.consumer.RecordedFrame;
 import jdk.jfr.consumer.RecordedStackTrace;
 
 public abstract class JfrEventType {
-    private String name;
-    private List<JfrPredicate> predicates = new ArrayList();
+
+    private final String name;
+    private final List<JfrPredicate> predicates = new ArrayList<>();
 
     protected JfrEventType(String name) {
         this.name = name;

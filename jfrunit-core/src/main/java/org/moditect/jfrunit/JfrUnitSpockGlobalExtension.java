@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.moditect.jfrunit.internal.EventConfiguration;
 import org.spockframework.runtime.extension.AbstractMethodInterceptor;
 import org.spockframework.runtime.extension.IGlobalExtension;
 import org.spockframework.runtime.extension.IMethodInvocation;

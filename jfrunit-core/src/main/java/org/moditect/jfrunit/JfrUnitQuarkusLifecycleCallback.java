@@ -25,6 +25,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.moditect.jfrunit.internal.EventConfiguration;
+
 import io.quarkus.test.junit.callback.QuarkusTestAfterEachCallback;
 import io.quarkus.test.junit.callback.QuarkusTestBeforeEachCallback;
 import io.quarkus.test.junit.callback.QuarkusTestMethodContext;

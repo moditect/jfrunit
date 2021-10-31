@@ -18,7 +18,8 @@
 package org.moditect.jfrunit;
 
 public class Attribute<E extends JfrEventType, T> {
-    private String name;
+
+    private final String name;
 
     public Attribute(String name) {
         this.name = name;

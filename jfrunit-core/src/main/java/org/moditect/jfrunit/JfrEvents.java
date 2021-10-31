@@ -38,6 +38,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 import org.moditect.jfrunit.EnableEvent.StacktracePolicy;
+import org.moditect.jfrunit.internal.EventConfiguration;
 import org.moditect.jfrunit.internal.SyncEvent;
 
 import jdk.jfr.Configuration;

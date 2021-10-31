@@ -34,7 +34,7 @@ public class JfrEventsAssert extends AbstractAssert<JfrEventsAssert, JfrEvents> 
     }
 
     public JfrEventsAssert contains(JfrEventType jfrEventType) {
-        AtomicReference<Supplier> errorMessage = new AtomicReference<>(null);
+        AtomicReference<Supplier<Boolean>> errorMessage = new AtomicReference<>(null);
         AtomicBoolean eventFound = new AtomicBoolean();
 
         actual.events()
