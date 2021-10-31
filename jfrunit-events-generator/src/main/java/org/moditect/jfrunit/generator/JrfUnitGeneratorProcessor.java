@@ -29,7 +29,7 @@ public class JrfUnitGeneratorProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        String jfrDocUrl = (String) System.getProperties().get("jfrDocUrl");
+        String jfrDocUrl = processingEnv.getOptions().get("jfrDocUrl");
         if (jfrDocUrl == null || processed) {
             return false;
         }

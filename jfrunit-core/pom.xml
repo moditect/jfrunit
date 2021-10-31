@@ -55,11 +55,6 @@
 			<type>pom</type>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>jfrunit-events-generator</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -73,6 +68,25 @@
 					<excludes>
 						<exclude>pom.xml</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.1</version>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>${project.groupId}</groupId>
+							<artifactId>jfrunit-events-generator</artifactId>
+							<version>${project.version}</version>
+						</path>
+					</annotationProcessorPaths>
+					<!-- due to problem in maven-compiler-plugin, for verbose mode add showWarnings -->
+					<showWarnings>true</showWarnings>
+					<compilerArgs>
+						<arg>-AjfrDocUrl=${jrfDocUrl}</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
 		</plugins>
