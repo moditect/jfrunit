@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.platform.commons.support.AnnotationSupport;
+import org.moditect.jfrunit.internal.EventConfiguration;
 
 /**
  * Utility methods used by Junit4/5 extensions that start/stop recording before/after each test (method) execution.
@@ -38,7 +39,6 @@ import org.junit.platform.commons.support.AnnotationSupport;
 public class JfrTestExtensionUtils {
 
     private JfrTestExtensionUtils() {
-        super();
     }
 
     /**

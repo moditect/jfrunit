@@ -34,12 +34,12 @@
   </parent>
 
   <groupId>org.moditect.jfrunit</groupId>
-  <artifactId>jfrunit</artifactId>
-  <version>1.0.0.Alpha1</version>
+  <artifactId>jfrunit-aggregator</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>JfrUnit</name>
-  <url>https://github.com/gunnarmorling/jfrunit/</url>
+  <url>https://github.com/moditect/jfrunit/</url>
   <description>A JUnit extension for asserting JDK Flight Recorder events</description>
   <inceptionYear>2020</inceptionYear>
 

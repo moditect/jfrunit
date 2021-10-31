@@ -25,7 +25,7 @@ import org.junit.runner.Description;
 
 public class JfrJunit4TestWatcher extends TestWatcher {
 
-    private Object testInstance;
+    private final Object testInstance;
 
     public JfrJunit4TestWatcher(Object testInstance) {
         this.testInstance = testInstance;

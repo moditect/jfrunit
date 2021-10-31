@@ -65,10 +65,12 @@ import jdk.jfr.consumer.RecordedStackTrace;
  * @see org.moditect.jfrunit.events.ThreadSleep#withTime(Duration). 
  */
 public abstract class JfrEventType {
+
     /**
      * Event name, ex. jdk.ThreadSleep
      */
     private final String name;
+
     /**
      * predicates stored for Assertion
      */
