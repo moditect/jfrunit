@@ -24,7 +24,8 @@ package org.moditect.jfrunit;
  * @param <T>
  */
 public class Attribute<E extends JfrEventType, T> {
-    private String name;
+
+    private final String name;
 
     public Attribute(String name) {
         this.name = name;
