@@ -19,6 +19,10 @@ import com.google.auto.service.AutoService;
 
 import freemarker.template.TemplateException;
 
+/**
+ * Annotation processor that generates JFR event types from its json representation
+ * ex. https://bestsolution-at.github.io/jfr-doc/openjdk-17.json
+ */
 @SupportedOptions({ "jfrDocUrl" })
 @SupportedAnnotationTypes({ "*" })
 @SupportedSourceVersion(SourceVersion.RELEASE_16)

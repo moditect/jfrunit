@@ -25,6 +25,11 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
+/**
+ * JFR types generator implementation, given json that represent standard jfr events
+ * generates classes and default methods that are used by jfrunit in order
+ * to build assertions
+ */
 public class JfrUnitConstantsGenerator {
 
     static List<String> baseTypes = List.of("boolean", "byte", "char", "double", "float", "int", "long", "short", "String");

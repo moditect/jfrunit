@@ -38,9 +38,41 @@ import jdk.jfr.consumer.RecordedEvent;
 import jdk.jfr.consumer.RecordedFrame;
 import jdk.jfr.consumer.RecordedStackTrace;
 
+/**
+ * Base class for generated typed events when builder is used
+ * <pre>
+ *     JfrEventTypes.THREAD_SLEEP.withTime(Duration.ofMillis(50))
+ * </pre>
+ * 
+ * Predicates (ex. withTime) are stored so that can be used during assertion verification
+ * @see org.moditect.jfrunit.JfrEventsAssert#contains(JfrEventType).
+ *
+ * matches methods conaains the actual assertion logic and are invoked by generated events types to build the JfrPredicate.
+ * <pre>
+ *     public ThreadSleep withTime(java.time.Duration time) {
+ * 		getPredicates().add(
+ * 			new org.moditect.jfrunit.JfrPredicate(
+ * 				input ->
+ *                 		<strong>matches</strong>(time, "time", input),
+ *                 "time",
+ *                 time.toString()
+ * 			)
+ * 		);
+ *
+ * 		return this;
+ *     }
+ * </pre>
+ * @see org.moditect.jfrunit.events.ThreadSleep#withTime(Duration). 
+ */
 public abstract class JfrEventType {
-    private String name;
-    private List<JfrPredicate> predicates = new ArrayList();
+    /**
+     * Event name, ex. jdk.ThreadSleep
+     */
+    private final String name;
+    /**
+     * predicates stored for Assertion
+     */
+    private final List<JfrPredicate> predicates = new ArrayList<>();
 
     protected JfrEventType(String name) {
         this.name = name;

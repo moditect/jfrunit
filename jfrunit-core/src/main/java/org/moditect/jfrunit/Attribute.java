@@ -17,6 +17,12 @@
  */
 package org.moditect.jfrunit;
 
+/**
+ * Base class for typed jfr event property
+ *
+ * @param <E>
+ * @param <T>
+ */
 public class Attribute<E extends JfrEventType, T> {
     private String name;
 

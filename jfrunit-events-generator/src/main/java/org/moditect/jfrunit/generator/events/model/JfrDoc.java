@@ -2,6 +2,9 @@ package org.moditect.jfrunit.generator.events.model;
 
 import java.util.List;
 
+/**
+ * jfr-doc structure, taken from https://bestsolution-at.github.io/jfr-doc/openjdk-17.json
+ */
 public class JfrDoc {
     private String version;
     private String distribution;
