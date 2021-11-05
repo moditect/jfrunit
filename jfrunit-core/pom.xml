@@ -81,6 +81,8 @@
           <showWarnings>true</showWarnings>
           <compilerArgs>
             <arg>-AjfrDocUrl=${jrfDocUrl}</arg>
+            <arg>--add-exports</arg>
+            <arg>jdk.jfr/jdk.internal.event=ALL-UNNAMED</arg>
           </compilerArgs>
         </configuration>
       </plugin>

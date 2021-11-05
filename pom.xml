@@ -50,7 +50,6 @@
     <java.version>16</java.version>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
-    <maven.compiler.release>${java.version}</maven.compiler.release>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <quarkus.platform.version>2.3.0.Final</quarkus.platform.version>
     <version.surefire.plugin>3.0.0-M5</version.surefire.plugin>
@@ -133,7 +132,8 @@
           <execution>
             <id>default-testCompile</id>
             <configuration>
-              <release>${java.version}</release>
+              <source>${java.version}</source>
+              <target>${java.version}</target>
             </configuration>
           </execution>
         </executions>
