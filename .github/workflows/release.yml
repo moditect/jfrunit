@@ -52,4 +52,4 @@ jobs:
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          ./mvnw -B --file pom.xml -Pjreleaser jreleaser:release
+          ./mvnw -B --file pom.xml -pl :jfrunit-aggregator -Pjreleaser jreleaser:release

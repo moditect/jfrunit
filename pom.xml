@@ -30,7 +30,7 @@
   <parent>
     <groupId>org.moditect</groupId>
     <artifactId>moditect-org-parent</artifactId>
-    <version>1.0.0.Final</version>
+    <version>1.1.0.Final</version>
   </parent>
 
   <groupId>org.moditect.jfrunit</groupId>
@@ -89,30 +89,6 @@
   </dependencyManagement>
 
   <build>
-    <pluginManagement>
-      <plugins>
-        <plugin>
-          <groupId>net.revelc.code.formatter</groupId>
-          <artifactId>formatter-maven-plugin</artifactId>
-          <version>2.16.0</version>
-          <configuration>
-            <configFile>../etc/eclipse-formatter-config.xml</configFile>
-          </configuration>
-        </plugin>
-
-        <plugin>
-          <groupId>net.revelc.code</groupId>
-          <artifactId>impsort-maven-plugin</artifactId>
-          <version>1.6.2</version>
-          <configuration>
-            <groups>java.,javax.,org.,com.</groups>
-            <removeUnused>true</removeUnused>
-            <staticAfter>true</staticAfter>
-            <!-- <staticGroups>java.,javax.,org.w3c.,org.xml.,junit.</staticGroups> -->
-          </configuration>
-        </plugin>
-      </plugins>
-    </pluginManagement>
     <plugins>
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
@@ -168,32 +144,6 @@
           </excludes>
         </configuration>
       </plugin>
-      <plugin>
-        <groupId>net.revelc.code.formatter</groupId>
-        <artifactId>formatter-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>format</id>
-            <goals>
-              <goal>format</goal>
-            </goals>
-            <phase>process-sources</phase>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>net.revelc.code</groupId>
-        <artifactId>impsort-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>sort-imports</id>
-            <goals>
-              <goal>sort</goal>
-            </goals>
-            <phase>process-sources</phase>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
     <resources>
       <resource>
@@ -211,7 +161,7 @@
           <plugin>
             <groupId>org.jreleaser</groupId>
             <artifactId>jreleaser-maven-plugin</artifactId>
-            <version>0.6.0</version>
+            <version>0.8.0</version>
             <inherited>false</inherited>
             <configuration>
               <jreleaser>
@@ -230,6 +180,18 @@
                           <contributor>bot</contributor>
                         </contributors>
                       </hide>
+                      <labelers>
+                        <labeler>
+                          <title>Bump</title>
+                          <label>dependencies</label>
+                        </labeler>
+                      </labelers>
+                      <categories>
+                        <category>
+                          <title>Dependencies</title>
+                          <labels>dependencies</labels>
+                        </category>
+                      </categories>
                     </changelog>
                   </github>
                 </release>
