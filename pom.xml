@@ -47,7 +47,8 @@
     <project.identifier>jfrunit</project.identifier>
     <project.github.repository>moditect/jfrunit</project.github.repository>
     <local.repository.path>/tmp/repository</local.repository.path>
-    <java.version>16</java.version>
+    <java.version>17</java.version>
+    <version.extra.enforcer.rules>1.4</version.extra.enforcer.rules>
     <maven.compiler.source>${java.version}</maven.compiler.source>
     <maven.compiler.target>${java.version}</maven.compiler.target>
     <maven.compiler.release>${java.version}</maven.compiler.release>
@@ -143,6 +144,42 @@
             <exclude>.mvn/wrapper/MavenWrapperDownloader.java</exclude>
           </excludes>
         </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0</version>
+        <executions>
+          <execution>
+            <phase>validate</phase>
+            <goals>
+              <goal>enforce</goal>
+            </goals>
+            <configuration>
+              <rules>
+                <requireMavenVersion>
+                  <version>${maven.version}</version>
+                </requireMavenVersion>
+                <requireJavaVersion>
+                  <version>${java.version}</version>
+                </requireJavaVersion>
+                <enforceBytecodeVersion>
+                  <maxJdkVersion>${java.version}</maxJdkVersion>
+                </enforceBytecodeVersion>
+                <dependencyConvergence/>
+                <requireUpperBoundDeps/>
+              </rules>
+              <fail>false</fail>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>extra-enforcer-rules</artifactId>
+            <version>${version.extra.enforcer.rules}</version>
+            <scope>compile</scope>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
     <resources>
