@@ -15,6 +15,16 @@ Starting off from a defined base line, future failures of such assertions are in
 JfrUnit provide means of identifying and analysizing such issues in a reliable, environment independent way in standard JUnit tests,
 before they manifest as performance regressions in production.
 
+### Learning More
+
+Here are some resources which describe JfrUnit and its approach to performance regression testing:
+
+* [Towards Continuous Performance Regression Testing](https://www.morling.dev/blog/towards-continuous-performance-regression-testing/)
+* [Introducing JfrUnit 1.0.0.Alpha1](https://www.morling.dev/blog/introducing-jfrunit-1-0-0-alpha1/)
+* [Asserting JDK Flight Recorder Events with JfrUnit](https://www.infoq.com/news/2021/09/jfrunit-flight-recorder-events/)
+* [Continuous Performance Regression Testing with JfrUnit](https://www.p99conf.io/session/continuous-performance-regression-testing-with-jfrunit/)
+* [Keep Your SQL in Check With Flight Recorder, JMC Agent and JfrUnit](https://www.javaadvent.com/2021/12/keep-your-sql-in-check-with-flight-recorder-jmc-agent-and-jfrunit.html)
+
 ## Usage
 
 This project requires OpenJDK 16 or later at runtime.
@@ -138,7 +148,7 @@ As you can see you can use custom DSL when checking the expected state.
 
 ## Build
 
-This project requires OpenJDK 14 or later for its build.
+This project requires OpenJDK 16 or later for its build.
 Apache Maven is used for the build.
 Run the following to build the project:
 
