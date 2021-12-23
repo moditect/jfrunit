@@ -38,8 +38,8 @@ add the following dependency to your project's _pom.xml_:
 ...
 <dependency>
   <groupId>org.moditect.jfrunit</groupId>
-  <artifactId>jfrunit</artifactId>
-  <version>1.0.0.Alpha1</version>
+  <artifactId>jfrunit-core</artifactId>
+  <version>1.0.0.Alpha2</version>
   <scope>test</scope>
 </dependency>
 ...
