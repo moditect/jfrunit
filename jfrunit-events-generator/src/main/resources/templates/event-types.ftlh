@@ -23,7 +23,7 @@ import org.moditect.jfrunit.JfrEventType;
  *
  */
 public class JfrEventTypes {
-	<#list events as event>
-	public static final ${package}.${event.name} ${event.typeUpperCase} = ${package}.${event.name}.INSTANCE;
-	</#list>
+    <#list events as event>
+    public static final ${package}.${event.name} ${event.typeUpperCase} = ${package}.${event.name}.INSTANCE;
+    </#list>
 }

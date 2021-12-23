@@ -26,9 +26,9 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 /**
- * JFR types generator implementation, given json that represent standard jfr events
- * generates classes and default methods that are used by jfrunit in order
- * to build assertions
+ * JFR types generator; given a JSON file that represents the standard JFR events,
+ * it generates classes and default methods that can be used with JfrUnit in order
+ * to build assertions.
  */
 public class JfrUnitConstantsGenerator {
 

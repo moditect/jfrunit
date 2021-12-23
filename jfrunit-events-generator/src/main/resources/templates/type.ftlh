@@ -20,7 +20,7 @@ package ${package}.model;
 import java.lang.*;
 
 public class ${type.name} {
-	<#list type.attributes as attribute>
-	public ${attribute.type} <#if attribute.name == "package">packageName<#else>${attribute.name}</#if>;
-	</#list>
+    <#list type.attributes as attribute>
+    public ${attribute.type} <#if attribute.name == "package">packageName<#else>${attribute.name}</#if>;
+    </#list>
 }

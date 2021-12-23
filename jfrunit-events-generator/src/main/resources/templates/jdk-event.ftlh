@@ -26,28 +26,28 @@ import java.util.Objects;
  * ${event.description}
  */
 public class ${event.name} extends JfrEventType {
-	public static final ${event.name} INSTANCE = new ${event.name}();
-	public static final String EVENT_NAME = "jdk.${event.name}";
-	<#list event.attributes as attribute>
-	public static final Attribute<${event.name}, ${attribute.objectType}> ${attribute.nameUpperCase} = new Attribute("${attribute.name}");
-	</#list>
+    public static final ${event.name} INSTANCE = new ${event.name}();
+    public static final String EVENT_NAME = "jdk.${event.name}";
+    <#list event.attributes as attribute>
+    public static final Attribute<${event.name}, ${attribute.objectType}> ${attribute.nameUpperCase} = new Attribute<>("${attribute.name}");
+    </#list>
 
-	public ${event.name}() {
-		super(EVENT_NAME);
-	}
+    public ${event.name}() {
+        super(EVENT_NAME);
+    }
 
-	<#list event.attributes as attribute>
+    <#list event.attributes as attribute>
     public ${event.name} ${attribute.methodName}(${attribute.objectType} ${attribute.name}) {
-		getPredicates().add(
-			new org.moditect.jfrunit.JfrPredicate(
-				input ->
-                		matches(${attribute.name}, "${attribute.name}", input),
+        getPredicates().add(
+            new org.moditect.jfrunit.JfrPredicate(
+                input ->
+                        matches(${attribute.name}, "${attribute.name}", input),
                 "${attribute.name}",
                 ${attribute.name}.toString()
-			)
-		);
+            )
+        );
 
-		return this;
+        return this;
     }
 
     </#list>
