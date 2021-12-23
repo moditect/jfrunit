@@ -46,7 +46,7 @@ public class ThreadSleepTest {
                         .withEventThread(new ExpectedThread(Thread.currentThread()))
                         .withStackTrace(new ExpectedStackTrace(elements[0], true)))
                 .collect(Collectors.toList());
-        assertThat(threadSleepEvents.size()).isEqualTo(1);
+        assertThat(threadSleepEvents).hasSize(1);
         assertThat(threadSleepEvents.get(0).getStackTrace() != null);
     }
 
@@ -60,7 +60,7 @@ public class ThreadSleepTest {
         List<RecordedEvent> threadSleepEvents = jfrEvents.filter(
                 JfrEventTypes.THREAD_SLEEP.withEventThread(new ExpectedThread(Thread.currentThread())))
                 .collect(Collectors.toList());
-        assertThat(threadSleepEvents.size()).isEqualTo(1);
+        assertThat(threadSleepEvents).hasSize(1);
         assertThat(threadSleepEvents.get(0).getStackTrace() == null);
     }
 
@@ -80,7 +80,7 @@ public class ThreadSleepTest {
                         .withStackTrace(new ExpectedStackTrace(elements[0], true)))
                 .collect(Collectors.toList());
 
-        assertThat(threadSleepEvents.size()).isEqualTo(1);
+        assertThat(threadSleepEvents).hasSize(1);
         assertThat(threadSleepEvents.get(0).getStackTrace() != null);
     }
 }
