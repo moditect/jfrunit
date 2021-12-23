@@ -15,27 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.moditect.jfrunit.generator.events.model;
+package org.moditect.jfrunit.generator;
 
-import java.util.List;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class Type {
-    private String name;
-    private List<Attribute> attributes;
+public class PascalToSnakeCaseTest {
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Attribute> getAttributes() {
-        return attributes;
-    }
-
-    public void setAttributes(List<Attribute> attributes) {
-        this.attributes = attributes;
+    @ParameterizedTest
+    @CsvFileSource(resources = "/pascalToSnakeCaseTest.csv", numLinesToSkip = 1)
+    public void eventNameToSnakeCase(String input, String expected) {
+        Assertions.assertEquals(expected,
+                JfrUnitConstantsGenerator.pascalCaseToSnakeCase(input));
     }
 }

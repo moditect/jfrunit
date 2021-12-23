@@ -34,7 +34,7 @@ public class JfrUnitErrorMessagesTest {
         Assertions.assertThatThrownBy(() -> assertThat(jfrEvents).contains(JfrEventTypes.THREAD_SLEEP.withTime(Duration.ofMillis(wrongMillis))))
                 .hasMessage("No JFR event of type <jdk.ThreadSleep>, expected <PT0." + wrongMillis + "S> on field <time>");
 
-        Assertions.assertThatThrownBy(() -> assertThat(jfrEvents).contains(JfrEventTypes.OBJECT_ALLOCATION_IN_NEW_TL_AB))
+        Assertions.assertThatThrownBy(() -> assertThat(jfrEvents).contains(JfrEventTypes.OBJECT_ALLOCATION_IN_NEW_TLAB))
                 .hasMessage("No JFR event of type <jdk.ObjectAllocationInNewTLAB>");
     }
 }

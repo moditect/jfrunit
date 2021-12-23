@@ -52,13 +52,13 @@ public class TLABRelatedTest {
         assertThat(jfrEvents).contains(ObjectAllocationOutsideTLAB.INSTANCE);
         assertThat(jfrEvents).contains(ObjectAllocationInNewTLAB.INSTANCE);
 
-        List<RecordedEvent> allocation100KBInNewTLABEvents = jfrEvents.filter(JfrEventTypes.OBJECT_ALLOCATION_IN_NEW_TL_AB
+        List<RecordedEvent> allocation100KBInNewTLABEvents = jfrEvents.filter(JfrEventTypes.OBJECT_ALLOCATION_IN_NEW_TLAB
                 .withAllocationSize((long) OBJECT_SIZE)
                 .withObjectClass(new ExpectedClass(byte[].class))
                 .withEventThread(new ExpectedThread(Thread.currentThread()))
                 .withStackTrace(new ExpectedStackTrace(elements[0], true)))
                 .collect(Collectors.toList());
-        List<RecordedEvent> allocation100KBOutsideTLABEvents = jfrEvents.filter(JfrEventTypes.OBJECT_ALLOCATION_OUTSIDE_TL_AB
+        List<RecordedEvent> allocation100KBOutsideTLABEvents = jfrEvents.filter(JfrEventTypes.OBJECT_ALLOCATION_OUTSIDE_TLAB
                 .withAllocationSize((long) OBJECT_SIZE)
                 .withObjectClass(new ExpectedClass(byte[].class))
                 .withEventThread(new ExpectedThread(Thread.currentThread()))
