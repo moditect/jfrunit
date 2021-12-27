@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 
 import org.moditect.jfrunit.EnableEvent.StacktracePolicy;
 import org.moditect.jfrunit.internal.EventConfiguration;
+import org.moditect.jfrunit.internal.ResetEvent;
 import org.moditect.jfrunit.internal.SyncEvent;
 
 import jdk.jfr.Configuration;
@@ -57,9 +58,9 @@ public class JfrEvents {
 
     private Method testMethod;
     private String dumpFileName;
-    private Queue<RecordedEvent> events = new ConcurrentLinkedQueue<>();
-    private AtomicLong sequence = new AtomicLong();
-    private AtomicLong watermark = new AtomicLong();
+    private final Queue<RecordedEvent> events = new ConcurrentLinkedQueue<>();
+    private final AtomicLong sequence = new AtomicLong();
+    private final AtomicLong watermark = new AtomicLong();
     private RecordingStream stream;
     private Recording recording;
     private boolean capturing;
@@ -144,7 +145,7 @@ public class JfrEvents {
         event.begin();
         long seq = sequence.incrementAndGet();
         event.sequence = seq;
-        event.cause = "awaiting events";
+        event.cause = "Awaiting events";
         event.commit();
 
         while (watermark.get() < seq) {
@@ -159,6 +160,14 @@ public class JfrEvents {
 
     public void reset() {
         awaitEvents();
+
+        ResetEvent event = new ResetEvent();
+        event.begin();
+        long seq = sequence.incrementAndGet();
+        event.sequence = seq;
+        event.cause = "Resetting events";
+        event.commit();
+
         events.clear();
     }
 
@@ -231,6 +240,7 @@ public class JfrEvents {
             }
         }
 
+        recording.enable(ResetEvent.JFRUNIT_RESET_EVENT_NAME);
         recording.enable(SyncEvent.JFRUNIT_SYNC_EVENT_NAME);
 
         recording.start();
@@ -263,6 +273,7 @@ public class JfrEvents {
         // we need this as we keep reference to events - otherwise they could be changed after the capture
         // see RecordingStream#setReuse (the default is true)
         stream.setReuse(false);
+        stream.enable(ResetEvent.JFRUNIT_RESET_EVENT_NAME);
         stream.enable(SyncEvent.JFRUNIT_SYNC_EVENT_NAME);
 
         stream.onEvent(re -> {
