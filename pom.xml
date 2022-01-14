@@ -30,7 +30,7 @@
   <parent>
     <groupId>org.moditect</groupId>
     <artifactId>moditect-org-parent</artifactId>
-    <version>1.1.0.Final</version>
+    <version>1.2.0.Final</version>
   </parent>
 
   <groupId>org.moditect.jfrunit</groupId>
