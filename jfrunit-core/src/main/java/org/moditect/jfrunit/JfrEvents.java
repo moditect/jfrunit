@@ -68,7 +68,7 @@ public class JfrEvents {
     public JfrEvents() {
     }
 
-    void startRecordingEvents(String configurationName, List<EventConfiguration> enabledEvents, Method testMethod, String dumpFileName) {
+    public void startRecordingEvents(String configurationName, List<EventConfiguration> enabledEvents, Method testMethod, String dumpFileName) {
         if (configurationName != null && !enabledEvents.isEmpty()) {
             throw new IllegalArgumentException("Either @EnableConfiguration or @EnableEvent may be given, but not both at the same time");
         }
@@ -94,7 +94,7 @@ public class JfrEvents {
         }
     }
 
-    void stopRecordingEvents() {
+    public void stopRecordingEvents() {
         try {
             URI testSourceUri = testMethod.getDeclaringClass().getProtectionDomain().getCodeSource().getLocation().toURI();
             Path dumpDir;
@@ -194,7 +194,7 @@ public class JfrEvents {
         return result;
     }
 
-    private Stream<RecordedEvent> stream() {
+    public Stream<RecordedEvent> stream() {
         // avoid blocking when called outside of a test such as new JfrEvents().stream()
         if (capturing) {
             awaitEvents();
