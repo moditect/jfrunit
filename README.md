@@ -72,7 +72,7 @@ public class JfrTest {
 
         assertThat(jfrEvents).contains(JfrEventTypes.GARBAGE_COLLECTION);
         assertThat(jfrEvents).contains(
-                JfrEventTypes.THREAD_SLEEP.withTime(Duration.ofMillis(50)));
+                JfrEventTypes.THREAD_SLEEP.withTime(Duration.ofMillis(1000)));
     }
 }
 ```
